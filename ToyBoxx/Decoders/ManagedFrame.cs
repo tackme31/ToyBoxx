@@ -1,10 +1,13 @@
 ﻿using FFmpeg.AutoGen;
+using System.Windows.Controls;
 
 namespace ToyBoxx.Decoders;
 
 public unsafe class ManagedFrame : IDisposable
 {
     private readonly AVFrame* _frame;
+    public AVFrame* Frame => _frame;
+
 
     public ManagedFrame(AVFrame* frame)
     {

@@ -9,8 +9,11 @@ public unsafe class VideoDecoder : IDisposable
     private AVFormatContext* _formatContext;
 
     private AVStream* _videoStream;
+    public AVStream VideoStream => *_videoStream;
     private AVCodec* _videoCodec;
+    public AVCodec VideoCodec => *_videoCodec;
     private AVCodecContext* _videoCodecContext;
+    public AVCodecContext VideoCodecContext => *_videoCodecContext;
 
     private AVStream* _audioStream;
     private AVCodec* _audioCodec;
