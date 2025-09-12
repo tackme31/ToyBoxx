@@ -22,10 +22,6 @@ namespace ToyBoxx
                 .AddJsonFile("appsettings.user.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables();
             _configuration = builder.Build();
-
-            var rootPath = Configuration["FFMpegRootPath"] ?? throw new Exception("'FFMpegRootPath' does not exist.");
-            ffmpeg.RootPath = rootPath;
-            ffmpeg.avdevice_register_all();
         }
     }
 
