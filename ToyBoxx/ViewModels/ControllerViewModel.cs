@@ -101,7 +101,7 @@ public sealed class ControllerViewModel : AttachedViewModel
         var m = App.ViewModel.MediaElement;
 
         // Load user preference
-        m.LoopingBehavior = (MediaPlaybackState)Properties.Settings.Default.LoopingBehavior;
+        IsLoopingMediaEnabled = (MediaPlaybackState)Properties.Settings.Default.LoopingBehavior == MediaPlaybackState.Play;
         m.Volume = Properties.Settings.Default.Volume;
         m.IsMuted = Properties.Settings.Default.IsMuted;
 
@@ -146,7 +146,7 @@ public sealed class ControllerViewModel : AttachedViewModel
             },
             nameof(m.IsOpen));
 
-        m.PositionChanged += (sender, args) =>
+        m.PositionChanged += async (sender, args) =>
         {
             if (!IsSegmentLoopEnabled)
             {
@@ -160,7 +160,7 @@ public sealed class ControllerViewModel : AttachedViewModel
 
             if (SegmentLoopTo < args.Position || args.Position < SegmentLoopFrom)
             {
-                m.Seek(SegmentLoopFrom.Value);
+                await m.Seek(SegmentLoopFrom.Value);
             }
         };
     }
