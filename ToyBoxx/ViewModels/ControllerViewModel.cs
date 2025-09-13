@@ -51,6 +51,11 @@ public sealed class ControllerViewModel : AttachedViewModel
         base.OnApplicationLoaded();
         var m = App.ViewModel.MediaElement;
 
+        // Load user preference
+        m.LoopingBehavior = (MediaPlaybackState)Properties.Settings.Default.LoopingBehavior;
+        m.Volume = Properties.Settings.Default.Volume;
+        m.IsMuted = Properties.Settings.Default.IsMuted;
+
         m.WhenChanged(
             () =>
             {

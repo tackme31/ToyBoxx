@@ -3,39 +3,61 @@ using System.Windows;
 using ToyBoxx.ViewModels;
 using Unosquare.FFME;
 
-namespace ToyBoxx
+namespace ToyBoxx;
+
+/// <summary>
+/// Interaction logic for App.xaml
+/// </summary>
+public partial class App : Application
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    private static IConfiguration? _configuration;
+    public static IConfiguration Configuration => _configuration ?? throw new InvalidOperationException("Configuration not initialized.");
+
+    public static RootViewModel ViewModel => Current.Resources[nameof(ViewModel)] as RootViewModel ?? throw new Exception("ViewModel not found.");
+
+    public App()
     {
-        private static IConfiguration? _configuration;
-        public static IConfiguration Configuration => _configuration ?? throw new InvalidOperationException("Configuration not initialized.");
+        var builder = new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile("appsettings.user.json", optional: true, reloadOnChange: true)
+            .AddEnvironmentVariables();
+        _configuration = builder.Build();
 
-        public App()
+        var ffmpegPath = _configuration["FFMpegRootPath"] ?? throw new InvalidOperationException("Variable 'FFMpegRootPath' does not exist");
+        Unosquare.FFME.Library.FFmpegDirectory = ffmpegPath;
+        Library.EnableWpfMultiThreadedVideo = false;
+    }
+
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        base.OnStartup(e);
+
+        Current.MainWindow = new MainWindow
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile("appsettings.user.json", optional: true, reloadOnChange: true)
-                .AddEnvironmentVariables();
-            _configuration = builder.Build();
+            Top = ToyBoxx.Properties.Settings.Default.WindowTop,
+            Left = ToyBoxx.Properties.Settings.Default.WindowLeft,
+            Width = ToyBoxx.Properties.Settings.Default.WindowWidth,
+            Height = ToyBoxx.Properties.Settings.Default.WindowHeight
+        };
 
-            var ffmpegPath = _configuration["FFMpegRootPath"] ?? throw new InvalidOperationException("Variable 'FFMpegRootPath' does not exist");
-            Unosquare.FFME.Library.FFmpegDirectory = ffmpegPath;
-            Library.EnableWpfMultiThreadedVideo = false;
-        }
-
-        protected override void OnStartup(StartupEventArgs e)
+        Current.MainWindow.Loaded += (sender, arg) => ViewModel.OnApplicationLoaded();
+        Current.MainWindow.Closing += (sender, args) =>
         {
-            base.OnStartup(e);
+            var window = sender as MainWindow;
+            if (window is not null)
+            {
+                ToyBoxx.Properties.Settings.Default.WindowTop = window.Top;
+                ToyBoxx.Properties.Settings.Default.WindowLeft = window.Left;
+                ToyBoxx.Properties.Settings.Default.WindowWidth = window.Width;
+                ToyBoxx.Properties.Settings.Default.WindowHeight = window.Height;
+                ToyBoxx.Properties.Settings.Default.LoopingBehavior = (int)window.ViewModel.MediaElement.LoopingBehavior;
+                ToyBoxx.Properties.Settings.Default.Volume = window.ViewModel.MediaElement.Volume;
+                ToyBoxx.Properties.Settings.Default.IsMuted = window.ViewModel.MediaElement.IsMuted;
+                ToyBoxx.Properties.Settings.Default.Save();
+            }
+        };
 
-            Current.MainWindow = new MainWindow();
-            Current.MainWindow.Loaded += (snd, eva) => ViewModel.OnApplicationLoaded();
-            Current.MainWindow.Show();
-        }
-
-        public static RootViewModel ViewModel => Current.Resources[nameof(ViewModel)] as RootViewModel ?? throw new Exception("ViewModel not found.");
+        Current.MainWindow.Show();
     }
 }

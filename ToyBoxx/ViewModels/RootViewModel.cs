@@ -2,7 +2,6 @@
 using System.Windows;
 using Unosquare.FFME;
 using Unosquare.FFME.Common;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace ToyBoxx.ViewModels;
 
