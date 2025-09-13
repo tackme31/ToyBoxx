@@ -24,9 +24,8 @@
                 </Grid.ColumnDefinitions>
 
                 <DockPanel Name="LeftControls" HorizontalAlignment="Left" Grid.Column="0">
-                    
                 </DockPanel>
-                
+
                 <DockPanel Name="CenterControls" HorizontalAlignment="Center" Grid.Column="1">
                     <Button Visibility="{Binding Controller.PlayButtonVisibility}" Style="{DynamicResource ModernButtonStyle}" Command="{Binding Commands.Play}">
                         <Path Stretch="Uniform" Data="{Binding Source={StaticResource PlayIcon}, Path=Data}" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
@@ -40,7 +39,9 @@
                 </DockPanel>
 
                 <DockPanel Name="RightControls" HorizontalAlignment="Right" Grid.Column="2">
-                    
+                    <Button Name="ToggleFullscreenButton" Style="{DynamicResource ModernButtonStyle}" Command="{Binding Commands.ToggleFullscreen}">
+                        <Path Stretch="Uniform" Data="{Binding Source={StaticResource ToggleFullscreenIcon}, Path=Data}" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
+                    </Button>
                 </DockPanel>
             </Grid>
         </Grid>
