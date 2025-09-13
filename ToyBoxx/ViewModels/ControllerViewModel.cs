@@ -52,14 +52,9 @@ public sealed class ControllerViewModel : AttachedViewModel
         var m = App.ViewModel.MediaElement;
 
         m.WhenChanged(
-            () => PauseButtonVisibility = m.CanPause && m.IsPlaying ? Visibility.Visible : Visibility.Collapsed,
-            nameof(m.CanPause),
-            nameof(m.IsPlaying));
-
-        m.WhenChanged(
             () =>
             {
-                PlayButtonVisibility = m.IsOpen && !m.IsPlaying && !m.HasMediaEnded && !m.IsSeeking && !m.IsChanging
+                PlayButtonVisibility = m.IsOpen && !m.IsPlaying && !m.IsSeeking && !m.IsChanging
                     ? Visibility.Visible
                     : Visibility.Collapsed;
             },
@@ -68,6 +63,11 @@ public sealed class ControllerViewModel : AttachedViewModel
             nameof(m.HasMediaEnded),
             nameof(m.IsSeeking),
             nameof(m.IsChanging));
+
+        m.WhenChanged(
+            () => PauseButtonVisibility = m.CanPause && m.IsPlaying ? Visibility.Visible : Visibility.Collapsed,
+            nameof(m.CanPause),
+            nameof(m.IsPlaying));
 
         m.WhenChanged(
             () =>

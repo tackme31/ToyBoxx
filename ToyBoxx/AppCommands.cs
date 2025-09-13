@@ -52,6 +52,11 @@ public class AppCommands
 
     public DelegateCommand Play => _playCommand ??= new(async o =>
     {
+        if (App.ViewModel.MediaElement.HasMediaEnded)
+        {
+            await App.ViewModel.MediaElement.Seek(TimeSpan.Zero);
+        }
+
         await App.ViewModel.MediaElement.Play();
     });
 
