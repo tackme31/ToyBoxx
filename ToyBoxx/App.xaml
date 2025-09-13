@@ -9,6 +9,13 @@
                 <ResourceDictionary>
                     <vm:RootViewModel x:Key="ViewModel" />
                 </ResourceDictionary>
+
+                <ResourceDictionary>
+                    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+                </ResourceDictionary>
+
+                <ResourceDictionary Source="App.Icons.xaml" />
+                <ResourceDictionary Source="App.Style.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

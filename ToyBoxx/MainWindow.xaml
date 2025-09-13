@@ -7,13 +7,26 @@
         xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
         xmlns:controls="clr-namespace:ToyBoxx.Controls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        DataContext="{StaticResource ViewModel}"
+        WindowStartupLocation="Manual" MinHeight="720" Height="0" MinWidth="1280" Width="0"
+        Title="ToyBoxx"
+        Background="Black">
+    <Window.Resources>
+        <Storyboard x:Key="ShowControlOpacity" Storyboard.TargetProperty="(UIElement.Opacity)">
+            <DoubleAnimation To="1" Duration="0:0:0.100" FillBehavior="HoldEnd" />
+        </Storyboard>
+        <Storyboard x:Key="HideControlOpacity" Storyboard.TargetProperty="(UIElement.Opacity)">
+            <DoubleAnimation To="0" Duration="0:0:0.300" FillBehavior="HoldEnd" />
+        </Storyboard>
+    </Window.Resources>
+    
     <Grid Name="Player">
         <ffme:MediaElement Name="Media" Background="Black" LoadedBehavior="Play" IsDesignPreviewEnabled="True" />
         <DockPanel x:Name="LayoutPanel" LastChildFill="False">
             <controls:ControllerPanelControl
                 x:Name="ControllerPanel"
-                DockPanel.Dock="Bottom"/>
+                DockPanel.Dock="Bottom"
+                Visibility="{Binding IsApplicationLoaded, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         </DockPanel>
     </Grid>
 </Window>

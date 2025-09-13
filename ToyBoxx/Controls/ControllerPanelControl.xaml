@@ -4,10 +4,45 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:ToyBoxx.ViewModels"
-             xmlns:local="clr-namespace:ToyBoxx.Controls"
+             xmlns:local="clr-namespace:ToyBoxx"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance vm:RootViewModel, IsDesignTimeCreatable=True}">
     <Grid Name="Controls" Visibility="Visible" Height="250" Background="{x:Null}">
+        <Canvas IsHitTestVisible="False" Background="{DynamicResource ShadedBackgroundBrush}" />
+        <Grid VerticalAlignment="Bottom">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0"></RowDefinition>
+                <RowDefinition Height="0"></RowDefinition>
+                <RowDefinition Height="70"></RowDefinition>
+            </Grid.RowDefinitions>
 
+            <Grid Name="ControlsPanel" Grid.Row="2" Margin="20,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+
+                <DockPanel Name="LeftControls" HorizontalAlignment="Left" Grid.Column="0">
+                    
+                </DockPanel>
+                
+                <DockPanel Name="CenterControls" HorizontalAlignment="Center" Grid.Column="1">
+                    <Button Visibility="{Binding Controller.PlayButtonVisibility}" Style="{DynamicResource ModernButtonStyle}" Command="{Binding Commands.Play}">
+                        <Path Stretch="Uniform" Data="{Binding Source={StaticResource PlayIcon}, Path=Data}" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
+                    </Button>
+                    <Button Visibility="{Binding Controller.PauseButtonVisibility}" Style="{DynamicResource ModernButtonStyle}" Command="{Binding Commands.Pause}">
+                        <Path Stretch="Uniform" Data="{Binding Source={StaticResource PauseIcon}, Path=Data}" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
+                    </Button>
+                    <Button Visibility="{Binding Controller.StopButtonVisibility}" Style="{DynamicResource ModernButtonStyle}" Command="{Binding Commands.Stop}">
+                        <Path Stretch="Uniform" Data="{Binding Source={StaticResource StopIcon}, Path=Data}" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
+                    </Button>
+                </DockPanel>
+
+                <DockPanel Name="RightControls" HorizontalAlignment="Right" Grid.Column="2">
+                    
+                </DockPanel>
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>
