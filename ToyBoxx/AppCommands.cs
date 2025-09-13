@@ -59,6 +59,7 @@ public class AppCommands
     public DelegateCommand Stop => _stopCommand ??= new(async o =>
     {
         await App.ViewModel.MediaElement.Value.Stop();
+        await App.ViewModel.MediaElement.Value.Seek(TimeSpan.Zero);
     });
 
     private DelegateCommand? _toggleFullScreenCommand;
