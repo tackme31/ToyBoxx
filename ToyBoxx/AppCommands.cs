@@ -20,6 +20,11 @@ public class AppCommands
             }
 
             var media = App.ViewModel.MediaElement;
+            if (media.IsOpen)
+            {
+                await media.Close();
+            }
+
             var target = new Uri(uriString);
             await media.Open(new FileInputStream(target.LocalPath));
         }

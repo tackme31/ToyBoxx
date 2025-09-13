@@ -10,7 +10,9 @@
         DataContext="{StaticResource ViewModel}"
         WindowStartupLocation="Manual" MinHeight="640" Height="0" MinWidth="640" Width="0"
         Title="ToyBoxx"
-        Background="Black">
+        Background="Black"
+        AllowDrop="True"
+        Drop="Window_Drop">
     <Window.Resources>
         <Storyboard x:Key="ShowControlOpacity" Storyboard.TargetProperty="(UIElement.Opacity)">
             <DoubleAnimation To="1" Duration="0:0:0.100" FillBehavior="HoldEnd" />

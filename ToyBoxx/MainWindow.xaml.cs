@@ -103,8 +103,12 @@ public partial class MainWindow : Window
     {
         Loaded -= OnWindowLoaded;
 
-        var file = @"D:\Windows\Downloads\sample.mp4";
-        App.ViewModel.Commands.Open.Execute(file);
+        // Open a file if it is specified in the arguments
+        var args = Environment.GetCommandLineArgs();
+        if (args.Length > 1)
+        {
+            App.ViewModel.Commands.Open.Execute(args[1].Trim());
+        }
     }
 
     private void OnWindowKeyDown(object? sender, KeyEventArgs e)
@@ -127,5 +131,21 @@ public partial class MainWindow : Window
     private void Media_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
         App.ViewModel.Commands.ToggleFullscreen.Execute(null);
+    }
+
+    private void Window_Drop(object sender, DragEventArgs e)
+    {
+        if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+        {
+            return;
+        }
+
+        var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+        if (files is [])
+        {
+            return;
+        }
+
+        App.ViewModel.Commands.Open.Execute(files[0]);
     }
 }
