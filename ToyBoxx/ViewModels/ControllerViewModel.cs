@@ -72,7 +72,7 @@ public sealed class ControllerViewModel : AttachedViewModel
         m.WhenChanged(
             () =>
             {
-                StopButtonVisibility = m.IsOpen && !m.IsChanging && !m.IsSeeking && (m.HasMediaEnded || (m.IsSeekable && m.MediaState != MediaPlaybackState.Stop))
+                StopButtonVisibility = m.IsOpen && !m.IsChanging && !m.IsSeeking
                 ? Visibility.Visible
                 : Visibility.Hidden;
             },
