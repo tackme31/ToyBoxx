@@ -1,12 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Unosquare.FFME.Common;
+﻿using Unosquare.FFME.Common;
 
 namespace ToyBoxx.ViewModels;
 
 public abstract class AttachedViewModel : ViewModelBase
 {
+    protected AttachedViewModel(RootViewModel root)
+    {
+        Root = root;
+    }
+
+    /// <summary>
+    /// Gets the root VM this object belongs to.
+    /// </summary>
+    public RootViewModel Root { get; }
+
+    internal virtual void OnApplicationLoaded()
+    {
+    }
 }
