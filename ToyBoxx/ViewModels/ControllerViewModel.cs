@@ -69,7 +69,7 @@ public sealed class ControllerViewModel : AttachedViewModel
 
     public void SetLoopSegment()
     {
-        if (IsLoopingMediaEnabled && SegmentLoopFrom is not null && SegmentLoopTo is not null)
+        if (IsSegmentLoopEnabled && SegmentLoopFrom is not null && SegmentLoopTo is not null)
         {
             IsSegmentLoopEnabled = false;
             SegmentLoopFrom = null;
