@@ -1,4 +1,7 @@
 ﻿using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using ToyBoxx.ViewModels;
 
 namespace ToyBoxx;
@@ -8,7 +11,10 @@ namespace ToyBoxx;
 /// </summary>
 public partial class MainWindow : Window
 {
-    public RootViewModel ViewModel { get; }
+    private DispatcherTimer? _mouseMoveTimer;
+    private DateTime _lastMouseMoveTime;
+    private Point _lastMousePosition;
+    private bool _isControllerHideCompleted;
 
     public MainWindow()
     {
@@ -17,9 +23,79 @@ public partial class MainWindow : Window
         InitializeMainWindow();
     }
 
+    public RootViewModel ViewModel { get; }
+
+    private Storyboard HideControllerAnimation => FindResource("HideControlOpacity") as Storyboard ?? throw new Exception("Control 'HideControlOpacity' not found.");
+
+    private Storyboard ShowControllerAnimation => FindResource("ShowControlOpacity") as Storyboard ?? throw new Exception("Control 'ShowControlOpacity' not found.");
+
     private void InitializeMainWindow()
     {
         Loaded += OnWindowLoaded;
+
+        _lastMouseMoveTime = DateTime.UtcNow;
+
+        Loaded += (s, e) =>
+        {
+            Storyboard.SetTarget(HideControllerAnimation, ControllerPanel);
+            Storyboard.SetTarget(ShowControllerAnimation, ControllerPanel);
+
+            HideControllerAnimation.Completed += (es, ee) =>
+            {
+                ControllerPanel.Visibility = Visibility.Hidden;
+                _isControllerHideCompleted = true;
+            };
+
+            ShowControllerAnimation.Completed += (es, ee) =>
+            {
+                _isControllerHideCompleted = false;
+            };
+        };
+
+        MouseMove += (s, e) =>
+        {
+            var currentPosition = e.GetPosition(Application.Current.MainWindow);
+            if (Math.Abs(currentPosition.X - _lastMousePosition.X) > double.Epsilon ||
+                Math.Abs(currentPosition.Y - _lastMousePosition.Y) > double.Epsilon)
+                _lastMouseMoveTime = DateTime.UtcNow;
+
+            _lastMousePosition = currentPosition;
+        };
+
+        MouseLeave += (s, e) =>
+        {
+            _lastMouseMoveTime = DateTime.UtcNow.Subtract(TimeSpan.FromSeconds(10));
+        };
+
+        _mouseMoveTimer = new DispatcherTimer(DispatcherPriority.Background)
+        {
+            Interval = TimeSpan.FromMilliseconds(150),
+            IsEnabled = true
+        };
+
+        _mouseMoveTimer.Tick += (s, e) =>
+        {
+            var elapsedSinceMouseMove = DateTime.UtcNow.Subtract(_lastMouseMoveTime);
+            if (elapsedSinceMouseMove.TotalMilliseconds >= 3000 && Media.IsOpen && !ControllerPanel.IsMouseOver)
+            {
+                if (_isControllerHideCompleted)
+                {
+                    return;
+                }
+
+                Cursor = Cursors.None;
+                HideControllerAnimation?.Begin();
+                _isControllerHideCompleted = false;
+            }
+            else
+            {
+                Cursor = Cursors.Arrow;
+                ControllerPanel.Visibility = Visibility.Visible;
+                ShowControllerAnimation?.Begin();
+            }
+        };
+
+        _mouseMoveTimer.Start();
     }
 
     private void OnWindowLoaded(object? sender, RoutedEventArgs e)
