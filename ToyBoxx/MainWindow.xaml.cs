@@ -32,6 +32,7 @@ public partial class MainWindow : Window
     private void InitializeMainWindow()
     {
         Loaded += OnWindowLoaded;
+        PreviewKeyDown += OnWindowKeyDown;
 
         _lastMouseMoveTime = DateTime.UtcNow;
 
@@ -104,5 +105,27 @@ public partial class MainWindow : Window
 
         var file = @"D:\Windows\Downloads\sample.mp4";
         App.ViewModel.Commands.Open.Execute(file);
+    }
+
+    private void OnWindowKeyDown(object? sender, KeyEventArgs e)
+    {
+        // Keep the key focus on the main window
+        FocusManager.SetIsFocusScope(this, true);
+        FocusManager.SetFocusedElement(this, this);
+
+        switch (e.Key)
+        {
+            case Key.Space when Media.IsPlaying:
+                App.ViewModel.Commands.Pause.Execute(null);
+                break;
+            case Key.Space when !Media.IsPlaying:
+                App.ViewModel.Commands.Play.Execute(null);
+                break;
+        }
+    }
+
+    private void Media_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        App.ViewModel.Commands.ToggleFullscreen.Execute(null);
     }
 }

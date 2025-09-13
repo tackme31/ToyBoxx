@@ -21,7 +21,7 @@
     </Window.Resources>
     
     <Grid Name="Player">
-        <ffme:MediaElement Name="Media" Background="Black" LoadedBehavior="Play" IsDesignPreviewEnabled="True" />
+        <ffme:MediaElement Name="Media" Background="Black" LoadedBehavior="Play" IsDesignPreviewEnabled="True" MouseDoubleClick="Media_MouseDoubleClick" />
         <DockPanel x:Name="LayoutPanel" LastChildFill="False">
             <controls:ControllerPanelControl
                 x:Name="ControllerPanel"
