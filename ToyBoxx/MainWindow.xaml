@@ -8,8 +8,8 @@
         xmlns:controls="clr-namespace:ToyBoxx.Controls"
         mc:Ignorable="d"
         DataContext="{StaticResource ViewModel}"
+        Title="{Binding WindowTitle}"
         WindowStartupLocation="Manual" MinHeight="640" Height="0" MinWidth="640" Width="0"
-        Title="ToyBoxx"
         Background="Black"
         AllowDrop="True"
         Drop="Window_Drop">

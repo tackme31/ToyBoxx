@@ -1,5 +1,6 @@
-﻿using System.IO;
+﻿using System.Text;
 using System.Windows;
+using ToyBoxx.Foundation;
 using Unosquare.FFME;
 using Unosquare.FFME.Common;
 
@@ -14,18 +15,6 @@ public class RootViewModel : ViewModelBase
 
     public ControllerViewModel Controller { get; }
 
-    internal void OnApplicationLoaded()
-    {
-        if (IsApplicationLoaded)
-        {
-            return;
-        }
-
-        Controller.OnApplicationLoaded();
-
-        IsApplicationLoaded = true;
-    }
-
     public AppCommands Commands { get; } = new AppCommands();
 
     private MediaElement? _mediaElement;
@@ -36,5 +25,48 @@ public class RootViewModel : ViewModelBase
     {
         get => _isApplicationLoaded;
         set => SetProperty(ref _isApplicationLoaded, value);
+    }
+
+    private string _windowTitle;
+    public string WindowTitle
+    {
+        get => _windowTitle;
+        private set => SetProperty(ref _windowTitle, value);
+    }
+
+    internal void OnApplicationLoaded()
+    {
+        if (IsApplicationLoaded)
+        {
+            return;
+        }
+
+        Controller.OnApplicationLoaded();
+
+        var m = MediaElement;
+        MediaElement.WhenChanged(UpdateWindowTitle,
+            nameof(m.IsOpen),
+            nameof(m.IsOpening),
+            nameof(m.Source));
+
+        IsApplicationLoaded = true;
+    }
+
+    private void UpdateWindowTitle()
+    {
+        var titleBuilder = new StringBuilder();
+        if (MediaElement.IsOpen)
+        {
+            var source = MediaElement.MediaInfo.MediaSource;
+            var uri = new Uri(source);
+            var fileName = uri.Segments.LastOrDefault();
+
+            titleBuilder.Append(fileName ?? "No title");
+            titleBuilder.Append(" - ");
+        }
+
+        titleBuilder.Append("ToyBoxx");
+
+        WindowTitle = titleBuilder.ToString();
     }
 }
