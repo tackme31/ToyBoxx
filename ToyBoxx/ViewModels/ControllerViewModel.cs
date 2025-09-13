@@ -31,6 +31,21 @@ public sealed class ControllerViewModel : AttachedViewModel
         set => SetProperty(ref _stopButtonVisibility, value);
     }
 
+    public bool IsLoopingMediaEnabled
+    {
+        get
+        {
+            var m = App.ViewModel.MediaElement.Value;
+            return m.LoopingBehavior == MediaPlaybackState.Play;
+        }
+        set
+        {
+            var m = App.ViewModel.MediaElement.Value;
+            m.LoopingBehavior = value ? MediaPlaybackState.Play : MediaPlaybackState.Pause;
+            NotifyPropertyChanged(nameof(IsLoopingMediaEnabled));
+        }
+    }
+
     internal override void OnApplicationLoaded()
     {
         base.OnApplicationLoaded();
