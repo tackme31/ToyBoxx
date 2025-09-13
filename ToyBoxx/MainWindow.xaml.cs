@@ -130,7 +130,7 @@ public partial class MainWindow : Window
 
     private void Media_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        App.ViewModel.Commands.ToggleFullscreen.Execute(null);
+        App.ViewModel.Commands.ToggleFullScreen.Execute(null);
     }
 
     private void Window_Drop(object sender, DragEventArgs e)

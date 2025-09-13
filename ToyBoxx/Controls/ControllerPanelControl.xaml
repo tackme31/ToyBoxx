@@ -73,7 +73,7 @@
 
                         <ui:SymbolIcon Symbol="ArrowRepeatAll16" Foreground="White"/>
                     </ToggleButton>
-                    <Button Name="ToggleFullscreenButton" Style="{DynamicResource ModernButtonStyle}" Command="{Binding Commands.ToggleFullscreen}">
+                    <Button Name="ToggleFullscreenButton" Style="{DynamicResource ModernButtonStyle}" Command="{Binding Commands.ToggleFullScreen}">
                         <ui:SymbolIcon Symbol="FullScreenMaximize16" Foreground="White"/>
                     </Button>
                 </DockPanel>

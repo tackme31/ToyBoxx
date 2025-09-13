@@ -73,7 +73,7 @@ public class AppCommands
     });
 
     private DelegateCommand? _toggleFullScreenCommand;
-    public DelegateCommand ToggleFullscreen => _toggleFullScreenCommand ??= new(o =>
+    public DelegateCommand ToggleFullScreen => _toggleFullScreenCommand ??= new(o =>
     {
         var mainWindow = Application.Current.MainWindow;
         if (mainWindow.WindowStyle == WindowStyle.None)
