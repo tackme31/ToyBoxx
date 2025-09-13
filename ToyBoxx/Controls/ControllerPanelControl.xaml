@@ -39,9 +39,10 @@
                     </ToggleButton>
                     <Slider Width="100" VerticalAlignment="Center" IsEnabled="{Binding MediaElement.IsMuted, Converter={StaticResource InverseBooleanConverter}}" Style="{DynamicResource CustomSliderStyle}" Minimum="0.0" Maximum="1.0" Value="{Binding MediaElement.Volume}" />
 
-                    <Button Name="SegmentLoopButton" Style="{DynamicResource ModernButtonStyle}" IsEnabled="{Binding MediaElement.IsOpen}" Command="{Binding Commands.SetSegmentLoop}">
+                    <Button Margin="10,0" Name="SegmentLoopButton" Style="{DynamicResource ModernButtonStyle}" IsEnabled="{Binding MediaElement.IsOpen}" Command="{Binding Commands.SetSegmentLoop}">
                         <ui:SymbolIcon Symbol="ArrowReset20" Filled="True" Foreground="White"/>
                     </Button>
+
                     <Grid VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="60" />
@@ -56,20 +57,20 @@
                 </DockPanel>
 
                 <DockPanel Name="CenterControls" HorizontalAlignment="Center" Grid.Column="1">
-                    <Button Visibility="{Binding Controller.PlayButtonVisibility}" Style="{DynamicResource ModernButtonStyle}" Command="{Binding Commands.Play}">
+                    <Button Margin="10,0" Visibility="{Binding Controller.PlayButtonVisibility}" Style="{DynamicResource ModernButtonStyle}" Command="{Binding Commands.Play}">
                         <ui:SymbolIcon Symbol="Play48" Filled="True" Foreground="White"/>
                     </Button>
-                    <Button Visibility="{Binding Controller.PauseButtonVisibility}" Style="{DynamicResource ModernButtonStyle}" Command="{Binding Commands.Pause}">
+                    <Button Margin="10,0" Visibility="{Binding Controller.PauseButtonVisibility}" Style="{DynamicResource ModernButtonStyle}" Command="{Binding Commands.Pause}">
                         <ui:SymbolIcon Symbol="Pause12" Filled="True" Foreground="White"/>
                     </Button>
-                    <Button Visibility="{Binding Controller.StopButtonVisibility}" Style="{DynamicResource ModernButtonStyle}" Command="{Binding Commands.Stop}">
+                    <Button Margin="10,0" Visibility="{Binding Controller.StopButtonVisibility}" Style="{DynamicResource ModernButtonStyle}" Command="{Binding Commands.Stop}">
                         <ui:SymbolIcon Symbol="Stop24" Filled="True" Foreground="White"/>
                     </Button>
                 </DockPanel>
 
                 <DockPanel Name="RightControls" HorizontalAlignment="Right" Grid.Column="2">
-                    <TextBlock Grid.Column="2" Foreground="White" FontSize="14" VerticalAlignment="Center" Text="{Binding MediaElement.Position, StringFormat={}{0:hh\\:mm\\:ss}}"/>
-                    <ToggleButton Style="{DynamicResource ModernToggleButtonStyle}" IsChecked="{Binding Controller.IsLoopingMediaEnabled, Mode=TwoWay}" ToolTip="Enable Looping">
+                    <TextBlock Margin="10,0" Foreground="White" FontSize="14" VerticalAlignment="Center" Text="{Binding MediaElement.Position, StringFormat={}{0:hh\\:mm\\:ss}}"/>
+                    <ToggleButton Margin="10,0" Style="{DynamicResource ModernToggleButtonStyle}" IsChecked="{Binding Controller.IsLoopingMediaEnabled, Mode=TwoWay}" ToolTip="Enable Looping">
 
                         <ui:SymbolIcon Symbol="ArrowRepeatAll16" Foreground="White"/>
                     </ToggleButton>
