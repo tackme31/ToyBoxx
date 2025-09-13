@@ -1,4 +1,4 @@
-﻿<Window x:Class="ToyBoxx.MainWindow"
+﻿<ui:FluentWindow x:Class="ToyBoxx.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -14,15 +14,15 @@
         Background="Black"
         AllowDrop="True"
         Drop="Window_Drop">
-    <Window.Resources>
+    <ui:FluentWindow.Resources>
         <Storyboard x:Key="ShowControlOpacity" Storyboard.TargetProperty="(UIElement.Opacity)">
             <DoubleAnimation To="1" Duration="0:0:0.100" FillBehavior="HoldEnd" />
         </Storyboard>
         <Storyboard x:Key="HideControlOpacity" Storyboard.TargetProperty="(UIElement.Opacity)">
             <DoubleAnimation To="0" Duration="0:0:0.300" FillBehavior="HoldEnd" />
         </Storyboard>
-    </Window.Resources>
-    
+    </ui:FluentWindow.Resources>
+
     <Grid Name="Player">
         <ffme:MediaElement Name="Media" Background="Black" LoadedBehavior="Play" IsDesignPreviewEnabled="True" MouseDoubleClick="Media_MouseDoubleClick" />
         <DockPanel x:Name="LayoutPanel" LastChildFill="False">
@@ -31,5 +31,15 @@
                 DockPanel.Dock="Bottom"
                 Visibility="{Binding IsApplicationLoaded, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         </DockPanel>
+
+        <ui:TitleBar
+            x:Name="TitleBar"
+            Title="{Binding WindowTitle}"
+            Grid.Row="0"
+            CloseWindowByDoubleClickOnIcon="True">
+            <ui:TitleBar.Icon>
+                <ui:SymbolIcon Symbol="PlayCircle16"/>
+            </ui:TitleBar.Icon>
+        </ui:TitleBar>
     </Grid>
-</Window>
+</ui:FluentWindow>
