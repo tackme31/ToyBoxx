@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:ToyBoxx.ViewModels"
              xmlns:local="clr-namespace:ToyBoxx"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance vm:RootViewModel, IsDesignTimeCreatable=True}">
     <Grid Name="Controls" Visibility="Visible" Height="120" Background="Black" Opacity="0.8">
@@ -34,12 +35,12 @@
 
                 <DockPanel Name="LeftControls" HorizontalAlignment="Left" Grid.Column="0">
                     <ToggleButton Name="MuteUnmuteButton" Style="{DynamicResource ModernToggleButtonStyle}" IsChecked="{Binding MediaElement.IsMuted, Mode=TwoWay}">
-                        <Path Stretch="Uniform" Data="{Binding Source={StaticResource UnmuteIcon}, Path=Data}" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}" />
+                        <ui:SymbolIcon Symbol="SpeakerMute16" Filled="True" Foreground="White"/>
                     </ToggleButton>
                     <Slider Width="100" VerticalAlignment="Center" IsEnabled="{Binding MediaElement.IsMuted, Converter={StaticResource InverseBooleanConverter}}" Style="{DynamicResource CustomSliderStyle}" Minimum="0.0" Maximum="1.0" Value="{Binding MediaElement.Volume}" />
 
                     <Button Name="SegmentLoopButton" Style="{DynamicResource ModernButtonStyle}" IsEnabled="{Binding MediaElement.IsOpen}" Command="{Binding Commands.SetSegmentLoop}">
-                        <Path Stretch="Uniform" Data="{Binding Source={StaticResource PlayIcon}, Path=Data}" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
+                        <ui:SymbolIcon Symbol="ArrowReset20" Filled="True" Foreground="White"/>
                     </Button>
                     <Grid VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
@@ -56,23 +57,24 @@
 
                 <DockPanel Name="CenterControls" HorizontalAlignment="Center" Grid.Column="1">
                     <Button Visibility="{Binding Controller.PlayButtonVisibility}" Style="{DynamicResource ModernButtonStyle}" Command="{Binding Commands.Play}">
-                        <Path Stretch="Uniform" Data="{Binding Source={StaticResource PlayIcon}, Path=Data}" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
+                        <ui:SymbolIcon Symbol="Play48" Filled="True" Foreground="White"/>
                     </Button>
                     <Button Visibility="{Binding Controller.PauseButtonVisibility}" Style="{DynamicResource ModernButtonStyle}" Command="{Binding Commands.Pause}">
-                        <Path Stretch="Uniform" Data="{Binding Source={StaticResource PauseIcon}, Path=Data}" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
+                        <ui:SymbolIcon Symbol="Pause12" Filled="True" Foreground="White"/>
                     </Button>
                     <Button Visibility="{Binding Controller.StopButtonVisibility}" Style="{DynamicResource ModernButtonStyle}" Command="{Binding Commands.Stop}">
-                        <Path Stretch="Uniform" Data="{Binding Source={StaticResource StopIcon}, Path=Data}" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
+                        <ui:SymbolIcon Symbol="Stop24" Filled="True" Foreground="White"/>
                     </Button>
                 </DockPanel>
 
                 <DockPanel Name="RightControls" HorizontalAlignment="Right" Grid.Column="2">
                     <TextBlock Grid.Column="2" Foreground="White" FontSize="14" VerticalAlignment="Center" Text="{Binding MediaElement.Position, StringFormat={}{0:hh\\:mm\\:ss}}"/>
                     <ToggleButton Style="{DynamicResource ModernToggleButtonStyle}" IsChecked="{Binding Controller.IsLoopingMediaEnabled, Mode=TwoWay}" ToolTip="Enable Looping">
-                        <Path Stretch="Uniform" Data="{Binding Source={StaticResource RepeatIcon}, Path=Data}" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}" />
+
+                        <ui:SymbolIcon Symbol="ArrowRepeatAll16" Foreground="White"/>
                     </ToggleButton>
                     <Button Name="ToggleFullscreenButton" Style="{DynamicResource ModernButtonStyle}" Command="{Binding Commands.ToggleFullscreen}">
-                        <Path Stretch="Uniform" Data="{Binding Source={StaticResource ToggleFullscreenIcon}, Path=Data}" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
+                        <ui:SymbolIcon Symbol="FullScreenMaximize16" Foreground="White"/>
                     </Button>
                 </DockPanel>
             </Grid>
