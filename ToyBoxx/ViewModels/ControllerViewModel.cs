@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using ToyBoxx.Foundation;
 using Unosquare.FFME.Common;
 
