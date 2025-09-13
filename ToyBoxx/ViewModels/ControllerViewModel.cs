@@ -35,12 +35,12 @@ public sealed class ControllerViewModel : AttachedViewModel
     {
         get
         {
-            var m = App.ViewModel.MediaElement.Value;
+            var m = App.ViewModel.MediaElement;
             return m.LoopingBehavior == MediaPlaybackState.Play;
         }
         set
         {
-            var m = App.ViewModel.MediaElement.Value;
+            var m = App.ViewModel.MediaElement;
             m.LoopingBehavior = value ? MediaPlaybackState.Play : MediaPlaybackState.Pause;
             NotifyPropertyChanged(nameof(IsLoopingMediaEnabled));
         }
@@ -49,7 +49,7 @@ public sealed class ControllerViewModel : AttachedViewModel
     internal override void OnApplicationLoaded()
     {
         base.OnApplicationLoaded();
-        var m = App.ViewModel.MediaElement.Value;
+        var m = App.ViewModel.MediaElement;
 
         m.WhenChanged(
             () => PauseButtonVisibility = m.CanPause && m.IsPlaying ? Visibility.Visible : Visibility.Collapsed,

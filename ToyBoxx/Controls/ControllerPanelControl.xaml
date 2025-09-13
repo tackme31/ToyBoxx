@@ -24,6 +24,10 @@
                 </Grid.ColumnDefinitions>
 
                 <DockPanel Name="LeftControls" HorizontalAlignment="Left" Grid.Column="0">
+                    <ToggleButton Name="MuteUnmuteButton" Style="{DynamicResource ModernToggleButtonStyle}" IsChecked="{Binding MediaElement.IsMuted, Mode=TwoWay}">
+                        <Path Stretch="Uniform" Data="{Binding Source={StaticResource UnmuteIcon}, Path=Data}" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}" />
+                    </ToggleButton>
+                    <Slider Width="100" VerticalAlignment="Center" IsEnabled="{Binding MediaElement.IsMuted, Converter=}" Style="{DynamicResource CustomSliderStyle}" Minimum="0.0" Maximum="1.0" Value="{Binding MediaElement.Volume}" />
                 </DockPanel>
 
                 <DockPanel Name="CenterControls" HorizontalAlignment="Center" Grid.Column="1">
