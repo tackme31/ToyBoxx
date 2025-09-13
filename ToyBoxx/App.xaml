@@ -17,9 +17,6 @@
                     <local:InverseBooleanConverter x:Key="InverseBooleanConverter" />
                 </ResourceDictionary>
 
-                <ResourceDictionary Source="App.Icons.xaml" />
-                <ResourceDictionary Source="App.Style.xaml" />
-
                 <ui:ThemesDictionary Theme="Dark" />
                 <ui:ControlsDictionary />
             </ResourceDictionary.MergedDictionaries>

@@ -16,7 +16,6 @@
             </Grid.RowDefinitions>
 
             <Slider Name="PositionSlider" Grid.Row="0" Margin="10,0" Cursor="Hand"
-                    Style="{DynamicResource PositionSliderStyle}"
                     Visibility="Visible"
                     IsEnabled="{Binding MediaElement.IsOpen}"
                     IsSnapToTickEnabled="False"
@@ -34,15 +33,15 @@
                 </Grid.ColumnDefinitions>
 
                 <DockPanel Name="LeftControls" HorizontalAlignment="Left" Grid.Column="0">
-                    <ToggleButton Name="MuteUnmuteButton" Style="{DynamicResource ModernToggleButtonStyle}" IsChecked="{Binding MediaElement.IsMuted, Mode=TwoWay}">
+                    <ToggleButton Name="MuteUnmuteButton" IsChecked="{Binding MediaElement.IsMuted, Mode=TwoWay}">
                         <ui:SymbolIcon Symbol="SpeakerMute16" Filled="True" Foreground="White"/>
                     </ToggleButton>
-                    <Slider Width="100" VerticalAlignment="Center" IsEnabled="{Binding MediaElement.IsMuted, Converter={StaticResource InverseBooleanConverter}}" Style="{DynamicResource CustomSliderStyle}" Minimum="0.0" Maximum="1.0" Value="{Binding MediaElement.Volume}" />
+                    <Slider Width="100" VerticalAlignment="Center" IsEnabled="{Binding MediaElement.IsMuted, Converter={StaticResource InverseBooleanConverter}}" Minimum="0.0" Maximum="1.0" Value="{Binding MediaElement.Volume}" />
 
-                    <Button Margin="10,0" Name="SegmentLoopButton" Style="{DynamicResource ModernButtonStyle}" IsEnabled="{Binding MediaElement.IsOpen}" Command="{Binding Commands.SetSegmentLoop}">
+                    <ui:Button Command="{Binding Commands.SetSegmentLoop}">
                         <ui:SymbolIcon Symbol="ArrowReset20" Filled="True" Foreground="White"/>
-                    </Button>
-
+                    </ui:Button>
+                    
                     <Grid VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="60" />
@@ -57,26 +56,26 @@
                 </DockPanel>
 
                 <DockPanel Name="CenterControls" HorizontalAlignment="Center" Grid.Column="1">
-                    <Button Margin="10,0" Visibility="{Binding Controller.PlayButtonVisibility}" Style="{DynamicResource ModernButtonStyle}" Command="{Binding Commands.Play}">
+                    <ui:Button Visibility="{Binding Controller.PlayButtonVisibility}" Command="{Binding Commands.Play}">
                         <ui:SymbolIcon Symbol="Play48" Filled="True" Foreground="White"/>
-                    </Button>
-                    <Button Margin="10,0" Visibility="{Binding Controller.PauseButtonVisibility}" Style="{DynamicResource ModernButtonStyle}" Command="{Binding Commands.Pause}">
+                    </ui:Button>
+                    <ui:Button Visibility="{Binding Controller.PauseButtonVisibility}" Command="{Binding Commands.Pause}">
                         <ui:SymbolIcon Symbol="Pause12" Filled="True" Foreground="White"/>
-                    </Button>
-                    <Button Margin="10,0" Visibility="{Binding Controller.StopButtonVisibility}" Style="{DynamicResource ModernButtonStyle}" Command="{Binding Commands.Stop}">
+                    </ui:Button>
+                    <ui:Button Visibility="{Binding Controller.StopButtonVisibility}" Command="{Binding Commands.Stop}">
                         <ui:SymbolIcon Symbol="Stop24" Filled="True" Foreground="White"/>
-                    </Button>
+                    </ui:Button>
                 </DockPanel>
 
                 <DockPanel Name="RightControls" HorizontalAlignment="Right" Grid.Column="2">
                     <TextBlock Margin="10,0" Foreground="White" FontSize="14" VerticalAlignment="Center" Text="{Binding MediaElement.Position, StringFormat={}{0:hh\\:mm\\:ss}}"/>
-                    <ToggleButton Margin="10,0" Style="{DynamicResource ModernToggleButtonStyle}" IsChecked="{Binding Controller.IsLoopingMediaEnabled, Mode=TwoWay}" ToolTip="Enable Looping">
-
+                    <ToggleButton Margin="10,0" IsChecked="{Binding Controller.IsLoopingMediaEnabled, Mode=TwoWay}" ToolTip="Enable Looping">
                         <ui:SymbolIcon Symbol="ArrowRepeatAll16" Foreground="White"/>
                     </ToggleButton>
-                    <Button Name="ToggleFullscreenButton" Style="{DynamicResource ModernButtonStyle}" Command="{Binding Commands.ToggleFullScreen}">
+                    
+                    <ui:Button Command="{Binding Commands.ToggleFullScreen}">
                         <ui:SymbolIcon Symbol="FullScreenMaximize16" Foreground="White"/>
-                    </Button>
+                    </ui:Button>
                 </DockPanel>
             </Grid>
         </Grid>
