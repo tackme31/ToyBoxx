@@ -8,7 +8,7 @@
         xmlns:controls="clr-namespace:ToyBoxx.Controls"
         mc:Ignorable="d"
         DataContext="{StaticResource ViewModel}"
-        WindowStartupLocation="Manual" MinHeight="720" Height="0" MinWidth="1280" Width="0"
+        WindowStartupLocation="Manual" MinHeight="640" Height="0" MinWidth="640" Width="0"
         Title="ToyBoxx"
         Background="Black">
     <Window.Resources>
