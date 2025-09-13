@@ -19,12 +19,14 @@
                     Visibility="Visible"
                     IsEnabled="{Binding MediaElement.IsOpen}"
                     IsSnapToTickEnabled="False"
-                    IsMoveToPointEnabled="True"
                     SmallChange="{Binding MediaElement.PositionStep, Converter={StaticResource TimeSpanToSecondsConverter}}"
                     LargeChange="{Binding MediaElement.PositionStep, Converter={StaticResource TimeSpanToSecondsConverter}}"
                     Minimum="{Binding MediaElement.PlaybackStartTime, Converter={StaticResource TimeSpanToSecondsConverter}}"
                     Maximum="{Binding MediaElement.PlaybackEndTime, Converter={StaticResource TimeSpanToSecondsConverter}}" 
-                    Value="{Binding MediaElement.Position, Converter={StaticResource TimeSpanToSecondsConverter}}" />
+                    Value="{Binding MediaElement.Position, Converter={StaticResource TimeSpanToSecondsConverter}}"
+                    PreviewMouseDown="PositionSlider_PreviewMouseDown"
+                    PreviewMouseMove="PositionSlider_PreviewMouseMove"
+                    PreviewMouseUp="PositionSlider_PreviewMouseUp"/>
 
             <Grid Name="ControlsPanel" Grid.Row="1" Margin="20,0">
                 <Grid.ColumnDefinitions>
