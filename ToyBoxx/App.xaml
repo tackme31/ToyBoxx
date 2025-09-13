@@ -1,7 +1,7 @@
 ﻿<Application x:Class="ToyBoxx.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:ToyBoxx"
+             xmlns:local="clr-namespace:ToyBoxx.Foundation"
              xmlns:vm="clr-namespace:ToyBoxx.ViewModels">
     <Application.Resources>
         <ResourceDictionary>
@@ -12,6 +12,7 @@
 
                 <ResourceDictionary>
                     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+                    <local:InverseBooleanConverter x:Key="InverseBooleanConverter" />
                 </ResourceDictionary>
 
                 <ResourceDictionary Source="App.Icons.xaml" />

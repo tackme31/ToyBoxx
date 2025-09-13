@@ -69,4 +69,71 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <!-- Custom Slider Control -->
+    <ControlTemplate x:Key="CustomSliderThumbTemplate" TargetType="{x:Type Thumb}">
+        <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
+            <Rectangle x:Name="grip" Fill="{StaticResource CustomSliderForegroundBrush}" Width="8" Height="{Binding Path=Height, RelativeSource={RelativeSource TemplatedParent}}" StrokeThickness="0"
+                       UseLayoutRounding="True" Stretch="Fill" RadiusX="3" RadiusY="3"  />
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsDragging" Value="true">
+                <Setter Property="Fill" TargetName="grip" Value="{StaticResource CustomSliderHighlightBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Fill" TargetName="grip" Value="{StaticResource CustomSliderBackgroundBrush}"/>
+            </Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="true">
+                <Setter Property="Fill" TargetName="grip" Value="{StaticResource CustomSliderForegroundBrush}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <ControlTemplate x:Key="CustomSliderTemplate" TargetType="{x:Type Slider}">
+        <Border x:Name="border" Background="Transparent" SnapsToDevicePixels="True">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="{TemplateBinding MinHeight}"/>
+                </Grid.RowDefinitions>
+                <DockPanel LastChildFill="True">
+                    <Border ClipToBounds="True" x:Name="PART_SelectionRange" Height="3" Visibility="Visible">
+                        <Rectangle RadiusX="1" RadiusY="1" Margin="4,0,-4,0" Fill="{StaticResource CustomSliderForegroundBrush}" />
+                    </Border>
+                    <Border ClipToBounds="True"  Height="3" Visibility="Visible">
+                        <Rectangle x:Name="PART_NegativeSelection" RadiusX="1" RadiusY="1" Margin="8,0,4,0" Fill="{StaticResource CustomSliderBackgroundBrush}" />
+                    </Border>
+                </DockPanel>
+                <Track x:Name="PART_Track">
+                    <Track.Thumb>
+                        <Thumb x:Name="Thumb" Focusable="False" Width="8" Height="{TemplateBinding MinHeight}" 
+                               OverridesDefaultStyle="True" Template="{StaticResource CustomSliderThumbTemplate}" VerticalAlignment="Center"/>
+                    </Track.Thumb>
+                </Track>
+            </Grid>
+        </Border>
+
+        <ControlTemplate.Triggers>
+            <DataTrigger Binding="{Binding ElementName=Thumb, Path=IsDragging}" Value="True">
+                <Setter TargetName="PART_NegativeSelection" Property="Fill" Value="{StaticResource CustomSliderHighlightBrush}" />
+            </DataTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <Style x:Key="CustomSliderStyle" TargetType="{x:Type Slider}">
+        <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="MinHeight" Value="26" />
+        <Setter Property="MaxHeight" Value="26" />
+        <Setter Property="Height" Value="26" />
+        <Setter Property="Minimum" Value="0" />
+        <Setter Property="IsSnapToTickEnabled" Value="True" />
+        <Setter Property="SmallChange" Value="0.01" />
+        <Setter Property="LargeChange" Value="0.01" />
+        <Setter Property="TickFrequency" Value="0.01" />
+        <Setter Property="AutoToolTipPlacement" Value="None" />
+        <Setter Property="IsMoveToPointEnabled" Value="True" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="SelectionStart" Value="{Binding Path=Minimum, RelativeSource={RelativeSource Self}}" />
+        <Setter Property="SelectionEnd" Value="{Binding Path=Value, RelativeSource={RelativeSource Self}}" />
+        <Setter Property="Template" Value="{StaticResource CustomSliderTemplate}"/>
+    </Style>
 </ResourceDictionary>

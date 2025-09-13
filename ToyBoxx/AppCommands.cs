@@ -19,7 +19,7 @@ public class AppCommands
                 return;
             }
 
-            var media = App.ViewModel.MediaElement.Value;
+            var media = App.ViewModel.MediaElement;
             var target = new Uri(uriString);
             await media.Open(new FileInputStream(target.LocalPath));
         }
@@ -38,28 +38,28 @@ public class AppCommands
     private DelegateCommand? _closeCommand;
     public DelegateCommand Close => _closeCommand ??= new(async o =>
     {
-        await App.ViewModel.MediaElement.Value.Close();
+        await App.ViewModel.MediaElement.Close();
     });
 
     private DelegateCommand? _pauseCommand;
 
     public DelegateCommand Pause => _pauseCommand ??= new(async o =>
     {
-        await App.ViewModel.MediaElement.Value.Pause();
+        await App.ViewModel.MediaElement.Pause();
     });
 
     private DelegateCommand? _playCommand;
 
     public DelegateCommand Play => _playCommand ??= new(async o =>
     {
-        await App.ViewModel.MediaElement.Value.Play();
+        await App.ViewModel.MediaElement.Play();
     });
 
     private DelegateCommand? _stopCommand;
     public DelegateCommand Stop => _stopCommand ??= new(async o =>
     {
-        await App.ViewModel.MediaElement.Value.Stop();
-        await App.ViewModel.MediaElement.Value.Seek(TimeSpan.Zero);
+        await App.ViewModel.MediaElement.Stop();
+        await App.ViewModel.MediaElement.Seek(TimeSpan.Zero);
     });
 
     private DelegateCommand? _toggleFullScreenCommand;
