@@ -92,4 +92,11 @@ public class AppCommands
             WindowStatus.DisableDisplayTimeout();
         }
     });
+
+    private DelegateCommand? _setSegmentLoop;
+    public DelegateCommand SetSegmentLoop => _setSegmentLoop ??= new(o =>
+    {
+        var controller = App.ViewModel.Controller;
+        controller.SetLoopSegment();
+    });
 }

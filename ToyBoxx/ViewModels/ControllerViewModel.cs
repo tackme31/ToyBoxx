@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using ToyBoxx.Foundation;
 using Unosquare.FFME.Common;
 
@@ -46,6 +47,55 @@ public sealed class ControllerViewModel : AttachedViewModel
         }
     }
 
+    private TimeSpan? _segmentLoopFrom;
+    public TimeSpan? SegmentLoopFrom
+    {
+        get => _segmentLoopFrom;
+        set => SetProperty(ref _segmentLoopFrom, value);
+    }
+
+    private TimeSpan? _segmentLoopTo;
+    public TimeSpan? SegmentLoopTo
+    {
+        get => _segmentLoopTo;
+        set => SetProperty(ref _segmentLoopTo, value);
+    }
+
+    private bool _isSegmentLoopEnabled;
+    public bool IsSegmentLoopEnabled
+    {
+        get => _isSegmentLoopEnabled;
+        set => SetProperty(ref _isSegmentLoopEnabled, value);
+    }
+
+    public void SetLoopSegment()
+    {
+        if (IsLoopingMediaEnabled && SegmentLoopFrom is not null && SegmentLoopTo is not null)
+        {
+            IsSegmentLoopEnabled = false;
+            SegmentLoopFrom = null;
+            SegmentLoopTo = null;
+            return;
+        }
+
+        var currentPosition = App.ViewModel.MediaElement.Position;
+        if (SegmentLoopFrom is null)
+        {
+            IsSegmentLoopEnabled = false;
+            SegmentLoopFrom = currentPosition;
+            SegmentLoopTo = null;
+            return;
+        }
+
+        if (SegmentLoopFrom >= currentPosition)
+        {
+            return;
+        }
+
+        SegmentLoopTo = currentPosition;
+        IsSegmentLoopEnabled = true;
+    }
+
     internal override void OnApplicationLoaded()
     {
         base.OnApplicationLoaded();
@@ -87,6 +137,32 @@ public sealed class ControllerViewModel : AttachedViewModel
             nameof(m.MediaState),
             nameof(m.IsChanging),
             nameof(m.IsSeeking));
-    }
 
+        m.WhenChanged(
+            () =>
+            {
+                IsSegmentLoopEnabled = false;
+                SegmentLoopFrom = null;
+                SegmentLoopTo = null;
+            },
+            nameof(m.IsOpen));
+
+        m.PositionChanged += (sender, args) =>
+        {
+            if (!IsLoopingMediaEnabled)
+            {
+                return;
+            }
+
+            if (SegmentLoopFrom is null || SegmentLoopTo is null)
+            {
+                return;
+            }
+
+            if (SegmentLoopTo < args.Position || args.Position < SegmentLoopFrom)
+            {
+                m.Seek(SegmentLoopFrom.Value);
+            }
+        };
+    }
 }

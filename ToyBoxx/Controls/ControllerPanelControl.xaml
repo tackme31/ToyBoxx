@@ -37,6 +37,21 @@
                         <Path Stretch="Uniform" Data="{Binding Source={StaticResource UnmuteIcon}, Path=Data}" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}" />
                     </ToggleButton>
                     <Slider Width="100" VerticalAlignment="Center" IsEnabled="{Binding MediaElement.IsMuted, Converter={StaticResource InverseBooleanConverter}}" Style="{DynamicResource CustomSliderStyle}" Minimum="0.0" Maximum="1.0" Value="{Binding MediaElement.Volume}" />
+
+                    <Button Name="SegmentLoopButton" Style="{DynamicResource ModernButtonStyle}" IsEnabled="{Binding MediaElement.IsOpen}" Command="{Binding Commands.SetSegmentLoop}">
+                        <Path Stretch="Uniform" Data="{Binding Source={StaticResource PlayIcon}, Path=Data}" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
+                    </Button>
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="60" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Foreground="White" FontSize="14" HorizontalAlignment="Right" Text="{Binding Controller.SegmentLoopFrom, StringFormat={}{0:hh\\:mm\\:ss}}"/>
+                        <TextBlock Grid.Column="1" Foreground="White" FontSize="14"  HorizontalAlignment="Center">-</TextBlock>
+                        <TextBlock Grid.Column="2" Foreground="White" FontSize="14"  HorizontalAlignment="Left" Text="{Binding Controller.SegmentLoopTo, StringFormat={}{0:hh\\:mm\\:ss}}"/>
+                    </Grid>
+
                 </DockPanel>
 
                 <DockPanel Name="CenterControls" HorizontalAlignment="Center" Grid.Column="1">
