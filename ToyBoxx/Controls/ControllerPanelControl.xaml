@@ -7,16 +7,25 @@
              xmlns:local="clr-namespace:ToyBoxx"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance vm:RootViewModel, IsDesignTimeCreatable=True}">
-    <Grid Name="Controls" Visibility="Visible" Height="250" Background="{x:Null}">
-        <Canvas IsHitTestVisible="False" Background="{DynamicResource ShadedBackgroundBrush}" />
+    <Grid Name="Controls" Visibility="Visible" Height="120" Background="Black" Opacity="0.8">
         <Grid VerticalAlignment="Bottom">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0"></RowDefinition>
-                <RowDefinition Height="0"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
                 <RowDefinition Height="70"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Grid Name="ControlsPanel" Grid.Row="2" Margin="20,0">
+            <Slider Name="PositionSlider" Grid.Row="0" Margin="10,0" Cursor="Hand"
+                    Style="{DynamicResource PositionSliderStyle}"
+                    Visibility="Visible"
+                    IsEnabled="{Binding MediaElement.IsOpen}"
+                    IsSnapToTickEnabled="False"
+                    SmallChange="{Binding MediaElement.PositionStep, Converter={StaticResource TimeSpanToSecondsConverter}}"
+                    LargeChange="{Binding MediaElement.PositionStep, Converter={StaticResource TimeSpanToSecondsConverter}}"
+                    Minimum="{Binding MediaElement.PlaybackStartTime, Converter={StaticResource TimeSpanToSecondsConverter}}"
+                    Maximum="{Binding MediaElement.PlaybackEndTime, Converter={StaticResource TimeSpanToSecondsConverter}}" 
+                    Value="{Binding MediaElement.Position, Converter={StaticResource TimeSpanToSecondsConverter}}" />
+
+            <Grid Name="ControlsPanel" Grid.Row="1" Margin="20,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="1*" />

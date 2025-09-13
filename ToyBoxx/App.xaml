@@ -12,6 +12,7 @@
 
                 <ResourceDictionary>
                     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+                    <local:TimeSpanToSecondsConverter x:Key="TimeSpanToSecondsConverter" />
                     <local:InverseBooleanConverter x:Key="InverseBooleanConverter" />
                 </ResourceDictionary>
 
