@@ -4,9 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ToyBoxx"
+        xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
+        xmlns:controls="clr-namespace:ToyBoxx.Controls"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Button Content="Click" Height="100" Width="200" Click="OnClick"></Button>
+    <Grid Name="Player">
+        <ffme:MediaElement Name="Media" Background="Black" LoadedBehavior="Play" IsDesignPreviewEnabled="True" />
+        <DockPanel x:Name="LayoutPanel" LastChildFill="False">
+            <controls:ControllerPanelControl
+                x:Name="ControllerPanel"
+                DockPanel.Dock="Bottom"/>
+        </DockPanel>
     </Grid>
 </Window>
