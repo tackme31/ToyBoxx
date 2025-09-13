@@ -27,6 +27,6 @@ public partial class MainWindow : Window
         Loaded -= OnWindowLoaded;
 
         var file = @"D:\Windows\Downloads\sample.mp4";
-        App.ViewModel.Commands.OpenCommand.Execute(file);
+        App.ViewModel.Commands.Open.Execute(file);
     }
 }

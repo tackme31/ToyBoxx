@@ -6,9 +6,10 @@ namespace ToyBoxx;
 
 public class AppCommands
 {
-    private DelegateCommand? _openCommand;
+    private readonly WindowStatus _previousWindowStatus = new();
 
-    public DelegateCommand OpenCommand => _openCommand ??= new DelegateCommand(async arg =>
+    private DelegateCommand? _openCommand;
+    public DelegateCommand Open => _openCommand ??= new(async arg =>
     {
         try
         {
@@ -31,6 +32,53 @@ public class AppCommands
                 MessageBoxButton.OK,
                 MessageBoxImage.Error,
                 MessageBoxResult.OK);
+        }
+    });
+
+    private DelegateCommand? _closeCommand;
+    public DelegateCommand Close => _closeCommand ??= new(async o =>
+    {
+        await App.ViewModel.MediaElement.Value.Close();
+    });
+
+    private DelegateCommand? _pauseCommand;
+
+    public DelegateCommand Pause => _pauseCommand ??= new(async o =>
+    {
+        await App.ViewModel.MediaElement.Value.Pause();
+    });
+
+    private DelegateCommand? _playCommand;
+
+    public DelegateCommand Play => _playCommand ??= new(async o =>
+    {
+        await App.ViewModel.MediaElement.Value.Play();
+    });
+
+    private DelegateCommand? _stopCommand;
+    public DelegateCommand Stop => _stopCommand ??= new(async o =>
+    {
+        await App.ViewModel.MediaElement.Value.Stop();
+    });
+
+    private DelegateCommand? _toggleFullScreenCommand;
+    public DelegateCommand ToggleFullscreen => _toggleFullScreenCommand ??= new(o =>
+    {
+        var mainWindow = Application.Current.MainWindow;
+        if (mainWindow.WindowStyle == WindowStyle.None)
+        {
+            _previousWindowStatus.ApplyState(mainWindow);
+            WindowStatus.EnableDisplayTimeout();
+        }
+        else
+        {
+            _previousWindowStatus.CaptureState(mainWindow);
+            mainWindow.WindowStyle = WindowStyle.None;
+            mainWindow.ResizeMode = ResizeMode.NoResize;
+            mainWindow.Topmost = true;
+            mainWindow.WindowState = WindowState.Normal;
+            mainWindow.WindowState = WindowState.Maximized;
+            WindowStatus.DisableDisplayTimeout();
         }
     });
 }
