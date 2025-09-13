@@ -1,5 +1,4 @@
-﻿using FFmpeg.AutoGen;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using System.Windows;
 
 namespace ToyBoxx
