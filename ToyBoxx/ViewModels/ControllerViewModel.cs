@@ -148,7 +148,7 @@ public sealed class ControllerViewModel : AttachedViewModel
 
         m.PositionChanged += (sender, args) =>
         {
-            if (!IsLoopingMediaEnabled)
+            if (!IsSegmentLoopEnabled)
             {
                 return;
             }
