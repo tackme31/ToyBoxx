@@ -36,7 +36,6 @@ public partial class MainWindow
 
     private void InitializeMainWindow()
     {
-        Loaded += OnWindowLoaded;
         PreviewKeyDown += OnWindowKeyDown;
 
         _lastMouseMoveTime = DateTime.UtcNow;
@@ -104,18 +103,6 @@ public partial class MainWindow
         _mouseMoveTimer.Start();
     }
 
-    private void OnWindowLoaded(object? sender, RoutedEventArgs e)
-    {
-        Loaded -= OnWindowLoaded;
-
-        // Open a file if it is specified in the arguments
-        var args = Environment.GetCommandLineArgs();
-        if (args.Length > 1)
-        {
-            App.ViewModel.Commands.Open.Execute(args[1].Trim());
-        }
-    }
-
     private void OnWindowKeyDown(object? sender, KeyEventArgs e)
     {
         // Keep the key focus on the main window
@@ -130,66 +117,6 @@ public partial class MainWindow
             case Key.Space when !Media.IsPlaying:
                 App.ViewModel.Commands.Play.Execute(null);
                 break;
-        }
-    }
-
-    private void Media_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-    {
-        App.ViewModel.Commands.ToggleFullScreen.Execute(null);
-    }
-
-    private void Window_Drop(object sender, DragEventArgs e)
-    {
-        if (!e.Data.GetDataPresent(DataFormats.FileDrop))
-        {
-            return;
-        }
-
-        var files = (string[])e.Data.GetData(DataFormats.FileDrop);
-        if (files is [])
-        {
-            return;
-        }
-
-        App.ViewModel.Commands.Open.Execute(files[0]);
-    }
-
-    private void FluentWindow_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-    {
-        // Zoom when Ctrl+Wheel
-        if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-        {
-            // calculate next scale
-            if (e.Delta > 0)
-            {
-                _currentScale += ZoomStep;
-            }
-            else
-            {
-                _currentScale = Math.Max(ZoomStep, _currentScale - ZoomStep);
-            }
-
-            // Set center position
-            if (_currentScale >= 1.0)
-            {
-                // Use mouse pos when 100%+ zoom
-                var pos = e.GetPosition(Media);
-                scaleTransform.CenterX = pos.X;
-                scaleTransform.CenterY = pos.Y;
-            }
-            else
-            {
-                scaleTransform.CenterX = Media.ActualWidth / 2;
-                scaleTransform.CenterY = Media.ActualHeight / 2;
-
-                translateTransform.X = 0;
-                translateTransform.Y = 0;
-            }
-
-            scaleTransform.ScaleX = _currentScale;
-            scaleTransform.ScaleY = _currentScale;
-
-            e.Handled = true;
         }
     }
 
@@ -223,6 +150,45 @@ public partial class MainWindow
             translateTransform.Y += delta.Y;
 
             _lastMousePos = pos;
+        }
+    }
+
+    private void FluentWindow_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+    {
+        // Zoom when Ctrl+Wheel
+        if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+        {
+            // calculate next scale
+            if (e.Delta > 0)
+            {
+                _currentScale += ZoomStep;
+            }
+            else
+            {
+                _currentScale = Math.Max(ZoomStep, _currentScale - ZoomStep);
+            }
+
+            // Set center position
+            if (_currentScale >= 1.0)
+            {
+                // Use mouse pos when 100%+ zoom
+                var pos = e.GetPosition(ViewModel.MediaElement);
+                ViewModel.ScaleCenterX = pos.X;
+                ViewModel.ScaleCenterY = pos.Y;
+            }
+            else
+            {
+                ViewModel.ScaleCenterX = ViewModel.MediaElement.ActualWidth / 2;
+                ViewModel.ScaleCenterY = ViewModel.MediaElement.ActualHeight / 2;
+
+                ViewModel.TransformX = 0;
+                ViewModel.TransformY = 0;
+            }
+
+            ViewModel.ScaleX = _currentScale;
+            ViewModel.ScaleY = _currentScale;
+
+            e.Handled = true;
         }
     }
 }

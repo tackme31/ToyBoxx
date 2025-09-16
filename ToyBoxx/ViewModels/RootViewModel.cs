@@ -1,8 +1,9 @@
-﻿using System.Text;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.IO;
+using System.Text;
 using System.Windows;
 using ToyBoxx.Foundation;
 using Unosquare.FFME;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ToyBoxx.ViewModels;
 
@@ -25,6 +26,24 @@ public partial class RootViewModel : ObservableObject
 
     [ObservableProperty]
     private string? _windowTitle;
+
+    [ObservableProperty]
+    private double _scaleX = 1.0;
+
+    [ObservableProperty]
+    private double _scaleY = 1.0;
+
+    [ObservableProperty]
+    private double _scaleCenterX;
+
+    [ObservableProperty]
+    private double _scaleCenterY;
+
+    [ObservableProperty]
+    private double _transformX = 0.0;
+
+    [ObservableProperty]
+    private double _transformY = 0.0;
 
     internal void OnApplicationLoaded()
     {
@@ -61,4 +80,37 @@ public partial class RootViewModel : ObservableObject
 
         WindowTitle = titleBuilder.ToString();
     }
+
+    private DelegateCommand? _openFromDropCommand;
+    public DelegateCommand OpenFileCommand => _openFromDropCommand ??= new (param =>
+    {
+        var filePath = param switch
+        {
+            DragEventArgs args => GetDragEventFile(args),
+            RoutedEventArgs args => GetRoutedEventFile(),
+            _ => null
+        };
+
+        if (filePath is not null && File.Exists(filePath))
+        {
+            App.ViewModel.Commands.Open.Execute(filePath);
+        }
+
+        string? GetDragEventFile(DragEventArgs args)
+        {
+            if (!args.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                return null;
+            }
+
+            var files = (string[])args.Data.GetData(DataFormats.FileDrop);
+            return files is [] ? null : files[0];
+        }
+
+        string? GetRoutedEventFile()
+        {
+            var args = Environment.GetCommandLineArgs();
+            return args is [] ? null : args[0].Trim();
+        }
+    });
 }

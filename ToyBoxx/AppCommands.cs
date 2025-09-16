@@ -124,4 +124,5 @@ public class AppCommands
         controller.SegmentLoopTo = currentPosition;
         controller.IsSegmentLoopEnabled = true;
     });
+
 }

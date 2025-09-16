@@ -8,17 +8,28 @@
     xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
     xmlns:controls="clr-namespace:ToyBoxx.Controls"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     mc:Ignorable="d"
     DataContext="{StaticResource ViewModel}"
     Title="{Binding WindowTitle}"
     WindowStartupLocation="Manual" MinHeight="640" Height="0" MinWidth="640" Width="0"
     Background="Black"
     AllowDrop="True"
-    Drop="Window_Drop"
     PreviewMouseWheel="FluentWindow_PreviewMouseWheel"
     MouseLeftButtonDown="FluentWindow_MouseLeftButtonDown"
     MouseLeftButtonUp="FluentWindow_MouseLeftButtonUp"
     MouseMove="FluentWindow_MouseMove">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding OpenFileCommand}"
+                                   PassEventArgsToCommand="True"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="PreviewDrop">
+            <i:InvokeCommandAction Command="{Binding OpenFileCommand}"
+                                   PassEventArgsToCommand="True"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <ui:FluentWindow.Resources>
         <Storyboard x:Key="ShowControlOpacity" Storyboard.TargetProperty="(UIElement.Opacity)">
             <DoubleAnimation To="1" Duration="0:0:0.100" FillBehavior="HoldEnd" />
@@ -35,12 +46,23 @@
                 Background="Black"
                 LoadedBehavior="Play"
                 IsDesignPreviewEnabled="True"
-                MouseDoubleClick="Media_MouseDoubleClick"
                 Stretch="Uniform">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <i:InvokeCommandAction Command="{Binding Commands.ToggleFullScreen}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                
                 <ffme:MediaElement.RenderTransform>
                     <TransformGroup>
-                        <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1" CenterX="0" CenterY="0"/>
-                        <TranslateTransform x:Name="translateTransform" X="0" Y="0" />
+                        <ScaleTransform x:Name="scaleTransform"
+                                        ScaleX="{Binding ScaleX}"
+                                        ScaleY="{Binding ScaleY}"
+                                        CenterX="{Binding ScaleCenterX}"
+                                        CenterY="{Binding ScaleCenterY}"/>
+                        <TranslateTransform x:Name="translateTransform"
+                                            X="{Binding TransformX}"
+                                            Y="{Binding TransformY}" />
                     </TransformGroup>
                 </ffme:MediaElement.RenderTransform>
             </ffme:MediaElement>
