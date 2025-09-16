@@ -2,11 +2,11 @@
 using System.Windows;
 using ToyBoxx.Foundation;
 using Unosquare.FFME;
-using Unosquare.FFME.Common;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ToyBoxx.ViewModels;
 
-public class RootViewModel : ViewModelBase
+public partial class RootViewModel : ObservableObject
 {
     public RootViewModel()
     {
@@ -20,19 +20,11 @@ public class RootViewModel : ViewModelBase
     private MediaElement? _mediaElement;
     public MediaElement MediaElement => _mediaElement ??= (Application.Current.MainWindow as MainWindow)?.Media ?? throw new Exception("Media element not found.");
 
+    [ObservableProperty]
     private bool _isApplicationLoaded;
-    public bool IsApplicationLoaded
-    {
-        get => _isApplicationLoaded;
-        set => SetProperty(ref _isApplicationLoaded, value);
-    }
 
-    private string _windowTitle;
-    public string WindowTitle
-    {
-        get => _windowTitle;
-        private set => SetProperty(ref _windowTitle, value);
-    }
+    [ObservableProperty]
+    private string? _windowTitle;
 
     internal void OnApplicationLoaded()
     {

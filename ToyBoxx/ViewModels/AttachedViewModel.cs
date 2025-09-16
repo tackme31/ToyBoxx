@@ -1,8 +1,9 @@
-﻿using Unosquare.FFME.Common;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Unosquare.FFME.Common;
 
 namespace ToyBoxx.ViewModels;
 
-public abstract class AttachedViewModel : ViewModelBase
+public abstract class AttachedViewModel : ObservableObject
 {
     protected AttachedViewModel(RootViewModel root)
     {

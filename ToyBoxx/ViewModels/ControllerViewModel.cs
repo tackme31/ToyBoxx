@@ -1,35 +1,33 @@
-﻿using System.Windows;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Windows;
 using ToyBoxx.Foundation;
 using Unosquare.FFME.Common;
 
 namespace ToyBoxx.ViewModels;
 
-public sealed class ControllerViewModel : AttachedViewModel
+public partial class ControllerViewModel : AttachedViewModel
 {
     internal ControllerViewModel(RootViewModel root) : base(root)
     {
     }
 
+    [ObservableProperty]
     private Visibility _pauseButtonVisibility;
-    public Visibility PauseButtonVisibility
-    {
-        get => _pauseButtonVisibility;
-        set => SetProperty(ref _pauseButtonVisibility, value);
-    }
 
+    [ObservableProperty]
     private Visibility _playButtonVisibility;
-    public Visibility PlayButtonVisibility
-    {
-        get => _playButtonVisibility;
-        set => SetProperty(ref _playButtonVisibility, value);
-    }
 
+    [ObservableProperty]
     private Visibility _stopButtonVisibility;
-    public Visibility StopButtonVisibility
-    {
-        get => _stopButtonVisibility;
-        set => SetProperty(ref _stopButtonVisibility, value);
-    }
+
+    [ObservableProperty]
+    private TimeSpan? _segmentLoopFrom;
+
+    [ObservableProperty]
+    private TimeSpan? _segmentLoopTo;
+
+    [ObservableProperty]
+    private bool _isSegmentLoopEnabled;
 
     public bool IsLoopingMediaEnabled
     {
@@ -42,29 +40,8 @@ public sealed class ControllerViewModel : AttachedViewModel
         {
             var m = App.ViewModel.MediaElement;
             m.LoopingBehavior = value ? MediaPlaybackState.Play : MediaPlaybackState.Pause;
-            NotifyPropertyChanged(nameof(IsLoopingMediaEnabled));
+            OnPropertyChanged(nameof(IsLoopingMediaEnabled));
         }
-    }
-
-    private TimeSpan? _segmentLoopFrom;
-    public TimeSpan? SegmentLoopFrom
-    {
-        get => _segmentLoopFrom;
-        set => SetProperty(ref _segmentLoopFrom, value);
-    }
-
-    private TimeSpan? _segmentLoopTo;
-    public TimeSpan? SegmentLoopTo
-    {
-        get => _segmentLoopTo;
-        set => SetProperty(ref _segmentLoopTo, value);
-    }
-
-    private bool _isSegmentLoopEnabled;
-    public bool IsSegmentLoopEnabled
-    {
-        get => _isSegmentLoopEnabled;
-        set => SetProperty(ref _isSegmentLoopEnabled, value);
     }
 
     internal override void OnApplicationLoaded()
