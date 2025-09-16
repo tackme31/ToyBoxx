@@ -80,7 +80,7 @@
             Title="{Binding WindowTitle}"
             CloseWindowByDoubleClickOnIcon="True">
             <ui:TitleBar.Icon>
-                <ui:SymbolIcon Symbol="PlayCircle16"/>
+                <ui:ImageIcon Source="/256x256.ico" />
             </ui:TitleBar.Icon>
         </ui:TitleBar>
     </Grid>
