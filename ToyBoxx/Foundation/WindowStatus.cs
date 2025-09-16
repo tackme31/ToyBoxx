@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
 using System.Windows;
 
 namespace ToyBoxx.Foundation;
@@ -15,7 +10,6 @@ public class WindowStatus
     public ResizeMode ResizeMode { get; set; }
     public double Top { get; set; }
     public double Left { get; set; }
-    public bool Topmost { get; set; }
 
     public static void EnableDisplayTimeout()
     {
@@ -34,7 +28,6 @@ public class WindowStatus
         w.WindowState = WindowState;
         w.Top = Top;
         w.Left = Left;
-        w.Topmost = Topmost;
         w.WindowStyle = WindowStyle;
         w.ResizeMode = ResizeMode;
     }
@@ -47,7 +40,6 @@ public class WindowStatus
         Top = w.Top;
         Left = w.Left;
         WindowStyle = w.WindowStyle;
-        Topmost = w.Topmost;
         ResizeMode = w.ResizeMode;
     }
 

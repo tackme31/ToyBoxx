@@ -86,8 +86,8 @@ public class AppCommands
             _previousWindowStatus.CaptureState(mainWindow);
             mainWindow.WindowStyle = WindowStyle.None;
             mainWindow.ResizeMode = ResizeMode.NoResize;
-            mainWindow.Topmost = true;
             mainWindow.WindowState = WindowState.Maximized;
+
             WindowStatus.DisableDisplayTimeout();
         }
     });
