@@ -66,7 +66,9 @@
             </ffme:MediaElement>
         </Grid>
 
-        <DockPanel x:Name="LayoutPanel" LastChildFill="False">
+        <DockPanel x:Name="LayoutPanel"
+                   LastChildFill="False"
+                   PreviewMouseDown="LayoutPanel_PreviewMouseDown">
             <controls:ControllerPanelControl
                 x:Name="ControllerPanel"
                 DockPanel.Dock="Bottom"

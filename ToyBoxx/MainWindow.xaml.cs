@@ -20,6 +20,7 @@ public partial class MainWindow
     private double _currentScale = 1.0;
     private bool _isDragging = false;
     private Point _lastMousePos;
+    private DateTime _lastControllerClick = DateTime.MinValue;
 
     public MainWindow()
     {
@@ -203,5 +204,16 @@ public partial class MainWindow
 
             e.Handled = true;
         }
+    }
+
+    private void LayoutPanel_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        var now = DateTime.Now;
+        if ((now - _lastControllerClick).TotalMilliseconds <= System.Windows.Forms.SystemInformation.DoubleClickTime)
+        {
+            // ダブルクリックと判定
+            e.Handled = true; // 親に伝搬しない
+        }
+        _lastControllerClick = now;
     }
 }
