@@ -68,7 +68,7 @@
                         </Grid>
                     </Border>
 
-                    <ui:Button Command="{Binding Commands.StepOneFrameCommand}">
+                    <ui:Button IsEnabled="{Binding Controller.IsStepOneFrameEnabled}" Command="{Binding Commands.StepOneFrameCommand}">
                         <ui:SymbolIcon Symbol="ArrowStepInRight12" Filled="True" Foreground="White"/>
                     </ui:Button>
 

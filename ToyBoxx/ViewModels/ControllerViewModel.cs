@@ -21,6 +21,9 @@ public partial class ControllerViewModel : AttachedViewModel
     private Visibility _stopButtonVisibility;
 
     [ObservableProperty]
+    private bool _isStepOneFrameEnabled;
+
+    [ObservableProperty]
     private TimeSpan? _segmentLoopFrom;
 
     [ObservableProperty]
@@ -89,11 +92,22 @@ public partial class ControllerViewModel : AttachedViewModel
         m.WhenChanged(
             () =>
             {
+                IsStepOneFrameEnabled = m.IsOpen && !m.HasMediaEnded && !m.IsSeeking && m.IsPaused;
+            },
+            nameof(m.IsOpen),
+            nameof(m.IsSeeking),
+            nameof(m.HasMediaEnded),
+            nameof(m.IsPaused));
+
+        m.WhenChanged(
+            () =>
+            {
                 IsSegmentLoopEnabled = false;
                 SegmentLoopFrom = null;
                 SegmentLoopTo = null;
             },
             nameof(m.IsOpen));
+
 
         m.PositionChanged += async (sender, args) =>
         {

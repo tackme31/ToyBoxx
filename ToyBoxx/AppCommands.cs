@@ -75,11 +75,6 @@ public class AppCommands
     private DelegateCommand? _stepOneFrameCommand;
     public DelegateCommand StepOneFrameCommand => _stepOneFrameCommand ??= new(async o =>
     {
-        if (App.ViewModel.MediaElement.HasMediaEnded)
-        {
-            return;
-        }
-
         await App.ViewModel.MediaElement.Pause();
 
         var fps = App.ViewModel.MediaElement.VideoFrameRate;
