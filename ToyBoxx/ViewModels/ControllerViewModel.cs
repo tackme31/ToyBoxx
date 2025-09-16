@@ -18,7 +18,15 @@ public partial class ControllerViewModel : AttachedViewModel
     private Visibility _playButtonVisibility;
 
     [ObservableProperty]
-    private Visibility _stopButtonVisibility;
+    private bool _isPauseButtonEnabled;
+
+    [ObservableProperty]
+    private bool _isPlayButtonEnabled;
+
+    [ObservableProperty]
+    private bool _isStopButtonEnabled;
+
+
 
     [ObservableProperty]
     private bool _isStepOneFrameEnabled;
@@ -60,9 +68,10 @@ public partial class ControllerViewModel : AttachedViewModel
         m.WhenChanged(
             () =>
             {
-                PlayButtonVisibility = m.IsOpen && !m.IsPlaying && !m.IsSeeking && !m.IsChanging
+                PlayButtonVisibility = !m.IsPlaying
                     ? Visibility.Visible
                     : Visibility.Collapsed;
+                IsPlayButtonEnabled = m.IsOpen && !m.IsPlaying && !m.IsSeeking && !m.IsChanging;
             },
             nameof(m.IsOpen),
             nameof(m.IsPlaying),
@@ -71,16 +80,20 @@ public partial class ControllerViewModel : AttachedViewModel
             nameof(m.IsChanging));
 
         m.WhenChanged(
-            () => PauseButtonVisibility = m.CanPause && m.IsPlaying ? Visibility.Visible : Visibility.Collapsed,
+            () =>
+            {
+                PauseButtonVisibility = m.CanPause && m.IsPlaying
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+                IsPauseButtonEnabled = m.IsOpen && m.CanPause && m.IsPlaying;
+            },
             nameof(m.CanPause),
             nameof(m.IsPlaying));
 
         m.WhenChanged(
             () =>
             {
-                StopButtonVisibility = m.IsOpen && !m.IsChanging && !m.IsSeeking
-                ? Visibility.Visible
-                : Visibility.Hidden;
+                IsStopButtonEnabled = m.IsOpen && !m.IsChanging && !m.IsSeeking;
             },
             nameof(m.IsOpen),
             nameof(m.HasMediaEnded),
