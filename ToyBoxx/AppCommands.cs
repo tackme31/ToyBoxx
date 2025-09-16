@@ -87,7 +87,7 @@ public class AppCommands
     public DelegateCommand ToggleFullScreen => _toggleFullScreenCommand ??= new(o =>
     {
         var mainWindow = Application.Current.MainWindow;
-        if (mainWindow.WindowStyle == WindowStyle.None)
+        if (mainWindow.WindowState == WindowState.Maximized)
         {
             _previousWindowStatus.ApplyState(mainWindow);
             WindowStatus.EnableDisplayTimeout();
