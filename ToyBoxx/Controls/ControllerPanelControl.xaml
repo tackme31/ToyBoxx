@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:ToyBoxx.ViewModels"
              xmlns:local="clr-namespace:ToyBoxx"
+             xmlns:controls="clr-namespace:ToyBoxx.Controls"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance vm:RootViewModel, IsDesignTimeCreatable=True}">
@@ -15,18 +16,20 @@
                 <RowDefinition Height="70"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Slider Name="PositionSlider" Grid.Row="0" Margin="10,0" Cursor="Hand"
-                    Visibility="Visible"
-                    IsEnabled="{Binding MediaElement.IsOpen}"
-                    IsSnapToTickEnabled="False"
-                    SmallChange="{Binding MediaElement.PositionStep, Converter={StaticResource TimeSpanToSecondsConverter}}"
-                    LargeChange="{Binding MediaElement.PositionStep, Converter={StaticResource TimeSpanToSecondsConverter}}"
-                    Minimum="{Binding MediaElement.PlaybackStartTime, Converter={StaticResource TimeSpanToSecondsConverter}}"
-                    Maximum="{Binding MediaElement.PlaybackEndTime, Converter={StaticResource TimeSpanToSecondsConverter}}" 
-                    Value="{Binding MediaElement.Position, Converter={StaticResource TimeSpanToSecondsConverter}}"
-                    PreviewMouseDown="PositionSlider_PreviewMouseDown"
-                    PreviewMouseMove="PositionSlider_PreviewMouseMove"
-                    PreviewMouseUp="PositionSlider_PreviewMouseUp"/>
+            <controls:HtmlLikeSlider x:Name="PositionSlider"
+                                     Grid.Row="0"
+                                     Margin="10,0"
+                                     Cursor="Hand"
+                                     Visibility="Visible"
+                                     IsSnapToTickEnabled="False"
+                                     Style="{StaticResource {x:Type Slider}}"
+                                     IsEnabled="{Binding MediaElement.IsOpen}"
+                                     SmallChange="{Binding MediaElement.PositionStep, Converter={StaticResource TimeSpanToSecondsConverter}}"
+                                     LargeChange="{Binding MediaElement.PositionStep, Converter={StaticResource TimeSpanToSecondsConverter}}"
+                                     Minimum="{Binding MediaElement.PlaybackStartTime, Converter={StaticResource TimeSpanToSecondsConverter}}"
+                                     Maximum="{Binding MediaElement.PlaybackEndTime, Converter={StaticResource TimeSpanToSecondsConverter}}" 
+                                     Value="{Binding MediaElement.Position, Converter={StaticResource TimeSpanToSecondsConverter}}"
+                                     />
 
             <Grid Name="ControlsPanel" Grid.Row="1" Margin="20,0">
                 <Grid.ColumnDefinitions>
@@ -39,7 +42,14 @@
                     <ToggleButton Name="MuteUnmuteButton" IsChecked="{Binding MediaElement.IsMuted, Mode=TwoWay}">
                         <ui:SymbolIcon Symbol="SpeakerMute16" Filled="True" Foreground="White"/>
                     </ToggleButton>
-                    <Slider Margin="5,0" Width="100" VerticalAlignment="Center" IsEnabled="{Binding MediaElement.IsMuted, Converter={StaticResource InverseBooleanConverter}}" Minimum="0.0" Maximum="1.0" Value="{Binding MediaElement.Volume}" />
+                    <controls:HtmlLikeSlider Margin="5,0"
+                            Width="100"
+                            VerticalAlignment="Center"
+                            IsEnabled="{Binding MediaElement.IsMuted, Converter={StaticResource InverseBooleanConverter}}"
+                            Minimum="0.0"
+                            Maximum="1.0"
+                            Style="{StaticResource {x:Type Slider}}"
+                            Value="{Binding MediaElement.Volume}" />
 
                     <ui:Button Command="{Binding Commands.SetSegmentLoop}">
                         <ui:SymbolIcon Symbol="ArrowReset20" Filled="True" Foreground="White"/>
