@@ -56,7 +56,6 @@
         <ui:TitleBar
             x:Name="TitleBar"
             Title="{Binding WindowTitle}"
-            Grid.Row="0"
             CloseWindowByDoubleClickOnIcon="True">
             <ui:TitleBar.Icon>
                 <ui:SymbolIcon Symbol="PlayCircle16"/>
