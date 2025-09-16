@@ -13,7 +13,8 @@
         WindowStartupLocation="Manual" MinHeight="640" Height="0" MinWidth="640" Width="0"
         Background="Black"
         AllowDrop="True"
-        Drop="Window_Drop">
+        Drop="Window_Drop"
+        PreviewMouseWheel="FluentWindow_PreviewMouseWheel">
     <ui:FluentWindow.Resources>
         <Storyboard x:Key="ShowControlOpacity" Storyboard.TargetProperty="(UIElement.Opacity)">
             <DoubleAnimation To="1" Duration="0:0:0.100" FillBehavior="HoldEnd" />
@@ -24,7 +25,20 @@
     </ui:FluentWindow.Resources>
 
     <Grid Name="Player">
-        <ffme:MediaElement Name="Media" Background="Black" LoadedBehavior="Play" IsDesignPreviewEnabled="True" MouseDoubleClick="Media_MouseDoubleClick" />
+        <Grid x:Name="ClipGrid" ClipToBounds="True">
+            <ffme:MediaElement
+                Name="Media"
+                Background="Black"
+                LoadedBehavior="Play"
+                IsDesignPreviewEnabled="True"
+                MouseDoubleClick="Media_MouseDoubleClick"
+                Stretch="Uniform">
+                <ffme:MediaElement.RenderTransform>
+                    <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1" CenterX="0" CenterY="0"/>
+                </ffme:MediaElement.RenderTransform>
+            </ffme:MediaElement>
+        </Grid>
+
         <DockPanel x:Name="LayoutPanel" LastChildFill="False">
             <controls:ControllerPanelControl
                 x:Name="ControllerPanel"

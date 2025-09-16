@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
@@ -11,10 +12,13 @@ namespace ToyBoxx;
 /// </summary>
 public partial class MainWindow
 {
+    private const double ZoomStep = 0.1;
+
     private DispatcherTimer? _mouseMoveTimer;
     private DateTime _lastMouseMoveTime;
     private Point _lastMousePosition;
     private bool _isControllerHideCompleted;
+    private double _currentScale = 1.0;
 
     public MainWindow()
     {
@@ -147,5 +151,41 @@ public partial class MainWindow
         }
 
         App.ViewModel.Commands.Open.Execute(files[0]);
+    }
+
+    private void FluentWindow_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+    {
+        // Zoom when Ctrl+Wheel
+        if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+        {
+            // calculate next scale
+            if (e.Delta > 0)
+            {
+                _currentScale += ZoomStep;
+            }
+            else
+            {
+                _currentScale = Math.Max(ZoomStep, _currentScale - ZoomStep);
+            }
+
+            // Set center position
+            if (_currentScale >= 1.0)
+            {
+                // Use mouse pos when 100%+ zoom
+                var pos = e.GetPosition(Media);
+                scaleTransform.CenterX = pos.X;
+                scaleTransform.CenterY = pos.Y;
+            }
+            else
+            {
+                scaleTransform.CenterX = Media.ActualWidth / 2;
+                scaleTransform.CenterY = Media.ActualHeight / 2;
+            }
+
+            scaleTransform.ScaleX = _currentScale;
+            scaleTransform.ScaleY = _currentScale;
+
+            e.Handled = true;
+        }
     }
 }
