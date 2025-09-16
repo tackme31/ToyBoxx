@@ -72,6 +72,22 @@ public class AppCommands
         await App.ViewModel.MediaElement.Seek(TimeSpan.Zero);
     });
 
+    private DelegateCommand? _stepOneFrameCommand;
+    public DelegateCommand StepOneFrameCommand => _stepOneFrameCommand ??= new(async o =>
+    {
+        if (App.ViewModel.MediaElement.HasMediaEnded)
+        {
+            return;
+        }
+
+        await App.ViewModel.MediaElement.Pause();
+
+        var fps = App.ViewModel.MediaElement.VideoFrameRate;
+        var frameDuration = TimeSpan.FromSeconds(1.0 / fps);
+
+        App.ViewModel.MediaElement.Position += frameDuration;
+    });
+
     private DelegateCommand? _toggleFullScreenCommand;
     public DelegateCommand ToggleFullScreen => _toggleFullScreenCommand ??= new(o =>
     {

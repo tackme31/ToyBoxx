@@ -43,13 +43,13 @@
                         <ui:SymbolIcon Symbol="SpeakerMute16" Filled="True" Foreground="White"/>
                     </ToggleButton>
                     <controls:HtmlLikeSlider Margin="5,0"
-                            Width="100"
-                            VerticalAlignment="Center"
-                            IsEnabled="{Binding MediaElement.IsMuted, Converter={StaticResource InverseBooleanConverter}}"
-                            Minimum="0.0"
-                            Maximum="1.0"
-                            Style="{StaticResource {x:Type Slider}}"
-                            Value="{Binding MediaElement.Volume}" />
+                                             Width="100"
+                                             VerticalAlignment="Center"
+                                             IsEnabled="{Binding MediaElement.IsMuted, Converter={StaticResource InverseBooleanConverter}}"
+                                             Minimum="0.0"
+                                             Maximum="1.0"
+                                             Style="{StaticResource {x:Type Slider}}"
+                                             Value="{Binding MediaElement.Volume}" />
 
                     <ui:Button Command="{Binding Commands.SetSegmentLoop}">
                         <ui:SymbolIcon Symbol="ArrowReset20" Filled="True" Foreground="White"/>
@@ -67,6 +67,10 @@
                             <TextBlock Grid.Column="2" Foreground="White" FontSize="14"  HorizontalAlignment="Left" Text="{Binding Controller.SegmentLoopTo, StringFormat={}{0:hh\\:mm\\:ss}}"/>
                         </Grid>
                     </Border>
+
+                    <ui:Button Command="{Binding Commands.StepOneFrameCommand}">
+                        <ui:SymbolIcon Symbol="ArrowStepInRight12" Filled="True" Foreground="White"/>
+                    </ui:Button>
 
                 </DockPanel>
 
