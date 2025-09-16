@@ -18,7 +18,8 @@
     PreviewMouseWheel="FluentWindow_PreviewMouseWheel"
     MouseLeftButtonDown="FluentWindow_MouseLeftButtonDown"
     MouseLeftButtonUp="FluentWindow_MouseLeftButtonUp"
-    MouseMove="FluentWindow_MouseMove">
+    MouseMove="FluentWindow_MouseMove"
+    MouseDown="FluentWindow_MouseDown">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding OpenFileCommand}"
@@ -27,6 +28,9 @@
         <i:EventTrigger EventName="PreviewDrop">
             <i:InvokeCommandAction Command="{Binding OpenFileCommand}"
                                    PassEventArgsToCommand="True"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="MouseDoubleClick">
+            <i:InvokeCommandAction Command="{Binding Commands.ToggleFullScreen}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
@@ -47,12 +51,6 @@
                 LoadedBehavior="Play"
                 IsDesignPreviewEnabled="True"
                 Stretch="Uniform">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding Commands.ToggleFullScreen}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                
                 <ffme:MediaElement.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform x:Name="scaleTransform"

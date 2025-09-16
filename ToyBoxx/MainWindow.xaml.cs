@@ -191,4 +191,17 @@ public partial class MainWindow
             e.Handled = true;
         }
     }
+
+    private void FluentWindow_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ChangedButton == MouseButton.Middle)
+        {
+            ViewModel.ResetTransform();
+
+            translateTransform.X = 0;
+            translateTransform.Y = 0;
+
+            e.Handled = true;
+        }
+    }
 }
