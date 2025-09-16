@@ -1,20 +1,24 @@
-﻿<ui:FluentWindow x:Class="ToyBoxx.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ToyBoxx"
-        xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
-        xmlns:controls="clr-namespace:ToyBoxx.Controls"
-        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-        mc:Ignorable="d"
-        DataContext="{StaticResource ViewModel}"
-        Title="{Binding WindowTitle}"
-        WindowStartupLocation="Manual" MinHeight="640" Height="0" MinWidth="640" Width="0"
-        Background="Black"
-        AllowDrop="True"
-        Drop="Window_Drop"
-        PreviewMouseWheel="FluentWindow_PreviewMouseWheel">
+﻿<ui:FluentWindow
+    x:Class="ToyBoxx.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:ToyBoxx"
+    xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
+    xmlns:controls="clr-namespace:ToyBoxx.Controls"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    mc:Ignorable="d"
+    DataContext="{StaticResource ViewModel}"
+    Title="{Binding WindowTitle}"
+    WindowStartupLocation="Manual" MinHeight="640" Height="0" MinWidth="640" Width="0"
+    Background="Black"
+    AllowDrop="True"
+    Drop="Window_Drop"
+    PreviewMouseWheel="FluentWindow_PreviewMouseWheel"
+    MouseLeftButtonDown="FluentWindow_MouseLeftButtonDown"
+    MouseLeftButtonUp="FluentWindow_MouseLeftButtonUp"
+    MouseMove="FluentWindow_MouseMove">
     <ui:FluentWindow.Resources>
         <Storyboard x:Key="ShowControlOpacity" Storyboard.TargetProperty="(UIElement.Opacity)">
             <DoubleAnimation To="1" Duration="0:0:0.100" FillBehavior="HoldEnd" />
@@ -34,7 +38,10 @@
                 MouseDoubleClick="Media_MouseDoubleClick"
                 Stretch="Uniform">
                 <ffme:MediaElement.RenderTransform>
-                    <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1" CenterX="0" CenterY="0"/>
+                    <TransformGroup>
+                        <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1" CenterX="0" CenterY="0"/>
+                        <TranslateTransform x:Name="translateTransform" X="0" Y="0" />
+                    </TransformGroup>
                 </ffme:MediaElement.RenderTransform>
             </ffme:MediaElement>
         </Grid>

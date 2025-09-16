@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
@@ -19,6 +18,8 @@ public partial class MainWindow
     private Point _lastMousePosition;
     private bool _isControllerHideCompleted;
     private double _currentScale = 1.0;
+    private bool _isDragging = false;
+    private Point _lastMousePos;
 
     public MainWindow()
     {
@@ -180,12 +181,48 @@ public partial class MainWindow
             {
                 scaleTransform.CenterX = Media.ActualWidth / 2;
                 scaleTransform.CenterY = Media.ActualHeight / 2;
+
+                translateTransform.X = 0;
+                translateTransform.Y = 0;
             }
 
             scaleTransform.ScaleX = _currentScale;
             scaleTransform.ScaleY = _currentScale;
 
             e.Handled = true;
+        }
+    }
+
+    private void FluentWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (_currentScale > 1.0)
+        {
+            _isDragging = true;
+            _lastMousePos = e.GetPosition(this);
+            Mouse.Capture(this);
+        }
+    }
+
+    private void FluentWindow_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        if (_isDragging)
+        {
+            _isDragging = false;
+            Mouse.Capture(null);
+        }
+    }
+
+    private void FluentWindow_MouseMove(object sender, MouseEventArgs e)
+    {
+        if (_isDragging && _currentScale > 1.0)
+        {
+            var pos = e.GetPosition(this);
+            var delta = pos - _lastMousePos;
+
+            translateTransform.X += delta.X;
+            translateTransform.Y += delta.Y;
+
+            _lastMousePos = pos;
         }
     }
 }
