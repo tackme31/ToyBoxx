@@ -96,6 +96,32 @@ public class AppCommands
     public DelegateCommand SetSegmentLoop => _setSegmentLoop ??= new(o =>
     {
         var controller = App.ViewModel.Controller;
-        controller.SetLoopSegment();
+
+        if (controller.IsSegmentLoopEnabled &&
+            controller.SegmentLoopFrom is not null &&
+            controller.SegmentLoopTo is not null)
+        {
+            controller.IsSegmentLoopEnabled = false;
+            controller.SegmentLoopFrom = null;
+            controller.SegmentLoopTo = null;
+            return;
+        }
+
+        var currentPosition = App.ViewModel.MediaElement.Position;
+        if (controller.SegmentLoopFrom is null)
+        {
+            controller.IsSegmentLoopEnabled = false;
+            controller.SegmentLoopFrom = currentPosition;
+            controller.SegmentLoopTo = null;
+            return;
+        }
+
+        if (controller.SegmentLoopFrom >= currentPosition)
+        {
+            return;
+        }
+
+        controller.SegmentLoopTo = currentPosition;
+        controller.IsSegmentLoopEnabled = true;
     });
 }

@@ -67,34 +67,6 @@ public sealed class ControllerViewModel : AttachedViewModel
         set => SetProperty(ref _isSegmentLoopEnabled, value);
     }
 
-    public void SetLoopSegment()
-    {
-        if (IsSegmentLoopEnabled && SegmentLoopFrom is not null && SegmentLoopTo is not null)
-        {
-            IsSegmentLoopEnabled = false;
-            SegmentLoopFrom = null;
-            SegmentLoopTo = null;
-            return;
-        }
-
-        var currentPosition = App.ViewModel.MediaElement.Position;
-        if (SegmentLoopFrom is null)
-        {
-            IsSegmentLoopEnabled = false;
-            SegmentLoopFrom = currentPosition;
-            SegmentLoopTo = null;
-            return;
-        }
-
-        if (SegmentLoopFrom >= currentPosition)
-        {
-            return;
-        }
-
-        SegmentLoopTo = currentPosition;
-        IsSegmentLoopEnabled = true;
-    }
-
     internal override void OnApplicationLoaded()
     {
         base.OnApplicationLoaded();
