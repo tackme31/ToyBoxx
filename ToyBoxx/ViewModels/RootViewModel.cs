@@ -115,7 +115,7 @@ public partial class RootViewModel : ObservableObject
         string? GetRoutedEventFile()
         {
             var args = Environment.GetCommandLineArgs();
-            return args is [] ? null : args[0].Trim();
+            return args.Length < 2 ? null : args[1].Trim();
         }
     });
 

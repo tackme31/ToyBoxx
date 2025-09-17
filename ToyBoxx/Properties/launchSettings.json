@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ToyBoxx": {
+      "commandName": "Project",
+      "commandLineArgs": "\"D:\\Windows\\Downloads\\sample.mp4\""
+    }
+  }
+}
