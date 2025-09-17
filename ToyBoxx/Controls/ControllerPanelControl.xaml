@@ -68,11 +68,24 @@
                                              Style="{StaticResource {x:Type Slider}}"
                                              Value="{Binding MediaElement.Volume}" />
 
-                    <ui:Button Command="{Binding Commands.SetSegmentLoop}">
-                        <ui:SymbolIcon Symbol="ArrowReset20" Filled="True" Foreground="White"/>
-                    </ui:Button>
+                </DockPanel>
 
-                    <Border BorderBrush="Gray" BorderThickness="1" Height="30">
+                <DockPanel Name="RightControls" HorizontalAlignment="Right" Grid.Column="1">
+                    <TextBlock Margin="5,0" Foreground="White" FontSize="14" VerticalAlignment="Center" Text="{Binding MediaElement.Position, StringFormat={}{0:hh\\:mm\\:ss}}"/>
+                    <TextBlock Foreground="White" FontSize="14" VerticalAlignment="Center">/</TextBlock>
+                    <TextBlock Margin="5,0" Foreground="White" FontSize="14" VerticalAlignment="Center" Text="{Binding MediaElement.NaturalDuration, StringFormat={}{0:hh\\:mm\\:ss}}"/>
+                    <ToggleButton Margin="5,0" IsChecked="{Binding Controller.IsLoopingMediaEnabled, Mode=TwoWay}" ToolTip="Enable Looping">
+                        <ui:SymbolIcon Symbol="ArrowRepeatAll16" Foreground="White"/>
+                    </ToggleButton>
+
+                    <ToggleButton Margin="5,0,0,0"
+                                  PreviewMouseLeftButtonDown="ToggleButton_PreviewMouseLeftButtonDown"
+                                  IsChecked="{Binding Controller.IsSegmentLoopEnabled, Mode=OneWay}"
+                                  Command="{Binding Commands.SetSegmentLoop}">
+                        <ui:SymbolIcon Symbol="ArrowReset20" Filled="True" Foreground="White"/>
+                    </ToggleButton>
+
+                    <Border Margin="5,0" BorderBrush="Gray" BorderThickness="1" Height="30">
                         <Grid VerticalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="60" />
@@ -85,16 +98,7 @@
                         </Grid>
                     </Border>
 
-                </DockPanel>
 
-                <DockPanel Name="RightControls" HorizontalAlignment="Right" Grid.Column="1">
-                    <TextBlock Margin="5,0" Foreground="White" FontSize="14" VerticalAlignment="Center" Text="{Binding MediaElement.Position, StringFormat={}{0:hh\\:mm\\:ss}}"/>
-                    <TextBlock Foreground="White" FontSize="14" VerticalAlignment="Center">/</TextBlock>
-                    <TextBlock Margin="5,0" Foreground="White" FontSize="14" VerticalAlignment="Center" Text="{Binding MediaElement.NaturalDuration, StringFormat={}{0:hh\\:mm\\:ss}}"/>
-                    <ToggleButton Margin="10,0" IsChecked="{Binding Controller.IsLoopingMediaEnabled, Mode=TwoWay}" ToolTip="Enable Looping">
-                        <ui:SymbolIcon Symbol="ArrowRepeatAll16" Foreground="White"/>
-                    </ToggleButton>
-                    
                     <ui:Button Command="{Binding Commands.ToggleFullScreen}">
                         <ui:SymbolIcon Symbol="FullScreenMaximize16" Foreground="White"/>
                     </ui:Button>

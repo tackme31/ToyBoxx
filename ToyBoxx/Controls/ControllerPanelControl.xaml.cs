@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
-using Unosquare.FFME.Common;
+using System.Windows.Controls.Primitives;
+using ToyBoxx.ViewModels;
 
 namespace ToyBoxx.Controls
 {
@@ -11,6 +12,18 @@ namespace ToyBoxx.Controls
         public ControllerPanelControl()
         {
             InitializeComponent();
+        }
+
+        private void ToggleButton_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+
+            var toggle = (ToggleButton)sender!;
+            if (toggle.DataContext is RootViewModel vm)
+            {
+                if (vm.Commands.SetSegmentLoop.CanExecute(null))
+                    vm.Commands.SetSegmentLoop.Execute(null);
+            }
         }
     }
 }
