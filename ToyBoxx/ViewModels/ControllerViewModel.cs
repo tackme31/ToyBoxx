@@ -27,7 +27,7 @@ public partial class ControllerViewModel : AttachedViewModel
     private bool _isStopButtonEnabled;
 
     [ObservableProperty]
-    private bool _isStepOneFrameEnabled;
+    private bool _isStepForwardEnabled;
 
     [ObservableProperty]
     private bool _isPlaybackSpeedButtonEnabled;
@@ -106,7 +106,7 @@ public partial class ControllerViewModel : AttachedViewModel
         m.WhenChanged(
             () =>
             {
-                IsStepOneFrameEnabled = m.IsOpen && !m.HasMediaEnded && !m.IsSeeking && m.IsPaused;
+                IsStepForwardEnabled = m.IsOpen && !m.HasMediaEnded && !m.IsSeeking && m.IsPaused;
             },
             nameof(m.IsOpen),
             nameof(m.IsSeeking),

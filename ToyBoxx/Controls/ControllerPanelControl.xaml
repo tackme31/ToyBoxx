@@ -60,9 +60,12 @@
                                ToolTip="Stop">
                         <ui:SymbolIcon Symbol="Stop24" Filled="True" Foreground="White"/>
                     </ui:Button>
+
+                    <!-- StepForwardCommand is executed in code-behind to bypass WPF Click event limitations for rapid clicks -->
                     <ui:Button Margin="5,0"
-                               IsEnabled="{Binding Controller.IsStepOneFrameEnabled}" Command="{Binding Commands.StepOneFrameCommand}"
-                               ToolTip="Step one frame">
+                               Name="StepForwardButton"
+                               IsEnabled="{Binding Controller.IsStepForwardEnabled}"
+                               ToolTip="Step forward">
                         <ui:SymbolIcon Symbol="ArrowStepInRight12" Filled="True" Foreground="White"/>
                     </ui:Button>
 

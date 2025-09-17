@@ -72,15 +72,11 @@ public class AppCommands
         await App.ViewModel.MediaElement.Seek(TimeSpan.Zero);
     });
 
-    private DelegateCommand? _stepOneFrameCommand;
-    public DelegateCommand StepOneFrameCommand => _stepOneFrameCommand ??= new(async o =>
+    private DelegateCommand? _stepForwardCommand;
+    public DelegateCommand StepForwardCommand => _stepForwardCommand ??= new(async o =>
     {
         await App.ViewModel.MediaElement.Pause();
-
-        var fps = App.ViewModel.MediaElement.VideoFrameRate;
-        var frameDuration = TimeSpan.FromSeconds(1.0 / fps);
-
-        App.ViewModel.MediaElement.Position += frameDuration;
+        await App.ViewModel.MediaElement.StepForward();
     });
 
     private DelegateCommand? _toggleFullScreenCommand;
