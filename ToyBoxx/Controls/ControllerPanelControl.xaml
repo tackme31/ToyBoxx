@@ -41,29 +41,34 @@
                     <ui:Button Margin="5,0"
                                Visibility="{Binding Controller.PlayButtonVisibility}"
                                IsEnabled="{Binding Controller.IsPlayButtonEnabled}"
-                               Command="{Binding Commands.Play}">
+                               Command="{Binding Commands.Play}"
+                               ToolTip="Play">
                         <ui:SymbolIcon Symbol="Play48" Filled="True" Foreground="White"/>
                     </ui:Button>
                     <ui:Button Margin="5,0"
                                Visibility="{Binding Controller.PauseButtonVisibility}"
                                IsEnabled="{Binding Controller.IsPauseButtonEnabled}"
-                               Command="{Binding Commands.Pause}">
+                               Command="{Binding Commands.Pause}"
+                               ToolTip="Pause">
                         <ui:SymbolIcon Symbol="Pause12" Filled="True" Foreground="White"/>
                     </ui:Button>
                     <ui:Button Margin="5,0"
                                IsEnabled="{Binding Controller.IsStopButtonEnabled}"
-                               Command="{Binding Commands.Stop}">
+                               Command="{Binding Commands.Stop}"
+                               ToolTip="Stop">
                         <ui:SymbolIcon Symbol="Stop24" Filled="True" Foreground="White"/>
                     </ui:Button>
                     <ui:Button Margin="5,0"
-                               IsEnabled="{Binding Controller.IsStepOneFrameEnabled}" Command="{Binding Commands.StepOneFrameCommand}">
+                               IsEnabled="{Binding Controller.IsStepOneFrameEnabled}" Command="{Binding Commands.StepOneFrameCommand}"
+                               ToolTip="Step one frame">
                         <ui:SymbolIcon Symbol="ArrowStepInRight12" Filled="True" Foreground="White"/>
                     </ui:Button>
 
                     <ToggleButton Name="PlaybackSpeedButton"
                                   IsEnabled="{Binding Controller.IsPlaybackSpeedButtonEnabled}"
                                   Margin="5,0"
-                                  Width="60">
+                                  Width="60"
+                                  ToolTip="Change playback speed">
                         <TextBlock Text="{Binding MediaElement.SpeedRatio, Converter={StaticResource SpeedRatioConverter}}" />
                     </ToggleButton>
                     <Popup Name="PlaybackSpeedPopup"
@@ -128,7 +133,8 @@
 
 
                     <ToggleButton Margin="5,0"
-                                  Name="MuteUnmuteButton" IsChecked="{Binding MediaElement.IsMuted, Mode=TwoWay}">
+                                  Name="MuteUnmuteButton" IsChecked="{Binding MediaElement.IsMuted, Mode=TwoWay}"
+                                  ToolTip="Mute">
                         <ui:SymbolIcon Symbol="SpeakerMute16" Filled="True" Foreground="White"/>
                     </ToggleButton>
                     <controls:HtmlLikeSlider Margin="5,0"
@@ -153,7 +159,8 @@
                     <ToggleButton Margin="5,0"
                                   PreviewMouseLeftButtonDown="ToggleButton_PreviewMouseLeftButtonDown"
                                   IsChecked="{Binding Controller.IsSegmentLoopEnabled, Mode=OneWay}"
-                                  Command="{Binding Commands.SetSegmentLoop}">
+                                  Command="{Binding Commands.SetSegmentLoop}"
+                                  ToolTip="Loop selected range">
                         <ui:SymbolIcon Symbol="ArrowReset20" Filled="True" Foreground="White"/>
                     </ToggleButton>
 
@@ -171,7 +178,8 @@
                     </Border>
 
                     <ui:Button Margin="5,0"
-                               Command="{Binding Commands.ToggleFullScreen}">
+                               Command="{Binding Commands.ToggleFullScreen}"
+                               ToolTip="Toggle full screen">
                         <ui:SymbolIcon Symbol="FullScreenMaximize16" Foreground="White"/>
                     </ui:Button>
                 </DockPanel>
