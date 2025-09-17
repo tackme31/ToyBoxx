@@ -38,25 +38,32 @@
                 </Grid.ColumnDefinitions>
 
                 <DockPanel Name="LeftControls" HorizontalAlignment="Left" Grid.Column="0">
-                    <ui:Button Visibility="{Binding Controller.PlayButtonVisibility}"
+                    <ui:Button Margin="5,0"
+                               Visibility="{Binding Controller.PlayButtonVisibility}"
                                IsEnabled="{Binding Controller.IsPlayButtonEnabled}"
                                Command="{Binding Commands.Play}">
                         <ui:SymbolIcon Symbol="Play48" Filled="True" Foreground="White"/>
                     </ui:Button>
-                    <ui:Button Visibility="{Binding Controller.PauseButtonVisibility}"
+                    <ui:Button Margin="5,0"
+                               Visibility="{Binding Controller.PauseButtonVisibility}"
                                IsEnabled="{Binding Controller.IsPauseButtonEnabled}"
                                Command="{Binding Commands.Pause}">
                         <ui:SymbolIcon Symbol="Pause12" Filled="True" Foreground="White"/>
                     </ui:Button>
-                    <ui:Button IsEnabled="{Binding Controller.IsStopButtonEnabled}"
+                    <ui:Button Margin="5,0"
+                               IsEnabled="{Binding Controller.IsStopButtonEnabled}"
                                Command="{Binding Commands.Stop}">
                         <ui:SymbolIcon Symbol="Stop24" Filled="True" Foreground="White"/>
                     </ui:Button>
-                    <ui:Button IsEnabled="{Binding Controller.IsStepOneFrameEnabled}" Command="{Binding Commands.StepOneFrameCommand}">
+                    <ui:Button Margin="5,0"
+                               IsEnabled="{Binding Controller.IsStepOneFrameEnabled}" Command="{Binding Commands.StepOneFrameCommand}">
                         <ui:SymbolIcon Symbol="ArrowStepInRight12" Filled="True" Foreground="White"/>
                     </ui:Button>
 
-                    <ToggleButton Name="MuteUnmuteButton" IsChecked="{Binding MediaElement.IsMuted, Mode=TwoWay}">
+                    <ui:Button Margin="5,0">x 1</ui:Button>
+
+                    <ToggleButton Margin="5,0"
+                                  Name="MuteUnmuteButton" IsChecked="{Binding MediaElement.IsMuted, Mode=TwoWay}">
                         <ui:SymbolIcon Symbol="SpeakerMute16" Filled="True" Foreground="White"/>
                     </ToggleButton>
                     <controls:HtmlLikeSlider Margin="5,0"
@@ -78,7 +85,7 @@
                         <ui:SymbolIcon Symbol="ArrowRepeatAll16" Foreground="White"/>
                     </ToggleButton>
 
-                    <ToggleButton Margin="5,0,0,0"
+                    <ToggleButton Margin="5,0"
                                   PreviewMouseLeftButtonDown="ToggleButton_PreviewMouseLeftButtonDown"
                                   IsChecked="{Binding Controller.IsSegmentLoopEnabled, Mode=OneWay}"
                                   Command="{Binding Commands.SetSegmentLoop}">
@@ -98,8 +105,8 @@
                         </Grid>
                     </Border>
 
-
-                    <ui:Button Command="{Binding Commands.ToggleFullScreen}">
+                    <ui:Button Margin="5,0"
+                               Command="{Binding Commands.ToggleFullScreen}">
                         <ui:SymbolIcon Symbol="FullScreenMaximize16" Foreground="White"/>
                     </ui:Button>
                 </DockPanel>
