@@ -16,12 +16,14 @@
                 <RowDefinition Height="70"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <controls:HtmlLikeSlider x:Name="PositionSlider"
+            <controls:PositionSlider x:Name="PositionSlider"
                                      Grid.Row="0"
                                      Margin="10,0"
                                      Cursor="Hand"
                                      Visibility="Visible"
                                      IsSnapToTickEnabled="False"
+                                     LoopStart="{Binding Controller.SegmentLoopFrom, Converter={StaticResource NullableTimeSpanToSecondsConverter}}"
+                                     LoopEnd="{Binding Controller.SegmentLoopTo, Converter={StaticResource NullableTimeSpanToSecondsConverter}}"
                                      Style="{StaticResource {x:Type Slider}}"
                                      IsEnabled="{Binding MediaElement.IsOpen}"
                                      SmallChange="{Binding MediaElement.PositionStep, Converter={StaticResource TimeSpanToSecondsConverter}}"
@@ -163,19 +165,6 @@
                                   ToolTip="Loop selected range">
                         <ui:SymbolIcon Symbol="ArrowReset20" Filled="True" Foreground="White"/>
                     </ToggleButton>
-
-                    <Border Margin="5,0" BorderBrush="Gray" BorderThickness="1" Height="30">
-                        <Grid VerticalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="60" />
-                                <ColumnDefinition Width="20" />
-                                <ColumnDefinition Width="60" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Foreground="White" FontSize="14" HorizontalAlignment="Right" Text="{Binding Controller.SegmentLoopFrom, StringFormat={}{0:hh\\:mm\\:ss}}"/>
-                            <TextBlock Grid.Column="1" Foreground="White" FontSize="14"  HorizontalAlignment="Center">-</TextBlock>
-                            <TextBlock Grid.Column="2" Foreground="White" FontSize="14"  HorizontalAlignment="Left" Text="{Binding Controller.SegmentLoopTo, StringFormat={}{0:hh\\:mm\\:ss}}"/>
-                        </Grid>
-                    </Border>
 
                     <ui:Button Margin="5,0"
                                Command="{Binding Commands.ToggleFullScreen}"

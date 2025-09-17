@@ -88,6 +88,47 @@ internal class TimeSpanToSecondsConverter : IValueConverter
     }
 }
 
+internal class NullableTimeSpanToSecondsConverter : IValueConverter
+{
+    /// <inheritdoc />
+    public object? Convert(object? value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return value switch
+        {
+            TimeSpan span => span.TotalSeconds,
+            Duration duration => duration.HasTimeSpan ? duration.TimeSpan.TotalSeconds : 0d,
+            null => null,
+            _ => 0d,
+        };
+    }
+
+    /// <inheritdoc />
+    public object? ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is null)
+        {
+            return null;
+        }
+
+        if (value is not double)
+        {
+            return 0d;
+        }
+
+        var result = TimeSpan.FromTicks(System.Convert.ToInt64(TimeSpan.TicksPerSecond * (double)value));
+
+        // Do the conversion from visibility to bool
+        if (targetType == typeof(TimeSpan))
+        {
+            return result;
+        }
+
+        return targetType == typeof(Duration)
+            ? new Duration(result)
+            : Activator.CreateInstance(targetType);
+    }
+}
+
 internal class SpeedRatioConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)

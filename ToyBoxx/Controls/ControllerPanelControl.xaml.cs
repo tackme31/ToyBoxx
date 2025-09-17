@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using ToyBoxx.ViewModels;
 
 namespace ToyBoxx.Controls
