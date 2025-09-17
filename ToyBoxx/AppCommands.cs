@@ -25,8 +25,17 @@ public class AppCommands
                 await media.Close();
             }
 
+            var previewMedia = App.ViewModel.PreviewMediaElement;
+            if (previewMedia.IsOpen)
+            {
+                await previewMedia.Close();
+            }
+
             var target = new Uri(uriString);
             await media.Open(new FileInputStream(target.LocalPath));
+
+            await previewMedia.Open(new FileInputStream(@target.LocalPath));
+            await previewMedia.Stop();
         }
         catch (Exception ex)
         {
@@ -44,6 +53,7 @@ public class AppCommands
     public DelegateCommand Close => _closeCommand ??= new(async o =>
     {
         await App.ViewModel.MediaElement.Close();
+        await App.ViewModel.PreviewMediaElement.Close();
     });
 
     private DelegateCommand? _pauseCommand;

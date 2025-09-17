@@ -25,8 +25,8 @@ public partial class App : Application
         _configuration = builder.Build();
 
         var ffmpegPath = _configuration["FFMpegRootPath"] ?? throw new InvalidOperationException("Variable 'FFMpegRootPath' does not exist");
-        Unosquare.FFME.Library.FFmpegDirectory = ffmpegPath;
-        Library.EnableWpfMultiThreadedVideo = false;
+        Library.FFmpegDirectory = ffmpegPath;
+        Library.EnableWpfMultiThreadedVideo = true;
     }
 
     protected override void OnStartup(StartupEventArgs e)

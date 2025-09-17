@@ -1,6 +1,7 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Threading;
 using ToyBoxx.ViewModels;
 
 namespace ToyBoxx.Controls
@@ -10,6 +11,8 @@ namespace ToyBoxx.Controls
     /// </summary>
     public partial class ControllerPanelControl : UserControl
     {
+        private DispatcherTimer _idleTimer;
+
         public ControllerPanelControl()
         {
             InitializeComponent();
@@ -24,6 +27,12 @@ namespace ToyBoxx.Controls
                     vm.Commands.StepForwardCommand.Execute(null);
                 }),
                 handledEventsToo: true);
+
+            _idleTimer = new DispatcherTimer();
+            _idleTimer.Interval = TimeSpan.FromSeconds(1);
+            _idleTimer.Tick += IdleTimer_Tick;
+
+
         }
 
         private void ToggleButton_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -42,6 +51,33 @@ namespace ToyBoxx.Controls
         {
             PlaybackSpeedPopup.IsOpen = false;
             PlaybackSpeedButton.IsChecked = false;
+        }
+
+        private void PositionSlider_MouseMove(object sender, MouseEventArgs e)
+        {
+            _idleTimer.Stop();
+            _idleTimer.Start();
+        }
+
+        private async void IdleTimer_Tick(object? sender, EventArgs e)
+        {
+            _idleTimer.Stop();
+
+            var pos = Mouse.GetPosition(PositionSlider);
+
+
+            // Position (sec) at mouse
+            var value = PositionSlider.Minimum + (pos.X / PositionSlider.ActualWidth) * (PositionSlider.Maximum - PositionSlider.Minimum);
+
+            App.ViewModel.PreviewMediaElement.Position = TimeSpan.FromSeconds(value);
+            //var bitmap = await App.ViewModel.PreviewMediaElement.CaptureBitmapAsync();
+
+            Console.WriteLine($"Mouse over slider at value: {value}");
+        }
+
+        private void PositionSlider_MouseLeave(object sender, MouseEventArgs e)
+        {
+            _idleTimer.Stop();
         }
     }
 }

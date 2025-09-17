@@ -31,6 +31,8 @@
                                      Minimum="{Binding MediaElement.PlaybackStartTime, Converter={StaticResource TimeSpanToSecondsConverter}}"
                                      Maximum="{Binding MediaElement.PlaybackEndTime, Converter={StaticResource TimeSpanToSecondsConverter}}" 
                                      Value="{Binding MediaElement.Position, Converter={StaticResource TimeSpanToSecondsConverter}}"
+                                     MouseMove="PositionSlider_MouseMove"
+                                     MouseLeave="PositionSlider_MouseLeave"
                                      />
 
             <Grid Name="ControlsPanel" Grid.Row="1" Margin="20,0">

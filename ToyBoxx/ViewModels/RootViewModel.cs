@@ -20,6 +20,8 @@ public partial class RootViewModel : ObservableObject
 
     private MediaElement? _mediaElement;
     public MediaElement MediaElement => _mediaElement ??= (Application.Current.MainWindow as MainWindow)?.Media ?? throw new Exception("Media element not found.");
+    private MediaElement? _previewMediaElement;
+    public MediaElement PreviewMediaElement => _previewMediaElement ??= (Application.Current.MainWindow as MainWindow)?.PreviewMedia ?? throw new Exception("Media element not found.");
 
     [ObservableProperty]
     private bool _isApplicationLoaded;

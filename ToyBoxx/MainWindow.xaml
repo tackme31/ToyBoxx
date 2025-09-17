@@ -64,6 +64,11 @@
             </ffme:MediaElement>
         </Grid>
 
+        <ffme:MediaElement Name="PreviewMedia"
+                           Visibility="Collapsed" 
+                           LoadedBehavior="Manual"
+                           UnloadedBehavior="Manual"/>
+
         <DockPanel x:Name="LayoutPanel"
                    LastChildFill="False"
                    PreviewMouseDown="LayoutPanel_PreviewMouseDown">
