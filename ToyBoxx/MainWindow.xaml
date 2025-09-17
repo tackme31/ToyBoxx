@@ -13,7 +13,6 @@
     DataContext="{StaticResource ViewModel}"
     Title="{Binding WindowTitle}"
     WindowStartupLocation="Manual" MinHeight="640" Height="0" MinWidth="640" Width="0"
-    Background="Black"
     AllowDrop="True"
     PreviewMouseWheel="FluentWindow_PreviewMouseWheel"
     MouseLeftButtonDown="FluentWindow_MouseLeftButtonDown"
@@ -47,7 +46,6 @@
         <Grid x:Name="ClipGrid" ClipToBounds="True">
             <ffme:MediaElement
                 Name="Media"
-                Background="Black"
                 LoadedBehavior="Play"
                 IsDesignPreviewEnabled="True"
                 Stretch="Uniform">
@@ -79,7 +77,7 @@
             x:Name="TitleBar"
             Title="{Binding WindowTitle}"
             Margin="0,4,0,0"
-            CloseWindowByDoubleClickOnIcon="True">
+            CloseWindowByDoubleClickOnIcon="True" Cursor="">
             <ui:TitleBar.Icon>
                 <ui:ImageIcon Source="/256x256.ico" />
             </ui:TitleBar.Icon>
