@@ -169,19 +169,12 @@ public partial class MainWindow
                 _currentScale = Math.Max(ZoomStep, _currentScale - ZoomStep);
             }
 
-            // Set center position
-            if (_currentScale >= 1.0)
-            {
-                // Use mouse pos when 100%+ zoom
-                var pos = e.GetPosition(ViewModel.MediaElement);
-                ViewModel.ScaleCenterX = pos.X;
-                ViewModel.ScaleCenterY = pos.Y;
-            }
-            else
-            {
-                ViewModel.ScaleCenterX = ViewModel.MediaElement.ActualWidth / 2;
-                ViewModel.ScaleCenterY = ViewModel.MediaElement.ActualHeight / 2;
+            ViewModel.ScaleCenterX = ViewModel.MediaElement.ActualWidth / 2;
+            ViewModel.ScaleCenterY = ViewModel.MediaElement.ActualHeight / 2;
 
+            if (_currentScale < 1.0)
+            {
+                // Fix to center
                 ViewModel.TransformX = 0;
                 ViewModel.TransformY = 0;
             }
@@ -195,10 +188,17 @@ public partial class MainWindow
 
     private void FluentWindow_MouseDown(object sender, MouseButtonEventArgs e)
     {
+        // Reset zoom&pan
         if (e.ChangedButton == MouseButton.Middle)
         {
-            ViewModel.ResetTransform();
+            ViewModel.ScaleX = 1.0;
+            ViewModel.ScaleY = 1.0;
+            ViewModel.ScaleCenterX = ViewModel.MediaElement.ActualWidth / 2;
+            ViewModel.ScaleCenterY = ViewModel.MediaElement.ActualHeight / 2;
+            ViewModel.TransformX = 0;
+            ViewModel.TransformY = 0;
 
+            // Force reset panning
             translateTransform.X = 0;
             translateTransform.Y = 0;
 

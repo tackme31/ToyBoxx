@@ -118,14 +118,4 @@ public partial class RootViewModel : ObservableObject
             return args.Length < 2 ? null : args[1].Trim();
         }
     });
-
-    public void ResetTransform()
-    {
-        ScaleX = 1.0;
-        ScaleY = 1.0;
-        ScaleCenterX = MediaElement.ActualWidth / 2;
-        ScaleCenterY = MediaElement.ActualHeight / 2;
-        TransformX = 0;
-        TransformY = 0;
-    }
 }
