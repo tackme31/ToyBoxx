@@ -7,5 +7,6 @@ Limited, buggy, and uncustomizable, but perfect for me.
 
 - [x] Loop playback for a specified section
 - [x] Zoom & Panning
-- [ ] Change playback speed
+- [x] Change playback speed
+- [x] Seek one frame
 - [ ] Take screenshots
