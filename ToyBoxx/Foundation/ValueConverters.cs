@@ -87,3 +87,24 @@ internal class TimeSpanToSecondsConverter : IValueConverter
             : Activator.CreateInstance(targetType);
     }
 }
+
+internal class SpeedRatioConverter : IValueConverter
+{
+    public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is int or double or float)
+        {
+            return $"x {value}";
+        }
+
+        return "x 1";
+    }
+
+    public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
+    {
+        var ratio = value?.ToString()?[2..];
+        return double.TryParse(ratio, out var result)
+            ? result
+            : 1.0;
+    }
+}

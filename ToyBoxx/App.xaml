@@ -15,6 +15,7 @@
                     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
                     <local:TimeSpanToSecondsConverter x:Key="TimeSpanToSecondsConverter" />
                     <local:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+                    <local:SpeedRatioConverter x:Key="SpeedRatioConverter" />
                 </ResourceDictionary>
 
                 <ui:ThemesDictionary Theme="Dark" />

@@ -26,10 +26,11 @@ public partial class ControllerViewModel : AttachedViewModel
     [ObservableProperty]
     private bool _isStopButtonEnabled;
 
-
-
     [ObservableProperty]
     private bool _isStepOneFrameEnabled;
+
+    [ObservableProperty]
+    private bool _isPlaybackSpeedButtonEnabled;
 
     [ObservableProperty]
     private TimeSpan? _segmentLoopFrom;
@@ -120,6 +121,13 @@ public partial class ControllerViewModel : AttachedViewModel
                 SegmentLoopTo = null;
             },
             nameof(m.IsOpen));
+
+        m.WhenChanged(() =>
+        {
+            IsPlaybackSpeedButtonEnabled = m.IsOpen && !m.IsSeeking;
+        },
+        nameof(m.IsOpen),
+        nameof(m.IsSeeking));
 
 
         m.PositionChanged += async (sender, args) =>

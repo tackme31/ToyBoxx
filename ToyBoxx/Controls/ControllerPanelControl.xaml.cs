@@ -25,5 +25,11 @@ namespace ToyBoxx.Controls
                     vm.Commands.SetSegmentLoop.Execute(null);
             }
         }
+
+        private void PlaybackSpeedButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            PlaybackSpeedPopup.IsOpen = false;
+            PlaybackSpeedButton.IsChecked = false;
+        }
     }
 }

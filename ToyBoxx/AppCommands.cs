@@ -136,4 +136,14 @@ public class AppCommands
         controller.IsSegmentLoopEnabled = true;
     });
 
+    private DelegateCommand? _changeSpeedRatioComand;
+    public DelegateCommand ChangeSpeedRatio => _changeSpeedRatioComand ??= new(o =>
+    {
+        if (double.TryParse(o?.ToString(), out var ratio) && ratio <= 0)
+        {
+            return;
+        }
+
+        App.ViewModel.MediaElement.SpeedRatio = ratio;
+    });
 }

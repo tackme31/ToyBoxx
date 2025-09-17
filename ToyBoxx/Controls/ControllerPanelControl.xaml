@@ -60,7 +60,72 @@
                         <ui:SymbolIcon Symbol="ArrowStepInRight12" Filled="True" Foreground="White"/>
                     </ui:Button>
 
-                    <ui:Button Margin="5,0">x 1</ui:Button>
+                    <ToggleButton Name="PlaybackSpeedButton"
+                                  IsEnabled="{Binding Controller.IsPlaybackSpeedButtonEnabled}"
+                                  Margin="5,0"
+                                  Width="60">
+                        <TextBlock Text="{Binding MediaElement.SpeedRatio, Converter={StaticResource SpeedRatioConverter}}" />
+                    </ToggleButton>
+                    <Popup Name="PlaybackSpeedPopup"
+                           IsOpen="{Binding IsChecked, ElementName=PlaybackSpeedButton, Mode=TwoWay}"
+                           StaysOpen="False"
+                           PopupAnimation="Fade"
+                           Placement="Top"
+                           PlacementTarget="{Binding ElementName=PlaybackSpeedButton}"
+                           VerticalOffset="-10"
+                           AllowsTransparency="True">
+                        <StackPanel Width="80" Background="Black" Opacity="0.8">
+                            <ui:Button HorizontalAlignment="Stretch"
+                                       Command="{Binding Commands.ChangeSpeedRatio}"
+                                       CommandParameter="0.25"
+                                       Click="PlaybackSpeedButton_Click">
+                                x 0.25
+                            </ui:Button>
+                            <ui:Button HorizontalAlignment="Stretch"
+                                       Command="{Binding Commands.ChangeSpeedRatio}"
+                                       CommandParameter="0.5"
+                                       Click="PlaybackSpeedButton_Click">
+                                x 0.5
+                            </ui:Button>
+                            <ui:Button HorizontalAlignment="Stretch"
+                                       Command="{Binding Commands.ChangeSpeedRatio}"
+                                       CommandParameter="0.75"
+                                       Click="PlaybackSpeedButton_Click">
+                                x 0.75
+                            </ui:Button>
+                            <ui:Button HorizontalAlignment="Stretch"
+                                       Command="{Binding Commands.ChangeSpeedRatio}"
+                                       CommandParameter="1.0"
+                                       Click="PlaybackSpeedButton_Click">
+                                x 1
+                            </ui:Button>
+                            <ui:Button HorizontalAlignment="Stretch"
+                                       Command="{Binding Commands.ChangeSpeedRatio}"
+                                       CommandParameter="1.25"
+                                       Click="PlaybackSpeedButton_Click">
+                                x 1.25
+                            </ui:Button>
+                            <ui:Button HorizontalAlignment="Stretch"
+                                       Command="{Binding Commands.ChangeSpeedRatio}"
+                                       CommandParameter="1.5"
+                                       Click="PlaybackSpeedButton_Click">
+                                x 1.5
+                            </ui:Button>
+                            <ui:Button HorizontalAlignment="Stretch"
+                                       Command="{Binding Commands.ChangeSpeedRatio}"
+                                       CommandParameter="2.0"
+                                       Click="PlaybackSpeedButton_Click">
+                                x 2
+                            </ui:Button>
+                            <ui:Button HorizontalAlignment="Stretch"
+                                       Command="{Binding Commands.ChangeSpeedRatio}"
+                                       CommandParameter="3.0"
+                                       Click="PlaybackSpeedButton_Click">
+                                x 3
+                            </ui:Button>
+                        </StackPanel>
+                    </Popup>
+
 
                     <ToggleButton Margin="5,0"
                                   Name="MuteUnmuteButton" IsChecked="{Binding MediaElement.IsMuted, Mode=TwoWay}">
