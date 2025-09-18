@@ -1,8 +1,10 @@
-﻿using System.Windows;
+﻿using FFmpeg.AutoGen;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using ToyBoxx.ViewModels;
+using Unosquare.FFME.Common;
 
 namespace ToyBoxx;
 
@@ -27,6 +29,7 @@ public partial class MainWindow
         ViewModel = App.ViewModel;
         InitializeComponent();
         InitializeMainWindow();
+        InitializeMediaEvents();
     }
 
     public RootViewModel ViewModel { get; }
@@ -102,6 +105,38 @@ public partial class MainWindow
         };
 
         _mouseMoveTimer.Start();
+    }
+
+    private void InitializeMediaEvents()
+    {
+        Media.MediaOpening += (s, e) =>
+        {
+            // Use hardware device if needed
+            if (e.Options.VideoStream is StreamInfo videoStream)
+            {
+                var deviceCandidates = new[]
+                {
+                    AVHWDeviceType.AV_HWDEVICE_TYPE_CUDA,
+                    AVHWDeviceType.AV_HWDEVICE_TYPE_D3D11VA,
+                    AVHWDeviceType.AV_HWDEVICE_TYPE_DXVA2
+                };
+
+                // Hardware device selection
+                if (videoStream.FPS <= 30)
+                {
+                    var devices = new List<HardwareDeviceInfo>(deviceCandidates.Length);
+                    foreach (var deviceType in deviceCandidates)
+                    {
+                        var accelerator = videoStream.HardwareDevices.FirstOrDefault(d => d.DeviceType == deviceType);
+                        if (accelerator == null) continue;
+
+                        devices.Add(accelerator);
+                    }
+
+                    e.Options.VideoHardwareDevices = [.. devices];
+                }
+            }
+        };
     }
 
     private void OnWindowKeyDown(object? sender, KeyEventArgs e)
