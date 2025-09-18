@@ -40,19 +40,20 @@ public class PositionSlider : HtmlLikeSlider
 
         if (Template.FindName("PART_Track", this) is Track track)
         {
-            double trackWidth = track.ActualWidth;
             double min = Minimum;
             double max = Maximum;
+            double thumbWidth = track.Thumb.ActualWidth;
+            double rangeWidth = track.ActualWidth - thumbWidth;
 
             if (LoopStart.HasValue && LoopStart >= min && LoopStart <= max)
             {
-                double startX = track.Thumb.ActualWidth / 2 + (LoopStart.Value - min) / (max - min) * trackWidth;
+                double startX = thumbWidth / 2 + (LoopStart.Value - min) / (max - min) * rangeWidth;
                 dc.DrawLine(new Pen(Brushes.White, 2), new Point(startX, 0), new Point(startX, ActualHeight));
             }
 
             if (LoopEnd.HasValue && LoopEnd >= min && LoopEnd <= max)
             {
-                double endX = track.Thumb.ActualWidth / 2 + (LoopEnd.Value - min) / (max - min) * trackWidth;
+                double endX = thumbWidth / 2 + (LoopEnd.Value - min) / (max - min) * rangeWidth;
                 dc.DrawLine(new Pen(Brushes.White, 2), new Point(endX, 0), new Point(endX, ActualHeight));
             }
         }
