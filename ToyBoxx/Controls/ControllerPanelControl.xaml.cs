@@ -1,10 +1,6 @@
-﻿using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using ToyBoxx.ViewModels;
 
@@ -74,7 +70,8 @@ namespace ToyBoxx.Controls
             _idleTimer.Start();
 
             // Clear thumbnail
-            Thumbnail.Source = null;
+            var vm = (RootViewModel)DataContext!;
+            vm.Controller.Thumbnail = null;
 
             // Move preview area to mouse point
             var posInSlider = e.GetPosition(PositionSlider);
@@ -100,41 +97,17 @@ namespace ToyBoxx.Controls
             _idleTimer.Stop();
         }
 
-        private async void IdleTimer_Tick(object? sender, EventArgs e)
+        private void IdleTimer_Tick(object? sender, EventArgs e)
         {
             _idleTimer.Stop();
 
-            var pos = Mouse.GetPosition(PositionSlider);
+            var mousePosition = Mouse.GetPosition(PositionSlider);
 
             // Position (sec) at mouse
-            var value = PositionSlider.Minimum + (pos.X / PositionSlider.ActualWidth) * (PositionSlider.Maximum - PositionSlider.Minimum);
+            var mediaPosition = PositionSlider.Minimum + (mousePosition.X / PositionSlider.ActualWidth) * (PositionSlider.Maximum - PositionSlider.Minimum);
 
-            // Capture thumbnail at mouse position
-            App.ViewModel.PreviewMediaElement.Position = TimeSpan.FromSeconds(value);
-            using var bitmap = await App.ViewModel.PreviewMediaElement.CaptureBitmapAsync();
-            if (bitmap is null)
-            {
-                return;
-            }
-
-            Thumbnail.Source = ConvertBitmapToBitmapSource(bitmap);
-        }
-
-        public static BitmapSource ConvertBitmapToBitmapSource(Bitmap bitmap)
-        {
-            using MemoryStream memory = new();
-
-            bitmap.Save(memory, ImageFormat.Png);
-            memory.Position = 0;
-
-            BitmapImage bitmapImage = new BitmapImage();
-            bitmapImage.BeginInit();
-            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-            bitmapImage.StreamSource = memory;
-            bitmapImage.EndInit();
-            bitmapImage.Freeze();
-
-            return bitmapImage;
+            var vm = (RootViewModel)DataContext!;
+            vm.Commands.CaptureThumbnail.Execute(mediaPosition);
         }
     }
 }
