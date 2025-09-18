@@ -157,15 +157,17 @@ public class AppCommands
     });
 
     private DelegateCommand? _captureThumbnail;
-    public DelegateCommand CaptureThumbnail => _captureThumbnail ??= new(async position =>
+    public DelegateCommand CaptureThumbnail => _captureThumbnail ??= new(async o =>
     {
-        if (position is not double and not int)
+        if (o is not double and not int)
         {
             return;
         }
 
-        // Capture
-        App.ViewModel.PreviewMediaElement.Position = TimeSpan.FromSeconds((double)position);
+        var position = TimeSpan.FromSeconds((double)o);
+        await App.ViewModel.PreviewMediaElement.Seek(position);
+
+        // Capture thumbnail
         var bitmap = await App.ViewModel.PreviewMediaElement.CaptureBitmapAsync();
         if (bitmap is null)
         {
