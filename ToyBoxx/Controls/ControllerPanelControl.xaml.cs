@@ -31,7 +31,7 @@ namespace ToyBoxx.Controls
 
             _idleTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromSeconds(0.5)
+                Interval = TimeSpan.FromMilliseconds(250)
             };
 
             _idleTimer.Tick += IdleTimer_Tick;
