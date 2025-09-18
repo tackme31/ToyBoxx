@@ -5,6 +5,7 @@ Limited, buggy, and uncustomizable, but perfect for me.
 
 ## Features
 
+- Seek bar thumbnail preview on hover
 - Loop playback within a specified range
 - Zoom in and out (Ctrl + Mouse Wheel)
 - Adjust playback speed
