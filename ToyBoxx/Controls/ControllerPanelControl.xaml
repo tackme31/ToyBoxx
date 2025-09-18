@@ -16,6 +16,15 @@
                 <RowDefinition Height="70"></RowDefinition>
             </Grid.RowDefinitions>
 
+            <Canvas Name="PreviewImageCanvas">
+                <Border Name="PreviewImageArea"
+                        Width="160"
+                        Height="120"
+                        Background="White"
+                        Canvas.Left="0"
+                        Canvas.Top="0" />
+            </Canvas>
+
             <controls:PositionSlider x:Name="PositionSlider"
                                      Grid.Row="0"
                                      Margin="10,0"
@@ -32,6 +41,7 @@
                                      Maximum="{Binding MediaElement.PlaybackEndTime, Converter={StaticResource TimeSpanToSecondsConverter}}" 
                                      Value="{Binding MediaElement.Position, Converter={StaticResource TimeSpanToSecondsConverter}}"
                                      MouseMove="PositionSlider_MouseMove"
+                                     MouseEnter="PositionSlider_MouseEnter"
                                      MouseLeave="PositionSlider_MouseLeave"
                                      />
 
