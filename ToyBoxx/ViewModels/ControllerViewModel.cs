@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using ToyBoxx.Foundation;
 using Unosquare.FFME.Common;
 
@@ -40,6 +41,9 @@ public partial class ControllerViewModel : AttachedViewModel
 
     [ObservableProperty]
     private bool _isSegmentLoopEnabled;
+
+    [ObservableProperty]
+    private BitmapImage? _thumbnail;
 
     public bool IsLoopingMediaEnabled
     {

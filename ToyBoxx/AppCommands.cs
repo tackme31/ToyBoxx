@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System.Drawing.Imaging;
+using System.IO;
+using System.Windows;
+using System.Windows.Media.Imaging;
 using ToyBoxx.Foundation;
 using Unosquare.FFME;
 
@@ -25,8 +28,17 @@ public class AppCommands
                 await media.Close();
             }
 
+            var previewMedia = App.ViewModel.PreviewMediaElement;
+            if (previewMedia.IsOpen)
+            {
+                await previewMedia.Close();
+            }
+
             var target = new Uri(uriString);
             await media.Open(new FileInputStream(target.LocalPath));
+
+            await previewMedia.Open(new FileInputStream(@target.LocalPath));
+            await previewMedia.Stop();
         }
         catch (Exception ex)
         {
@@ -44,6 +56,7 @@ public class AppCommands
     public DelegateCommand Close => _closeCommand ??= new(async o =>
     {
         await App.ViewModel.MediaElement.Close();
+        await App.ViewModel.PreviewMediaElement.Close();
     });
 
     private DelegateCommand? _pauseCommand;
@@ -141,5 +154,37 @@ public class AppCommands
         }
 
         App.ViewModel.MediaElement.SpeedRatio = ratio;
+    });
+
+    private DelegateCommand? _captureThumbnail;
+    public DelegateCommand CaptureThumbnail => _captureThumbnail ??= new(async position =>
+    {
+        if (position is not double and not int)
+        {
+            return;
+        }
+
+        // Capture
+        App.ViewModel.PreviewMediaElement.Position = TimeSpan.FromSeconds((double)position);
+        var bitmap = await App.ViewModel.PreviewMediaElement.CaptureBitmapAsync();
+        if (bitmap is null)
+        {
+            App.ViewModel.Controller.Thumbnail = null;
+            return;
+        }
+
+        // Convert into BitmapImage
+        using var memory = new MemoryStream();
+        bitmap.Save(memory, ImageFormat.Png);
+        memory.Position = 0;
+
+        var bitmapImage = new BitmapImage();
+        bitmapImage.BeginInit();
+        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+        bitmapImage.StreamSource = memory;
+        bitmapImage.EndInit();
+        bitmapImage.Freeze();
+
+        App.ViewModel.Controller.Thumbnail = bitmapImage;
     });
 }
