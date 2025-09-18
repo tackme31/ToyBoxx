@@ -1,6 +1,10 @@
-﻿using System.Windows.Controls;
+﻿using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using ToyBoxx.ViewModels;
 
@@ -28,11 +32,12 @@ namespace ToyBoxx.Controls
                 }),
                 handledEventsToo: true);
 
-            _idleTimer = new DispatcherTimer();
-            _idleTimer.Interval = TimeSpan.FromSeconds(1);
+            _idleTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(0.5)
+            };
+
             _idleTimer.Tick += IdleTimer_Tick;
-
-
         }
 
         private void ToggleButton_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -58,33 +63,28 @@ namespace ToyBoxx.Controls
             _idleTimer.Stop();
             _idleTimer.Start();
 
-            // スライダー内のマウス座標を取得
+            // Clear thumbnail
+            Thumbnail.Source = null;
+
+            // Move preview area to mouse point
             var posInSlider = e.GetPosition(PositionSlider);
-
-            // スライダー基準の座標をCanvas基準に変換
             var posInCanvas = PositionSlider.TranslatePoint(posInSlider, PreviewImageCanvas);
-
-            // 表示位置を設定
             Canvas.SetLeft(PreviewImageArea, posInCanvas.X - PreviewImageArea.Width / 2);
         }
 
         private void PositionSlider_MouseEnter(object sender, MouseEventArgs e)
         {
-            // スライダー内のマウス座標を取得
+            // Show preview area at enter point
             var posInSlider = e.GetPosition(PositionSlider);
-
-            // スライダー基準の座標をCanvas基準に変換
             var posInCanvas = PositionSlider.TranslatePoint(posInSlider, PreviewImageCanvas);
-
-            // 表示位置を設定
             Canvas.SetTop(PreviewImageArea, -PreviewImageArea.Height);
             Canvas.SetLeft(PreviewImageArea, posInCanvas.X - PreviewImageArea.Width / 2);
-
             PreviewImageCanvas.Visibility = System.Windows.Visibility.Visible;
         }
 
         private void PositionSlider_MouseLeave(object sender, MouseEventArgs e)
         {
+            // Hide preview area
             PreviewImageCanvas.Visibility = System.Windows.Visibility.Collapsed;
 
             _idleTimer.Stop();
@@ -96,14 +96,35 @@ namespace ToyBoxx.Controls
 
             var pos = Mouse.GetPosition(PositionSlider);
 
-
             // Position (sec) at mouse
             var value = PositionSlider.Minimum + (pos.X / PositionSlider.ActualWidth) * (PositionSlider.Maximum - PositionSlider.Minimum);
 
-            //App.ViewModel.PreviewMediaElement.Position = TimeSpan.FromSeconds(value);
-            //var bitmap = await App.ViewModel.PreviewMediaElement.CaptureBitmapAsync();
+            // Capture thumbnail at mouse position
+            App.ViewModel.PreviewMediaElement.Position = TimeSpan.FromSeconds(value);
+            using var bitmap = await App.ViewModel.PreviewMediaElement.CaptureBitmapAsync();
+            if (bitmap is null)
+            {
+                return;
+            }
 
-            Console.WriteLine($"Mouse over slider at value: {value}");
+            Thumbnail.Source = ConvertBitmapToBitmapSource(bitmap);
+        }
+
+        public static BitmapSource ConvertBitmapToBitmapSource(Bitmap bitmap)
+        {
+            using MemoryStream memory = new();
+
+            bitmap.Save(memory, ImageFormat.Png);
+            memory.Position = 0;
+
+            BitmapImage bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+            bitmapImage.StreamSource = memory;
+            bitmapImage.EndInit();
+            bitmapImage.Freeze();
+
+            return bitmapImage;
         }
     }
 }
