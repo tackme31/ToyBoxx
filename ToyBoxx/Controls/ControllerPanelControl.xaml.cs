@@ -16,6 +16,7 @@ namespace ToyBoxx.Controls
     public partial class ControllerPanelControl : UserControl
     {
         private DispatcherTimer _idleTimer;
+        private System.Windows.Point _lastMousePos;
 
         public ControllerPanelControl()
         {
@@ -60,6 +61,15 @@ namespace ToyBoxx.Controls
 
         private void PositionSlider_MouseMove(object sender, MouseEventArgs e)
         {
+            // Ignore repeated MouseMove events on the right side of the thumb during playback.
+            var pos = e.GetPosition(PositionSlider);
+            if (pos == _lastMousePos)
+            {
+                return;
+            }
+
+            _lastMousePos = pos;
+
             _idleTimer.Stop();
             _idleTimer.Start();
 
