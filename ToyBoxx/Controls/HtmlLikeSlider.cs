@@ -9,7 +9,7 @@ public class HtmlLikeSlider : Slider
     public event EventHandler? DragStarted;
     public event EventHandler? DragCompleted;
 
-    private bool _isDraggingThumb = false;
+    public bool IsDraggingThumb { get; private set; }
 
     protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
     {
@@ -22,7 +22,7 @@ public class HtmlLikeSlider : Slider
 
         Value = Minimum + (Maximum - Minimum) * relativePos;
 
-        _isDraggingThumb = true;
+        IsDraggingThumb = true;
         CaptureMouse();
         e.Handled = true;
 
@@ -33,7 +33,7 @@ public class HtmlLikeSlider : Slider
     {
         base.OnPreviewMouseMove(e);
 
-        if (_isDraggingThumb && e.LeftButton == MouseButtonState.Pressed)
+        if (IsDraggingThumb && e.LeftButton == MouseButtonState.Pressed)
         {
             var pos = e.GetPosition(this);
             double relativePos = Orientation == Orientation.Horizontal
@@ -48,9 +48,9 @@ public class HtmlLikeSlider : Slider
     {
         base.OnPreviewMouseLeftButtonUp(e);
 
-        if (_isDraggingThumb)
+        if (IsDraggingThumb)
         {
-            _isDraggingThumb = false;
+            IsDraggingThumb = false;
             ReleaseMouseCapture();
             e.Handled = true;
 
