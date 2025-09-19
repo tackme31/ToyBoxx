@@ -12,21 +12,11 @@ Limited, buggy, and uncustomizable, but perfect for me.
 - Move forward one frame
 
 ## Setup
+Run `requirements.ps1` before debugging.
 
-- Download FFmpeg library from [here](https://github.com/BtbN/FFmpeg-Builds/releases/tag/autobuild-2024-08-31-12-50).
-    - ffmpeg-n7.0.2-6-g7e69129d2f-win64-gpl-shared-7.0.zip
-- Extract the zip file.
-- Download SoundTouch from [here](https://www.surina.net/soundtouch/download.html).
-    - SoundTouch DLL library 2.1.1 for Windows
-- Copy all files in SoundTouch zip into `/bin` in extracted ffmpeg folder.
-- Delete `SoundTouch.dll` and Rename `SoundTouch.dl_x64.dll` into `SoundTouch.dll`.
-- Edit appsettings.json
-    - FFMpegRootPath: `/bin` folder in the ffmepg folder.
-    - You can also create a appsettings.user.json.
-- Now ready to debug.
+## Author
 
-SoundTouch is optional. It allows keeping the pitch constant when changing the playback speed.
+- Takumi Yamada (X: [@tackme31](https://x.com/tackme31))
 
-## Todos
-
-- [ ] Take screenshots
+## License
+This software is licensed under the MIT license. See [LICENSE](./LICENSE).
