@@ -29,7 +29,7 @@
                                    PassEventArgsToCommand="True"/>
         </i:EventTrigger>
         <i:EventTrigger EventName="MouseDoubleClick">
-            <i:InvokeCommandAction Command="{Binding Commands.ToggleFullScreen}" />
+            <i:InvokeCommandAction Command="{Binding ToggleFullScreen}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
 

@@ -3,32 +3,32 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using ToyBoxx.Foundation;
+using ToyBoxx.ViewModels;
 using Unosquare.FFME;
 
 namespace ToyBoxx;
 
-public class AppCommands
+public class AppCommands(RootViewModel viewModel)
 {
-    private readonly WindowStatus _previousWindowStatus = new();
-
     private DelegateCommand? _openCommand;
-    public DelegateCommand Open => _openCommand ??= new(async arg =>
+
+    public DelegateCommand Open => _openCommand ??= new(async param =>
     {
         try
         {
-            var uriString = arg as string;
+            var uriString = param as string;
             if (string.IsNullOrWhiteSpace(uriString))
             {
                 return;
             }
 
-            var media = App.ViewModel.MediaElement;
+            var media = viewModel.MediaElement;
             if (media.IsOpen)
             {
                 await media.Close();
             }
 
-            var previewMedia = App.ViewModel.PreviewMediaElement;
+            var previewMedia = viewModel.PreviewMediaElement;
             if (previewMedia.IsOpen)
             {
                 await previewMedia.Close();
@@ -53,69 +53,49 @@ public class AppCommands
     });
 
     private DelegateCommand? _closeCommand;
-    public DelegateCommand Close => _closeCommand ??= new(async o =>
+    public DelegateCommand Close => _closeCommand ??= new(async _ =>
     {
-        await App.ViewModel.MediaElement.Close();
-        await App.ViewModel.PreviewMediaElement.Close();
+        await viewModel.MediaElement.Close();
+        await viewModel.PreviewMediaElement.Close();
     });
 
     private DelegateCommand? _pauseCommand;
 
-    public DelegateCommand Pause => _pauseCommand ??= new(async o =>
+    public DelegateCommand Pause => _pauseCommand ??= new(async _ =>
     {
-        await App.ViewModel.MediaElement.Pause();
+        await viewModel.MediaElement.Pause();
     });
 
     private DelegateCommand? _playCommand;
 
-    public DelegateCommand Play => _playCommand ??= new(async o =>
+    public DelegateCommand Play => _playCommand ??= new(async _ =>
     {
-        if (App.ViewModel.MediaElement.HasMediaEnded)
+        if (viewModel.MediaElement.HasMediaEnded)
         {
-            await App.ViewModel.MediaElement.Seek(TimeSpan.Zero);
+            await viewModel.MediaElement.Seek(TimeSpan.Zero);
         }
 
-        await App.ViewModel.MediaElement.Play();
+        await viewModel.MediaElement.Play();
     });
 
     private DelegateCommand? _stopCommand;
-    public DelegateCommand Stop => _stopCommand ??= new(async o =>
+    public DelegateCommand Stop => _stopCommand ??= new(async _ =>
     {
-        await App.ViewModel.MediaElement.Stop();
-        await App.ViewModel.MediaElement.Seek(TimeSpan.Zero);
+        await viewModel.MediaElement.Stop();
+        await viewModel.MediaElement.Seek(TimeSpan.Zero);
     });
 
     private DelegateCommand? _stepForwardCommand;
-    public DelegateCommand StepForwardCommand => _stepForwardCommand ??= new(async o =>
+    public DelegateCommand StepForwardCommand => _stepForwardCommand ??= new(async _ =>
     {
-        await App.ViewModel.MediaElement.Pause();
-        await App.ViewModel.MediaElement.StepForward();
-    });
-
-    private DelegateCommand? _toggleFullScreenCommand;
-    public DelegateCommand ToggleFullScreen => _toggleFullScreenCommand ??= new(o =>
-    {
-        var mainWindow = Application.Current.MainWindow;
-        if (mainWindow.WindowState == WindowState.Maximized)
-        {
-            _previousWindowStatus.ApplyState(mainWindow);
-            WindowStatus.EnableDisplayTimeout();
-        }
-        else
-        {
-            _previousWindowStatus.CaptureState(mainWindow);
-            mainWindow.WindowStyle = WindowStyle.None;
-            mainWindow.ResizeMode = ResizeMode.NoResize;
-            mainWindow.WindowState = WindowState.Maximized;
-
-            WindowStatus.DisableDisplayTimeout();
-        }
+        await viewModel.MediaElement.Pause();
+        await viewModel.MediaElement.StepForward();
     });
 
     private DelegateCommand? _setSegmentLoop;
-    public DelegateCommand SetSegmentLoop => _setSegmentLoop ??= new(o =>
+    public DelegateCommand SetSegmentLoop => _setSegmentLoop ??= new(_ =>
     {
-        var controller = App.ViewModel.Controller;
+        var controller = viewModel.Controller;
 
         if (controller.IsSegmentLoopEnabled &&
             controller.SegmentLoopFrom is not null &&
@@ -127,7 +107,7 @@ public class AppCommands
             return;
         }
 
-        var currentPosition = App.ViewModel.MediaElement.Position;
+        var currentPosition = viewModel.MediaElement.Position;
         if (controller.SegmentLoopFrom is null)
         {
             controller.IsSegmentLoopEnabled = false;
@@ -146,32 +126,32 @@ public class AppCommands
     });
 
     private DelegateCommand? _changeSpeedRatioComand;
-    public DelegateCommand ChangeSpeedRatio => _changeSpeedRatioComand ??= new(o =>
+    public DelegateCommand ChangeSpeedRatio => _changeSpeedRatioComand ??= new(param =>
     {
-        if (double.TryParse(o?.ToString(), out var ratio) && ratio <= 0)
+        if (double.TryParse(param?.ToString(), out var ratio) && ratio <= 0)
         {
             return;
         }
 
-        App.ViewModel.MediaElement.SpeedRatio = ratio;
+        viewModel.MediaElement.SpeedRatio = ratio;
     });
 
     private DelegateCommand? _captureThumbnail;
-    public DelegateCommand CaptureThumbnail => _captureThumbnail ??= new(async o =>
+    public DelegateCommand CaptureThumbnail => _captureThumbnail ??= new(async param =>
     {
-        if (o is not double and not int)
+        if (param is not double and not int)
         {
             return;
         }
 
-        var position = TimeSpan.FromSeconds((double)o);
-        await App.ViewModel.PreviewMediaElement.Seek(position);
+        var position = TimeSpan.FromSeconds((double)param);
+        await viewModel.PreviewMediaElement.Seek(position);
 
         // Capture thumbnail
-        var bitmap = await App.ViewModel.PreviewMediaElement.CaptureBitmapAsync();
+        var bitmap = await viewModel.PreviewMediaElement.CaptureBitmapAsync();
         if (bitmap is null)
         {
-            App.ViewModel.Controller.Thumbnail = null;
+            viewModel.Controller.Thumbnail = null;
             return;
         }
 
@@ -187,6 +167,6 @@ public class AppCommands
         bitmapImage.EndInit();
         bitmapImage.Freeze();
 
-        App.ViewModel.Controller.Thumbnail = bitmapImage;
+        viewModel.Controller.Thumbnail = bitmapImage;
     });
 }

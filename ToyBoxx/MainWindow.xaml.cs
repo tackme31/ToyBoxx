@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using ToyBoxx.Foundation;
 using ToyBoxx.ViewModels;
 using Unosquare.FFME.Common;
 
@@ -23,10 +24,13 @@ public partial class MainWindow
     private bool _isDragging = false;
     private Point _lastMousePos;
     private DateTime _lastControllerClick = DateTime.MinValue;
+    private readonly WindowStatus _previousWindowStatus = new();
 
     public MainWindow()
     {
         ViewModel = App.ViewModel;
+        ViewModel.RequestToggleFullScreen += ToggleFullScreen;
+
         InitializeComponent();
         InitializeMainWindow();
         InitializeMediaEvents();
@@ -149,10 +153,10 @@ public partial class MainWindow
         switch (e.Key)
         {
             case Key.Space when Media.IsPlaying:
-                App.ViewModel.Commands.Pause.Execute(null);
+                ViewModel.Commands.Pause.Execute(null);
                 break;
             case Key.Space when !Media.IsPlaying:
-                App.ViewModel.Commands.Play.Execute(null);
+                ViewModel.Commands.Play.Execute(null);
                 break;
         }
     }
@@ -251,5 +255,24 @@ public partial class MainWindow
             e.Handled = true; // 親に伝搬しない
         }
         _lastControllerClick = now;
+    }
+
+    private void ToggleFullScreen()
+    {
+        if (WindowState == WindowState.Maximized)
+        {
+            _previousWindowStatus.ApplyState(this);
+
+            WindowStatus.EnableDisplayTimeout();
+        }
+        else
+        {
+            _previousWindowStatus.CaptureState(this);
+            WindowStyle = WindowStyle.None;
+            ResizeMode = ResizeMode.NoResize;
+            WindowState = WindowState.Maximized;
+
+            WindowStatus.DisableDisplayTimeout();
+        }
     }
 }

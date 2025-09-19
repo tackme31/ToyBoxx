@@ -187,7 +187,7 @@
                     </ToggleButton>
 
                     <ui:Button Margin="5,0"
-                               Command="{Binding Commands.ToggleFullScreen}"
+                               Command="{Binding ToggleFullScreen}"
                                ToolTip="Toggle full screen">
                         <ui:SymbolIcon Symbol="FullScreenMaximize16" Foreground="White"/>
                     </ui:Button>

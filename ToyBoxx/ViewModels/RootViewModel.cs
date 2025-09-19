@@ -12,14 +12,18 @@ public partial class RootViewModel : ObservableObject
     public RootViewModel()
     {
         Controller = new ControllerViewModel(this);
+        Commands = new AppCommands(this);
     }
 
     public ControllerViewModel Controller { get; }
 
-    public AppCommands Commands { get; } = new AppCommands();
+    public AppCommands Commands { get; }
+
+    public event Action? RequestToggleFullScreen;
 
     private MediaElement? _mediaElement;
     public MediaElement MediaElement => _mediaElement ??= (Application.Current.MainWindow as MainWindow)?.Media ?? throw new Exception("Media element not found.");
+
     private MediaElement? _previewMediaElement;
     public MediaElement PreviewMediaElement => _previewMediaElement ??= (Application.Current.MainWindow as MainWindow)?.PreviewMedia ?? throw new Exception("Media element not found.");
 
@@ -120,4 +124,7 @@ public partial class RootViewModel : ObservableObject
             return args.Length < 2 ? null : args[1].Trim();
         }
     });
+
+    private DelegateCommand? _toggleFullScreenCommand;
+    public DelegateCommand ToggleFullScreen => _toggleFullScreenCommand ??= new(_ => RequestToggleFullScreen?.Invoke());
 }
