@@ -55,9 +55,6 @@ public partial class App : Application
                 ToyBoxx.Properties.Settings.Default.Volume = window.ViewModel.MediaElement.Volume;
                 ToyBoxx.Properties.Settings.Default.IsMuted = window.ViewModel.MediaElement.IsMuted;
                 ToyBoxx.Properties.Settings.Default.Save();
-
-                // Prevent distorted sound when DirectSound buffer is released
-                window.ViewModel.MediaElement.IsMuted = true;
             }
         };
 
