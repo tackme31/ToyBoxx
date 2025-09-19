@@ -485,3 +485,7 @@ $RECYCLE.BIN/
 
 # User setting file
 appsettings.user.json
+
+# FFMpeg library
+/ToyBoxx/ffmpeg/*
+!/ToyBoxx/ffmpeg/.keep

@@ -41,8 +41,8 @@
 	<None Update="appsettings.user.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	</None>
-	<None Update="ffme\.keep">
-	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	<None Update="ffmpeg\**\*">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	</None>
 	<None Update="Properties\Settings.settings">
 	  <Generator>SettingsSingleFileGenerator</Generator>
