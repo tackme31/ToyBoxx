@@ -109,6 +109,7 @@ public partial class MainWindow
 
     private void InitializeMediaEvents()
     {
+        Media.RendererOptions.UseLegacyAudioOut = true;
         Media.MediaOpening += (s, e) =>
         {
             // Use hardware device if needed
