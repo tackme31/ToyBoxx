@@ -1,3 +1,5 @@
+<img src="./img/icons/256x256.png" width="100" />
+
 # ToyBoxx - a tiny media player
 Limited, buggy, and uncustomizable, but perfect for me.
 
