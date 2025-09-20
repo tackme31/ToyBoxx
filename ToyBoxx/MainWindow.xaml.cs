@@ -160,6 +160,12 @@ public partial class MainWindow
             case Key.Space when !Media.IsPlaying:
                 ViewModel.Commands.Play.Execute(null);
                 break;
+            case Key.Right when !Media.IsSeeking:
+                ViewModel.Commands.ShiftPosition.Execute(TimeSpan.FromSeconds(5));
+                break;
+            case Key.Left when !Media.IsSeeking:
+                ViewModel.Commands.ShiftPosition.Execute(TimeSpan.FromSeconds(-5));
+                break;
         }
     }
 

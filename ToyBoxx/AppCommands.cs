@@ -92,6 +92,18 @@ public class AppCommands(RootViewModel viewModel)
         await viewModel.MediaElement.StepForward();
     });
 
+    private DelegateCommand? _shiftPositionCommand;
+    public DelegateCommand ShiftPosition => _shiftPositionCommand ??= new(async param =>
+    {
+        if (param is not TimeSpan diff)
+        {
+            return;
+        }
+
+        var position = viewModel.MediaElement.Position + diff;
+        await viewModel.MediaElement.Seek(position);
+    });
+
     private DelegateCommand? _setSegmentLoop;
     public DelegateCommand SetSegmentLoop => _setSegmentLoop ??= new(_ =>
     {
