@@ -113,6 +113,8 @@ public partial class MainWindow
 
     private void InitializeMediaEvents()
     {
+        PreviewMedia.RendererOptions.VideoImageType = VideoRendererImageType.InteropBitmap;
+
         Media.RendererOptions.UseLegacyAudioOut = true;
         Media.MediaOpening += (s, e) =>
         {
