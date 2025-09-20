@@ -56,13 +56,13 @@
                                         ScaleY="{Binding ScaleY}"
                                         CenterX="{Binding ScaleCenterX}"
                                         CenterY="{Binding ScaleCenterY}"/>
-                        <TranslateTransform x:Name="translateTransform"
-                                            X="{Binding TransformX}"
-                                            Y="{Binding TransformY}" />
                         <RotateTransform x:Name="rotateTransform"
                                          Angle="{Binding Angle}"
                                          CenterX="{Binding ScaleCenterX}"
                                          CenterY="{Binding ScaleCenterY}"/>
+                        <TranslateTransform x:Name="translateTransform"
+                                            X="{Binding TransformX}"
+                                            Y="{Binding TransformY}" />
                     </TransformGroup>
                 </ffme:MediaElement.RenderTransform>
             </ffme:MediaElement>
