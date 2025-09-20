@@ -1,4 +1,5 @@
 ﻿using FFmpeg.AutoGen;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
@@ -166,6 +167,19 @@ public partial class MainWindow
             case Key.Left when !Media.IsSeeking:
                 await ViewModel.Commands.ShiftPosition.ExecuteAsync(TimeSpan.FromSeconds(-5));
                 break;
+            case Key.S:
+                var savePath = GetCaptureSavePath();
+                await ViewModel.Commands.SaveCapture.ExecuteAsync(savePath);
+                break;
+        }
+
+        string GetCaptureSavePath()
+        {
+            var picturePath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            var uri = new Uri(Media.MediaInfo.MediaSource);
+            var title = Path.GetFileNameWithoutExtension(uri.LocalPath);
+            var fileName = $"{title}_{DateTime.Now:yyyyMMddhhmmssfff}.png";
+            return Path.Combine(picturePath, fileName);
         }
     }
 

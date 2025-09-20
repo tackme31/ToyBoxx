@@ -183,4 +183,21 @@ public class AppCommands(RootViewModel viewModel)
 
         viewModel.Controller.Thumbnail = bitmapImage;
     });
+
+    private DelegateCommand? _saveCaptureCommand;
+    public DelegateCommand SaveCapture => _saveCaptureCommand ??= new(async param =>
+    {
+        if (param is not string path)
+        {
+            return;
+        }
+
+        var bitmap = await viewModel.PreviewMediaElement.CaptureBitmapAsync();
+        if (bitmap is null)
+        {
+            return;
+        }
+
+        bitmap.Save(path, ImageFormat.Png);
+    });
 }
