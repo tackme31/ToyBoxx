@@ -52,8 +52,8 @@
                 <ffme:MediaElement.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform x:Name="scaleTransform"
-                                        ScaleX="{Binding ScaleX}"
-                                        ScaleY="{Binding ScaleY}"
+                                        ScaleX="{Binding Scale}"
+                                        ScaleY="{Binding Scale}"
                                         CenterX="{Binding ScaleCenterX}"
                                         CenterY="{Binding ScaleCenterY}"/>
                         <RotateTransform x:Name="rotateTransform"

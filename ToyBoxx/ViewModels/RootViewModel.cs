@@ -34,10 +34,7 @@ public partial class RootViewModel : ObservableObject
     private string? _windowTitle;
 
     [ObservableProperty]
-    private double _scaleX = 1.0;
-
-    [ObservableProperty]
-    private double _scaleY = 1.0;
+    private double _scale = 1.0;
 
     [ObservableProperty]
     private double _scaleCenterX;

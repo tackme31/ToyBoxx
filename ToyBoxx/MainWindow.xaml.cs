@@ -21,7 +21,6 @@ public partial class MainWindow
     private DateTime _lastMouseMoveTime;
     private Point _lastMousePosition;
     private bool _isControllerHideCompleted;
-    private double _currentScale = 1.0;
     private bool _isDragging = false;
     private Point _lastMousePos;
     private DateTime _lastControllerClick = DateTime.MinValue;
@@ -189,7 +188,7 @@ public partial class MainWindow
 
     private void FluentWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        if (_currentScale > 1.0)
+        if (ViewModel.Scale > 1.0)
         {
             _isDragging = true;
             _lastMousePos = e.GetPosition(this);
@@ -208,7 +207,7 @@ public partial class MainWindow
 
     private void FluentWindow_MouseMove(object sender, MouseEventArgs e)
     {
-        if (_isDragging && _currentScale > 1.0)
+        if (_isDragging && ViewModel.Scale > 1.0)
         {
             var pos = e.GetPosition(this);
             var delta = pos - _lastMousePos;
@@ -225,28 +224,28 @@ public partial class MainWindow
         // Zoom when Ctrl+Wheel
         if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
         {
+            var scale = ViewModel.Scale;
             // calculate next scale
             if (e.Delta > 0)
             {
-                _currentScale += ZoomStep;
+                scale += ZoomStep;
             }
             else
             {
-                _currentScale = Math.Max(ZoomStep, _currentScale - ZoomStep);
+                scale = Math.Max(ZoomStep, scale - ZoomStep);
             }
 
             ViewModel.ScaleCenterX = ViewModel.MediaElement.ActualWidth / 2;
             ViewModel.ScaleCenterY = ViewModel.MediaElement.ActualHeight / 2;
 
-            if (_currentScale < 1.0)
+            if (scale < 1.0)
             {
                 // Fix to center
                 ViewModel.TransformX = 0;
                 ViewModel.TransformY = 0;
             }
 
-            ViewModel.ScaleX = _currentScale;
-            ViewModel.ScaleY = _currentScale;
+            ViewModel.Scale = scale;
 
             e.Handled = true;
         }
@@ -294,13 +293,11 @@ public partial class MainWindow
 
     private void ResetTransform()
     {
-        ViewModel.ScaleX = 1.0;
-        ViewModel.ScaleY = 1.0;
+        ViewModel.Scale = 1.0;
         ViewModel.ScaleCenterX = ViewModel.MediaElement.ActualWidth / 2;
         ViewModel.ScaleCenterY = ViewModel.MediaElement.ActualHeight / 2;
         ViewModel.TransformX = 0;
         ViewModel.TransformY = 0;
         ViewModel.Angle = 0;
-        _currentScale = 1.0;
     }
 }
