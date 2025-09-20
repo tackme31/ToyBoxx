@@ -174,6 +174,12 @@ public partial class MainWindow
             case Key.R when Media.IsOpen:
                 ViewModel.Angle += 90;
                 break;
+            case Key.F when Media.IsOpen && Media.HasVideo:
+                var scale = CalculateOriginalScale();
+                ViewModel.Scale = scale;
+                ViewModel.ScaleCenterX = Media.ActualWidth / 2;
+                ViewModel.ScaleCenterY = Media.ActualHeight / 2;
+                break;
         }
 
         string GetCaptureSavePath()
@@ -183,6 +189,17 @@ public partial class MainWindow
             var title = Path.GetFileNameWithoutExtension(uri.LocalPath);
             var fileName = $"{title}_{DateTime.Now:yyyyMMddhhmmssfff}.png";
             return Path.Combine(picturePath, fileName);
+        }
+
+        double CalculateOriginalScale()
+        {
+            double videoWidth = Media.MediaInfo.Streams[Media.VideoStreamIndex].PixelWidth;
+            double videoHeight = Media.MediaInfo.Streams[Media.VideoStreamIndex].PixelHeight;
+
+            double scaleX = Media.ActualWidth / videoWidth;
+            double scaleY = Media.ActualHeight / videoHeight;
+
+            return 1 / Math.Min(scaleX, scaleY);
         }
     }
 

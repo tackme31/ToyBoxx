@@ -12,6 +12,7 @@ Limited, buggy, and uncustomizable, but perfect for me.
 - Transform media
   - Zoom in and out (`Ctrl` + Mouse Wheel)
   - Rotate the media 90° clockwise (`R`)
+  - Display media at original size (`F`)
   - Reset view to default (`Middle click`)
 - Adjust playback speed
 - Step forward one frame
