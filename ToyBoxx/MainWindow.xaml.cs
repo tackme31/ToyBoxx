@@ -155,19 +155,19 @@ public partial class MainWindow
 
         switch (e.Key)
         {
-            case Key.Space when Media.IsPlaying:
+            case Key.Space when Media.IsOpen && Media.IsPlaying:
                 await ViewModel.Commands.Pause.ExecuteAsync(null);
                 break;
-            case Key.Space when !Media.IsPlaying:
+            case Key.Space when Media.IsOpen && !Media.IsPlaying:
                 await ViewModel.Commands.Play.ExecuteAsync(null);
                 break;
-            case Key.Right when !Media.IsSeeking:
+            case Key.Right when Media.IsOpen && !Media.IsSeeking:
                 await ViewModel.Commands.ShiftPosition.ExecuteAsync(TimeSpan.FromSeconds(5));
                 break;
-            case Key.Left when !Media.IsSeeking:
+            case Key.Left when Media.IsOpen && !Media.IsSeeking:
                 await ViewModel.Commands.ShiftPosition.ExecuteAsync(TimeSpan.FromSeconds(-5));
                 break;
-            case Key.S:
+            case Key.S when Media.IsOpen:
                 var savePath = GetCaptureSavePath();
                 await ViewModel.Commands.SaveCapture.ExecuteAsync(savePath);
                 break;
