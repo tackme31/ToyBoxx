@@ -259,10 +259,6 @@ public partial class MainWindow
         {
             ResetTransform();
 
-            // Force reset panning
-            translateTransform.X = 0;
-            translateTransform.Y = 0;
-
             e.Handled = true;
         }
     }
