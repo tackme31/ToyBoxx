@@ -7,9 +7,11 @@ Limited, buggy, and uncustomizable, but perfect for me.
 
 - Seek bar thumbnail preview on hover
 - Loop playback within a specified range
-- Zoom in and out (Ctrl + Mouse Wheel)
-- Adjust playback speed
+- Zoom in and out (`Ctrl` + Mouse Wheel)
+- Change playback speed
 - Move forward one frame
+- Capture current frame (`S`)
+- Shift -5s/+5s (`Left` or `Right`)
 
 ## Setup
 Run `requirements.ps1` before debugging.
