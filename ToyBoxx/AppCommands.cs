@@ -12,6 +12,15 @@ public class AppCommands(RootViewModel viewModel)
 {
     private DelegateCommand? _openCommand;
 
+    private readonly object _captureSyncLock = new();
+    private bool _isCaptureInProgress;
+    private bool IsCaptureInProgress
+    {
+        get { lock (_captureSyncLock) return _isCaptureInProgress; }
+        set { lock (_captureSyncLock) _isCaptureInProgress = value; }
+    }
+
+
     public DelegateCommand Open => _openCommand ??= new(async param =>
     {
         try
@@ -185,19 +194,38 @@ public class AppCommands(RootViewModel viewModel)
     });
 
     private DelegateCommand? _saveCaptureCommand;
-    public DelegateCommand SaveCapture => _saveCaptureCommand ??= new(async param =>
+    public DelegateCommand SaveCapture => _saveCaptureCommand ??= new(param =>
     {
         if (param is not string path)
         {
-            return;
+            return Task.CompletedTask;
         }
 
-        var bitmap = await viewModel.PreviewMediaElement.CaptureBitmapAsync();
-        if (bitmap is null)
+        if (IsCaptureInProgress)
         {
-            return;
+            return Task.CompletedTask;
         }
 
-        bitmap.Save(path, ImageFormat.Png);
+        IsCaptureInProgress = true;
+
+        _ = Task.Run(() =>
+        {
+            try
+            {
+                var bitmap = viewModel.MediaElement.CaptureBitmapAsync().GetAwaiter().GetResult();
+                if (bitmap is null)
+                {
+                    return;
+                }
+
+                bitmap.Save(path, ImageFormat.Png);
+            }
+            finally
+            {
+                IsCaptureInProgress = false;
+            }
+        });
+
+        return Task.CompletedTask;
     });
 }
