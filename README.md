@@ -7,14 +7,16 @@ Limited, buggy, and uncustomizable, but perfect for me.
 
 ## Features
 
-- Seek bar thumbnail preview on hover
-- Loop playback within a specified range
-- Zoom in and out (`Ctrl` + Mouse Wheel)
-- Change playback speed
-- Move forward one frame
-- Capture current frame (`S`)
-- Shift -5s/+5s (`Left` or `Right`)
-- Rotate media (`R`)
+- Preview thumbnails when hovering over the seek bar
+- Loop playback within a selected range
+- Transform media
+  - Zoom in and out (`Ctrl` + Mouse Wheel)
+  - Rotate the media 90° clockwise (`R`)
+  - Reset view to default (`Middle click`)
+- Adjust playback speed
+- Step forward one frame
+- Capture the current frame (`S`)
+- Jump backward or forward 5 seconds (`Left` / `Right`)
 
 ## Setup
 Run `requirements.ps1` before debugging.
