@@ -51,6 +51,9 @@ public partial class RootViewModel : ObservableObject
     [ObservableProperty]
     private double _transformY = 0.0;
 
+    [ObservableProperty]
+    private double _angle = 0.0;
+
     internal void OnApplicationLoaded()
     {
         if (IsApplicationLoaded)

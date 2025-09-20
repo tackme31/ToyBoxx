@@ -117,6 +117,7 @@ public partial class MainWindow
         PreviewMedia.RendererOptions.VideoImageType = VideoRendererImageType.InteropBitmap;
 
         Media.RendererOptions.UseLegacyAudioOut = true;
+        Media.Loaded += (s, e) => ResetTransform();
         Media.MediaOpening += (s, e) =>
         {
             // Use hardware device if needed
@@ -171,6 +172,9 @@ public partial class MainWindow
                 var savePath = GetCaptureSavePath();
                 await ViewModel.Commands.SaveCapture.ExecuteAsync(savePath);
                 break;
+            case Key.R when Media.IsOpen:
+                ViewModel.Angle += 90;
+                break;
         }
 
         string GetCaptureSavePath()
@@ -209,8 +213,8 @@ public partial class MainWindow
             var pos = e.GetPosition(this);
             var delta = pos - _lastMousePos;
 
-            translateTransform.X += delta.X;
-            translateTransform.Y += delta.Y;
+            ViewModel.TransformX += delta.X;
+            ViewModel.TransformY += delta.Y;
 
             _lastMousePos = pos;
         }
@@ -253,12 +257,7 @@ public partial class MainWindow
         // Reset zoom&pan
         if (e.ChangedButton == MouseButton.Middle)
         {
-            ViewModel.ScaleX = 1.0;
-            ViewModel.ScaleY = 1.0;
-            ViewModel.ScaleCenterX = ViewModel.MediaElement.ActualWidth / 2;
-            ViewModel.ScaleCenterY = ViewModel.MediaElement.ActualHeight / 2;
-            ViewModel.TransformX = 0;
-            ViewModel.TransformY = 0;
+            ResetTransform();
 
             // Force reset panning
             translateTransform.X = 0;
@@ -273,8 +272,7 @@ public partial class MainWindow
         var now = DateTime.Now;
         if ((now - _lastControllerClick).TotalMilliseconds <= System.Windows.Forms.SystemInformation.DoubleClickTime)
         {
-            // ダブルクリックと判定
-            e.Handled = true; // 親に伝搬しない
+            e.Handled = true;
         }
         _lastControllerClick = now;
     }
@@ -296,5 +294,17 @@ public partial class MainWindow
 
             WindowStatus.DisableDisplayTimeout();
         }
+    }
+
+    private void ResetTransform()
+    {
+        ViewModel.ScaleX = 1.0;
+        ViewModel.ScaleY = 1.0;
+        ViewModel.ScaleCenterX = ViewModel.MediaElement.ActualWidth / 2;
+        ViewModel.ScaleCenterY = ViewModel.MediaElement.ActualHeight / 2;
+        ViewModel.TransformX = 0;
+        ViewModel.TransformY = 0;
+        ViewModel.Angle = 0;
+        _currentScale = 1.0;
     }
 }

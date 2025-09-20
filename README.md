@@ -12,6 +12,7 @@ Limited, buggy, and uncustomizable, but perfect for me.
 - Move forward one frame
 - Capture current frame (`S`)
 - Shift -5s/+5s (`Left` or `Right`)
+- Rotate media (`R`)
 
 ## Setup
 Run `requirements.ps1` before debugging.
