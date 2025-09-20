@@ -47,10 +47,10 @@ public partial class App : Application
             var window = sender as MainWindow;
             if (window is not null)
             {
-                ToyBoxx.Properties.Settings.Default.WindowTop = window.Top;
-                ToyBoxx.Properties.Settings.Default.WindowLeft = window.Left;
-                ToyBoxx.Properties.Settings.Default.WindowWidth = window.Width;
-                ToyBoxx.Properties.Settings.Default.WindowHeight = window.Height;
+                ToyBoxx.Properties.Settings.Default.WindowTop = window.RestoreBounds.Top;
+                ToyBoxx.Properties.Settings.Default.WindowLeft = window.RestoreBounds.Left;
+                ToyBoxx.Properties.Settings.Default.WindowWidth = window.RestoreBounds.Width;
+                ToyBoxx.Properties.Settings.Default.WindowHeight = window.RestoreBounds.Height;
                 ToyBoxx.Properties.Settings.Default.LoopingBehavior = (int)window.ViewModel.MediaElement.LoopingBehavior;
                 ToyBoxx.Properties.Settings.Default.Volume = window.ViewModel.MediaElement.Volume;
                 ToyBoxx.Properties.Settings.Default.IsMuted = window.ViewModel.MediaElement.IsMuted;
