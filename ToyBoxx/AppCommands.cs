@@ -35,9 +35,8 @@ public class AppCommands(RootViewModel viewModel)
             }
 
             var target = new Uri(uriString);
-            await media.Open(new FileInputStream(target.LocalPath));
-
-            await previewMedia.Open(new FileInputStream(@target.LocalPath));
+            await media.Open(target);
+            await previewMedia.Open(target);
             await previewMedia.Stop();
         }
         catch (Exception ex)
