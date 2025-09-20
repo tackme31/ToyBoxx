@@ -116,7 +116,7 @@ public class AppCommands(RootViewModel viewModel)
             controller.IsSegmentLoopEnabled = false;
             controller.SegmentLoopFrom = null;
             controller.SegmentLoopTo = null;
-            return;
+            return Task.CompletedTask;
         }
 
         var currentPosition = viewModel.MediaElement.Position;
@@ -125,16 +125,17 @@ public class AppCommands(RootViewModel viewModel)
             controller.IsSegmentLoopEnabled = false;
             controller.SegmentLoopFrom = currentPosition;
             controller.SegmentLoopTo = null;
-            return;
+            return Task.CompletedTask;
         }
 
         if (controller.SegmentLoopFrom >= currentPosition)
         {
-            return;
+            return Task.CompletedTask;
         }
 
         controller.SegmentLoopTo = currentPosition;
         controller.IsSegmentLoopEnabled = true;
+        return Task.CompletedTask;
     });
 
     private DelegateCommand? _changeSpeedRatioComand;
@@ -142,10 +143,12 @@ public class AppCommands(RootViewModel viewModel)
     {
         if (double.TryParse(param?.ToString(), out var ratio) && ratio <= 0)
         {
-            return;
+            return Task.CompletedTask;
         }
 
         viewModel.MediaElement.SpeedRatio = ratio;
+
+        return Task.CompletedTask;
     });
 
     private DelegateCommand? _captureThumbnail;

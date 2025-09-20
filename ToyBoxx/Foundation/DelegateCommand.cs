@@ -4,12 +4,12 @@ namespace ToyBoxx.Foundation;
 
 public class DelegateCommand : ICommand
 {
-    private readonly Action<object?> _execute;
+    private readonly Func<object?, Task> _execute;
     private readonly Func<object?, bool>? _canExecute;
     private bool _isExecuting;
     private readonly object _syncLock = new();
 
-    public DelegateCommand(Action<object?> execute, Func<object?, bool>? canExecute = null)
+    public DelegateCommand(Func<object?, Task> execute, Func<object?, bool>? canExecute = null)
     {
         _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         _canExecute = canExecute;
@@ -26,7 +26,15 @@ public class DelegateCommand : ICommand
 
     public void Execute(object? parameter)
     {
-        _execute(parameter);
+        _ = _execute(parameter);
+    }
+
+    public async Task ExecuteAsync(object? parameter)
+    {
+        if (_execute is not null)
+        {
+            await _execute.Invoke(parameter);
+        }
     }
 
     public void RaiseCanExecuteChanged()

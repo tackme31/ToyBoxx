@@ -93,7 +93,7 @@ public partial class RootViewModel : ObservableObject
     }
 
     private DelegateCommand? _openFromDropCommand;
-    public DelegateCommand OpenFileCommand => _openFromDropCommand ??= new (param =>
+    public DelegateCommand OpenFileCommand => _openFromDropCommand ??= new (async param =>
     {
         var filePath = param switch
         {
@@ -104,7 +104,7 @@ public partial class RootViewModel : ObservableObject
 
         if (filePath is not null && File.Exists(filePath))
         {
-            App.ViewModel.Commands.Open.Execute(filePath);
+            await App.ViewModel.Commands.Open.ExecuteAsync(filePath);
         }
 
         string? GetDragEventFile(DragEventArgs args)
@@ -126,5 +126,9 @@ public partial class RootViewModel : ObservableObject
     });
 
     private DelegateCommand? _toggleFullScreenCommand;
-    public DelegateCommand ToggleFullScreen => _toggleFullScreenCommand ??= new(_ => RequestToggleFullScreen?.Invoke());
+    public DelegateCommand ToggleFullScreen => _toggleFullScreenCommand ??= new(_ =>
+    {
+        RequestToggleFullScreen?.Invoke();
+        return Task.CompletedTask;
+    });
 }

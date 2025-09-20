@@ -146,7 +146,7 @@ public partial class MainWindow
         };
     }
 
-    private void OnWindowKeyDown(object? sender, KeyEventArgs e)
+    private async void OnWindowKeyDown(object? sender, KeyEventArgs e)
     {
         // Keep the key focus on the main window
         FocusManager.SetIsFocusScope(this, true);
@@ -155,16 +155,16 @@ public partial class MainWindow
         switch (e.Key)
         {
             case Key.Space when Media.IsPlaying:
-                ViewModel.Commands.Pause.Execute(null);
+                await ViewModel.Commands.Pause.ExecuteAsync(null);
                 break;
             case Key.Space when !Media.IsPlaying:
-                ViewModel.Commands.Play.Execute(null);
+                await ViewModel.Commands.Play.ExecuteAsync(null);
                 break;
             case Key.Right when !Media.IsSeeking:
-                ViewModel.Commands.ShiftPosition.Execute(TimeSpan.FromSeconds(5));
+                await ViewModel.Commands.ShiftPosition.ExecuteAsync(TimeSpan.FromSeconds(5));
                 break;
             case Key.Left when !Media.IsSeeking:
-                ViewModel.Commands.ShiftPosition.Execute(TimeSpan.FromSeconds(-5));
+                await ViewModel.Commands.ShiftPosition.ExecuteAsync(TimeSpan.FromSeconds(-5));
                 break;
         }
     }

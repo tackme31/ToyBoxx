@@ -22,10 +22,10 @@ namespace ToyBoxx.Controls
             // (Click event would otherwise suppress fast consecutive presses)
             StepForwardButton.AddHandler(
                 MouseLeftButtonDownEvent,
-                new MouseButtonEventHandler((s, e) =>
+                new MouseButtonEventHandler(async (s, e) =>
                 {
                     var vm = (RootViewModel)DataContext!;
-                    vm.Commands.StepForwardCommand.Execute(null);
+                    await vm.Commands.StepForwardCommand.ExecuteAsync(null);
                 }),
                 handledEventsToo: true);
 
@@ -37,7 +37,7 @@ namespace ToyBoxx.Controls
             _idleTimer.Tick += IdleTimer_Tick;
         }
 
-        private void ToggleButton_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private async void ToggleButton_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
 
@@ -45,7 +45,9 @@ namespace ToyBoxx.Controls
             if (toggle.DataContext is RootViewModel vm)
             {
                 if (vm.Commands.SetSegmentLoop.CanExecute(null))
-                    vm.Commands.SetSegmentLoop.Execute(null);
+                {
+                    await vm.Commands.SetSegmentLoop.ExecuteAsync(null);
+                }
             }
         }
 
@@ -97,7 +99,7 @@ namespace ToyBoxx.Controls
             _idleTimer.Stop();
         }
 
-        private void IdleTimer_Tick(object? sender, EventArgs e)
+        private async void IdleTimer_Tick(object? sender, EventArgs e)
         {
             _idleTimer.Stop();
 
@@ -107,7 +109,7 @@ namespace ToyBoxx.Controls
             var mediaPosition = PositionSlider.Minimum + (mousePosition.X / PositionSlider.ActualWidth) * (PositionSlider.Maximum - PositionSlider.Minimum);
 
             var vm = (RootViewModel)DataContext!;
-            vm.Commands.CaptureThumbnail.Execute(mediaPosition);
+            await vm.Commands.CaptureThumbnail.ExecuteAsync(mediaPosition);
         }
     }
 }
