@@ -156,12 +156,11 @@ public class AppCommands(RootViewModel viewModel)
     private DelegateCommand? _captureThumbnail;
     public DelegateCommand CaptureThumbnail => _captureThumbnail ??= new(async param =>
     {
-        if (param is not double and not int)
+        if (param is not TimeSpan position)
         {
             return;
         }
 
-        var position = TimeSpan.FromSeconds((double)param);
         await viewModel.PreviewMediaElement.Seek(position);
 
         // Capture thumbnail

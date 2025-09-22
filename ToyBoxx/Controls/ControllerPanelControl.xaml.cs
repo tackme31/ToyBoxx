@@ -17,12 +17,13 @@ namespace ToyBoxx.Controls
         /// <summary>
         /// Position (sec) at mouse
         /// </summary>
-        private double MousePointPosition
+        private TimeSpan MousePointPosition
         {
             get
             {
-                var mousePosition = Mouse.GetPosition(PositionSlider);
-                return PositionSlider.Minimum + (mousePosition.X / PositionSlider.ActualWidth) * (PositionSlider.Maximum - PositionSlider.Minimum);
+                var mousePoint = Mouse.GetPosition(PositionSlider);
+                var position = PositionSlider.Minimum + (mousePoint.X / PositionSlider.ActualWidth) * (PositionSlider.Maximum - PositionSlider.Minimum);
+                return TimeSpan.FromSeconds(position);
             }
         }
 
@@ -87,7 +88,7 @@ namespace ToyBoxx.Controls
             // Clear thumbnail
             _viewModel.Controller.Thumbnail = null;
 
-            HoverPosition.Text = TimeSpan.FromSeconds(MousePointPosition).ToString(@"hh\:mm\:ss");
+            HoverPosition.Text = MousePointPosition.ToString(@"hh\:mm\:ss");
 
             // Move preview area to mouse point
             var posInSlider = e.GetPosition(PositionSlider);
@@ -98,7 +99,7 @@ namespace ToyBoxx.Controls
         private void PositionSlider_MouseEnter(object sender, MouseEventArgs e)
         {
             // Show preview area at enter point
-            HoverPosition.Text = TimeSpan.FromSeconds(MousePointPosition).ToString(@"hh\:mm\:ss");
+            HoverPosition.Text = MousePointPosition.ToString(@"hh\:mm\:ss");
             var posInSlider = e.GetPosition(PositionSlider);
             var posInCanvas = PositionSlider.TranslatePoint(posInSlider, PreviewImageCanvas);
             Canvas.SetTop(PreviewImageArea, -PreviewImageArea.Height);
