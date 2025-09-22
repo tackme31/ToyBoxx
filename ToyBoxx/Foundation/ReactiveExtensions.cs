@@ -9,7 +9,7 @@ internal static class ReactiveExtensions
     private static readonly Dictionary<INotifyPropertyChanged, SubscriptionSet> Subscriptions
         = new Dictionary<INotifyPropertyChanged, SubscriptionSet>();
 
-    private static readonly object SyncLock = new object();
+    private static readonly Lock SyncLock = new ();
 
     /// <summary>
     /// Specifies a callback when properties change.

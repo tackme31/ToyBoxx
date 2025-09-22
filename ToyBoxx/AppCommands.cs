@@ -12,14 +12,8 @@ public class AppCommands(RootViewModel viewModel)
 {
     private DelegateCommand? _openCommand;
 
-    private readonly object _captureSyncLock = new();
+    private readonly Lock _captureSyncLock = new();
     private bool _isCaptureInProgress;
-    private bool IsCaptureInProgress
-    {
-        get { lock (_captureSyncLock) return _isCaptureInProgress; }
-        set { lock (_captureSyncLock) _isCaptureInProgress = value; }
-    }
-
 
     public DelegateCommand Open => _openCommand ??= new(async param =>
     {
@@ -201,12 +195,15 @@ public class AppCommands(RootViewModel viewModel)
             return Task.CompletedTask;
         }
 
-        if (IsCaptureInProgress)
+        lock (_captureSyncLock)
         {
-            return Task.CompletedTask;
-        }
+            if (_isCaptureInProgress)
+            {
+                return Task.CompletedTask;
+            }
 
-        IsCaptureInProgress = true;
+            _isCaptureInProgress = true;
+        }
 
         _ = Task.Run(() =>
         {
@@ -222,7 +219,10 @@ public class AppCommands(RootViewModel viewModel)
             }
             finally
             {
-                IsCaptureInProgress = false;
+                lock (_captureSyncLock)
+                {
+                    _isCaptureInProgress = false;
+                }
             }
         });
 

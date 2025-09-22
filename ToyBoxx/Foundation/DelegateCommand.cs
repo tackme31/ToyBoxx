@@ -7,7 +7,7 @@ public class DelegateCommand : ICommand
     private readonly Func<object?, Task> _execute;
     private readonly Func<object?, bool>? _canExecute;
     private bool _isExecuting;
-    private readonly object _syncLock = new();
+    private readonly Lock _syncLock = new();
 
     public DelegateCommand(Func<object?, Task> execute, Func<object?, bool>? canExecute = null)
     {
