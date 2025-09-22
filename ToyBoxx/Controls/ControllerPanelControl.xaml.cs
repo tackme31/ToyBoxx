@@ -26,8 +26,7 @@ namespace ToyBoxx.Controls
                 MouseLeftButtonDownEvent,
                 new MouseButtonEventHandler(async (s, e) =>
                 {
-                    var vm = (RootViewModel)DataContext!;
-                    await vm.Commands.StepForwardCommand.ExecuteAsync(null);
+                    await _viewModel.Commands.StepForwardCommand.ExecuteAsync(null);
                 }),
                 handledEventsToo: true);
 
@@ -74,8 +73,7 @@ namespace ToyBoxx.Controls
             _idleTimer.Start();
 
             // Clear thumbnail
-            var vm = (RootViewModel)DataContext!;
-            vm.Controller.Thumbnail = null;
+            _viewModel.Controller.Thumbnail = null;
 
             // Move preview area to mouse point
             var posInSlider = e.GetPosition(PositionSlider);
