@@ -1,4 +1,5 @@
-﻿using System.Drawing.Imaging;
+﻿using FFmpeg.AutoGen;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -34,7 +35,10 @@ public class AppCommands(RootViewModel viewModel)
             var target = new Uri(uriString);
             await media.Open(target);
 
-            viewModel.ThumbnailProvider.Open(uriString);
+            if (media.HasVideo)
+            {
+                viewModel.ThumbnailProvider.Open(uriString);
+            }
         }
         catch (Exception ex)
         {
@@ -150,6 +154,11 @@ public class AppCommands(RootViewModel viewModel)
     public DelegateCommand CaptureThumbnail => _captureThumbnail ??= new(async param =>
     {
         if (param is not double and not int)
+        {
+            return;
+        }
+
+        if (!viewModel.MediaElement.HasVideo)
         {
             return;
         }

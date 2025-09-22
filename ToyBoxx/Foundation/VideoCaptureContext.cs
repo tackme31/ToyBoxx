@@ -9,6 +9,7 @@ namespace ToyBoxx.Foundation;
 public sealed unsafe class VideoCaptureContext : IDisposable
 {
     private AVFormatContext* _formatContext;
+    private AVPacket? _attachedPic;
     private AVCodecContext* _codecContext;
     private AVStream* _videoStream;
     private int _videoStreamIndex = -1;
@@ -101,14 +102,21 @@ public sealed unsafe class VideoCaptureContext : IDisposable
             {
                 _videoStreamIndex = i;
                 _videoStream = _formatContext->streams[i];
+            }
 
-                return;
+            var stream = _formatContext->streams[i];
+            if ((stream->disposition & ffmpeg.AV_DISPOSITION_ATTACHED_PIC) != 0)
+            {
+                if (stream->attached_pic.size > 0)
+                {
+                    _attachedPic = stream->attached_pic;
+                }
             }
         }
 
-        if (_videoStream == null)
+        if (_videoStream == null && _attachedPic == null)
         {
-            throw new InvalidOperationException("No video stream found in the file.");
+            throw new InvalidOperationException("No video stream or attached picture found in the file.");
         }
     }
 
@@ -204,6 +212,11 @@ public sealed unsafe class VideoCaptureContext : IDisposable
     {
         ThrowIfDisposed();
 
+        if (_attachedPic != null)
+        {
+            return DecodeAttachedPicture(_attachedPic.Value);
+        }
+
         if (position < TimeSpan.Zero)
         {
             throw new ArgumentOutOfRangeException(nameof(position), "Position must be non-negative.");
@@ -211,6 +224,18 @@ public sealed unsafe class VideoCaptureContext : IDisposable
 
         SeekToTime(position.TotalSeconds);
         return CaptureCurrentFrame(position.TotalSeconds);
+    }
+
+    private Bitmap DecodeAttachedPicture(AVPacket packet)
+    {
+        byte[] buffer = new byte[packet.size];
+        Marshal.Copy((IntPtr)packet.data, buffer, 0, packet.size);
+
+        using var ms = new MemoryStream(buffer);
+        using var original = new Bitmap(ms);
+
+        var resized = new Bitmap(original, new Size(CaptureSize.width, CaptureSize.height));
+        return resized;
     }
 
     private void SeekToTime(double timeInSeconds)

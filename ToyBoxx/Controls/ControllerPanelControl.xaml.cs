@@ -14,6 +14,8 @@ namespace ToyBoxx.Controls
         private DispatcherTimer _idleTimer;
         private System.Windows.Point _lastMousePos;
 
+        private RootViewModel _viewModel => (RootViewModel)DataContext!;
+
         public ControllerPanelControl()
         {
             InitializeComponent();
@@ -84,11 +86,14 @@ namespace ToyBoxx.Controls
         private void PositionSlider_MouseEnter(object sender, MouseEventArgs e)
         {
             // Show preview area at enter point
-            var posInSlider = e.GetPosition(PositionSlider);
-            var posInCanvas = PositionSlider.TranslatePoint(posInSlider, PreviewImageCanvas);
-            Canvas.SetTop(PreviewImageArea, -PreviewImageArea.Height);
-            Canvas.SetLeft(PreviewImageArea, posInCanvas.X - PreviewImageArea.Width / 2);
-            PreviewImageCanvas.Visibility = System.Windows.Visibility.Visible;
+            if (_viewModel.MediaElement.HasVideo)
+            {
+                var posInSlider = e.GetPosition(PositionSlider);
+                var posInCanvas = PositionSlider.TranslatePoint(posInSlider, PreviewImageCanvas);
+                Canvas.SetTop(PreviewImageArea, -PreviewImageArea.Height);
+                Canvas.SetLeft(PreviewImageArea, posInCanvas.X - PreviewImageArea.Width / 2);
+                PreviewImageCanvas.Visibility = System.Windows.Visibility.Visible;
+            }
         }
 
         private void PositionSlider_MouseLeave(object sender, MouseEventArgs e)
@@ -103,13 +108,15 @@ namespace ToyBoxx.Controls
         {
             _idleTimer.Stop();
 
-            var mousePosition = Mouse.GetPosition(PositionSlider);
+            if (_viewModel.MediaElement.HasVideo)
+            {
+                var mousePosition = Mouse.GetPosition(PositionSlider);
 
-            // Position (sec) at mouse
-            var mediaPosition = PositionSlider.Minimum + (mousePosition.X / PositionSlider.ActualWidth) * (PositionSlider.Maximum - PositionSlider.Minimum);
+                // Position (sec) at mouse
+                var mediaPosition = PositionSlider.Minimum + (mousePosition.X / PositionSlider.ActualWidth) * (PositionSlider.Maximum - PositionSlider.Minimum);
 
-            var vm = (RootViewModel)DataContext!;
-            await vm.Commands.CaptureThumbnail.ExecuteAsync(mediaPosition);
+                await _viewModel.Commands.CaptureThumbnail.ExecuteAsync(mediaPosition);
+            }
         }
     }
 }
