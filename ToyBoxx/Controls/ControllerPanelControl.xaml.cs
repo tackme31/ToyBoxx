@@ -14,6 +14,20 @@ namespace ToyBoxx.Controls
         private DispatcherTimer _idleTimer;
         private System.Windows.Point _lastMousePos;
 
+        /// <summary>
+        /// Position (sec) at mouse
+        /// </summary>
+        private double MousePointPosition
+        {
+            get
+            {
+                var mousePosition = Mouse.GetPosition(PositionSlider);
+                return PositionSlider.Minimum + (mousePosition.X / PositionSlider.ActualWidth) * (PositionSlider.Maximum - PositionSlider.Minimum);
+            }
+        }
+
+        private RootViewModel _viewModel => (RootViewModel)DataContext!;
+
         public ControllerPanelControl()
         {
             InitializeComponent();
@@ -24,8 +38,7 @@ namespace ToyBoxx.Controls
                 MouseLeftButtonDownEvent,
                 new MouseButtonEventHandler(async (s, e) =>
                 {
-                    var vm = (RootViewModel)DataContext!;
-                    await vm.Commands.StepForwardCommand.ExecuteAsync(null);
+                    await _viewModel.Commands.StepForwardCommand.ExecuteAsync(null);
                 }),
                 handledEventsToo: true);
 
@@ -72,8 +85,9 @@ namespace ToyBoxx.Controls
             _idleTimer.Start();
 
             // Clear thumbnail
-            var vm = (RootViewModel)DataContext!;
-            vm.Controller.Thumbnail = null;
+            _viewModel.Controller.Thumbnail = null;
+
+            HoverPosition.Text = TimeSpan.FromSeconds(MousePointPosition).ToString(@"hh\:mm\:ss");
 
             // Move preview area to mouse point
             var posInSlider = e.GetPosition(PositionSlider);
@@ -84,6 +98,7 @@ namespace ToyBoxx.Controls
         private void PositionSlider_MouseEnter(object sender, MouseEventArgs e)
         {
             // Show preview area at enter point
+            HoverPosition.Text = TimeSpan.FromSeconds(MousePointPosition).ToString(@"hh\:mm\:ss");
             var posInSlider = e.GetPosition(PositionSlider);
             var posInCanvas = PositionSlider.TranslatePoint(posInSlider, PreviewImageCanvas);
             Canvas.SetTop(PreviewImageArea, -PreviewImageArea.Height);
@@ -103,13 +118,7 @@ namespace ToyBoxx.Controls
         {
             _idleTimer.Stop();
 
-            var mousePosition = Mouse.GetPosition(PositionSlider);
-
-            // Position (sec) at mouse
-            var mediaPosition = PositionSlider.Minimum + (mousePosition.X / PositionSlider.ActualWidth) * (PositionSlider.Maximum - PositionSlider.Minimum);
-
-            var vm = (RootViewModel)DataContext!;
-            await vm.Commands.CaptureThumbnail.ExecuteAsync(mediaPosition);
+            await _viewModel.Commands.CaptureThumbnail.ExecuteAsync(MousePointPosition);
         }
     }
 }

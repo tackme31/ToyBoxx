@@ -20,13 +20,29 @@
                     Visibility="Collapsed">
                 <Border Name="PreviewImageArea"
                         Width="160"
-                        Height="120"
+                        Height="130"
                         Background="White"
+                        Opacity="0.8"
                         Canvas.Left="0"
                         Canvas.Top="0">
-                    <Image Name="Thumbnail"
-                           Stretch="Uniform"
-                           Source="{Binding Controller.Thumbnail}"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Image
+                            Name="Thumbnail"
+                            Grid.Row="0"
+                            Stretch="Uniform"
+                            Source="{Binding Controller.Thumbnail}"/>
+                        <TextBlock
+                            Name="HoverPosition"
+                            Grid.Row="1"
+                            Foreground="Black"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Margin="0,2"/>
+                    </Grid>
                 </Border>
             </Canvas>
 
