@@ -31,16 +31,10 @@ public class AppCommands(RootViewModel viewModel)
                 await media.Close();
             }
 
-            var previewMedia = viewModel.PreviewMediaElement;
-            if (previewMedia.IsOpen)
-            {
-                await previewMedia.Close();
-            }
-
             var target = new Uri(uriString);
             await media.Open(target);
-            await previewMedia.Open(target);
-            await previewMedia.Stop();
+
+            viewModel.ThumbnailProvider.Open(uriString);
         }
         catch (Exception ex)
         {
@@ -58,7 +52,6 @@ public class AppCommands(RootViewModel viewModel)
     public DelegateCommand Close => _closeCommand ??= new(async _ =>
     {
         await viewModel.MediaElement.Close();
-        await viewModel.PreviewMediaElement.Close();
     });
 
     private DelegateCommand? _pauseCommand;
@@ -161,11 +154,9 @@ public class AppCommands(RootViewModel viewModel)
             return;
         }
 
-        var position = TimeSpan.FromSeconds((double)param);
-        await viewModel.PreviewMediaElement.Seek(position);
-
         // Capture thumbnail
-        var bitmap = await viewModel.PreviewMediaElement.CaptureBitmapAsync();
+        var position = TimeSpan.FromSeconds((double)param);
+        var bitmap = await viewModel.ThumbnailProvider.CaptureAsync(position);
         if (bitmap is null)
         {
             viewModel.Controller.Thumbnail = null;
