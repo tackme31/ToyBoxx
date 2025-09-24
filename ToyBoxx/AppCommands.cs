@@ -45,13 +45,7 @@ public class AppCommands(RootViewModel viewModel)
         }
         catch (Exception ex)
         {
-            MessageBox.Show(
-                Application.Current.MainWindow,
-                $"Media Failed: {ex.GetType()}\r\n{ex.Message}",
-                $"{nameof(MediaElement)} Error",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error,
-                MessageBoxResult.OK);
+            App.ShowSnackbar($"{nameof(MediaElement)} Error", $"Media Failed: {ex.GetType()}\r\n{ex.Message}");
         }
     });
 
