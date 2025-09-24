@@ -39,8 +39,9 @@ public class AppCommands(RootViewModel viewModel)
 
             var target = new Uri(uriString);
             await media.Open(target);
-            await previewMedia.Open(target);
-            await previewMedia.Stop();
+
+            // Pire-and-forget (preview loading is non-blocking)
+            InitPreviewAsync(viewModel.PreviewMediaElement, target);
         }
         catch (Exception ex)
         {
@@ -53,6 +54,19 @@ public class AppCommands(RootViewModel viewModel)
                 MessageBoxResult.OK);
         }
     });
+
+    private async void InitPreviewAsync(MediaElement preview, Uri target)
+    {
+        try
+        {
+            await preview.Open(target);
+            await preview.Stop();
+        }
+        catch (Exception)
+        {
+            // ignore
+        }
+    }
 
     private DelegateCommand? _closeCommand;
     public DelegateCommand Close => _closeCommand ??= new(async _ =>
@@ -157,6 +171,11 @@ public class AppCommands(RootViewModel viewModel)
     public DelegateCommand CaptureThumbnail => _captureThumbnail ??= new(async param =>
     {
         if (param is not TimeSpan position)
+        {
+            return;
+        }
+
+        if (!viewModel.PreviewMediaElement.IsOpen)
         {
             return;
         }
