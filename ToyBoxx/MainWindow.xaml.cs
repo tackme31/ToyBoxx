@@ -1,4 +1,5 @@
 ﻿using FFmpeg.AutoGen;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -175,7 +176,7 @@ public partial class MainWindow
             case Key.S when Media.IsOpen:
                 var savePath = GetCaptureSavePath();
                 await _viewModel.Commands.SaveCapture.ExecuteAsync(savePath);
-                App.ShowSnackbar("Screenshot saved", savePath);
+                App.ShowSnackbar("Screenshot saved", savePath, onClick: () => OpenFileInExplorer(savePath));
                 break;
             case Key.R when Media.IsOpen:
                 _viewModel.Angle += 90;
@@ -206,6 +207,23 @@ public partial class MainWindow
             double scaleY = Media.ActualHeight / videoHeight;
 
             return 1 / Math.Min(scaleX, scaleY);
+        }
+
+        void OpenFileInExplorer(string filePath)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "explorer.exe",
+                    Arguments = $"/select,\"{filePath}\"",
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception)
+            {
+                // ignore
+            }
         }
     }
 
