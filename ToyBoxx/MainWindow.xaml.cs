@@ -26,17 +26,16 @@ public partial class MainWindow
     private DateTime _lastControllerClick = DateTime.MinValue;
     private readonly WindowStatus _previousWindowStatus = new();
 
-    public MainWindow()
+    private readonly RootViewModel _viewModel;
+
+    public MainWindow(RootViewModel rootViewModel)
     {
-        ViewModel = App.ViewModel;
-        ViewModel.RequestToggleFullScreen += ToggleFullScreen;
+        _viewModel = rootViewModel;
 
         InitializeComponent();
         InitializeMainWindow();
         InitializeMediaEvents();
     }
-
-    public RootViewModel ViewModel { get; }
 
     private Storyboard HideControllerAnimation => FindResource("HideControlOpacity") as Storyboard ?? throw new Exception("Control 'HideControlOpacity' not found.");
 
@@ -156,29 +155,29 @@ public partial class MainWindow
         switch (e.Key)
         {
             case Key.Space when Media.IsOpen && Media.IsPlaying:
-                await ViewModel.Commands.Pause.ExecuteAsync(null);
+                await _viewModel.Commands.Pause.ExecuteAsync(null);
                 break;
             case Key.Space when Media.IsOpen && !Media.IsPlaying:
-                await ViewModel.Commands.Play.ExecuteAsync(null);
+                await _viewModel.Commands.Play.ExecuteAsync(null);
                 break;
             case Key.Right when Media.IsOpen && !Media.IsSeeking:
-                await ViewModel.Commands.ShiftPosition.ExecuteAsync(TimeSpan.FromSeconds(5));
+                await _viewModel.Commands.ShiftPosition.ExecuteAsync(TimeSpan.FromSeconds(5));
                 break;
             case Key.Left when Media.IsOpen && !Media.IsSeeking:
-                await ViewModel.Commands.ShiftPosition.ExecuteAsync(TimeSpan.FromSeconds(-5));
+                await _viewModel.Commands.ShiftPosition.ExecuteAsync(TimeSpan.FromSeconds(-5));
                 break;
             case Key.S when Media.IsOpen:
                 var savePath = GetCaptureSavePath();
-                await ViewModel.Commands.SaveCapture.ExecuteAsync(savePath);
+                await _viewModel.Commands.SaveCapture.ExecuteAsync(savePath);
                 break;
             case Key.R when Media.IsOpen:
-                ViewModel.Angle += 90;
+                _viewModel.Angle += 90;
                 break;
             case Key.F when Media.IsOpen && Media.HasVideo:
                 var scale = CalculateOriginalScale();
-                ViewModel.Scale = scale;
-                ViewModel.ScaleCenterX = Media.ActualWidth / 2;
-                ViewModel.ScaleCenterY = Media.ActualHeight / 2;
+                _viewModel.Scale = scale;
+                _viewModel.ScaleCenterX = Media.ActualWidth / 2;
+                _viewModel.ScaleCenterY = Media.ActualHeight / 2;
                 break;
         }
 
@@ -205,7 +204,7 @@ public partial class MainWindow
 
     private void FluentWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        if (ViewModel.Scale > 1.0)
+        if (_viewModel.Scale > 1.0)
         {
             _isDragging = true;
             _lastMousePos = e.GetPosition(this);
@@ -224,13 +223,13 @@ public partial class MainWindow
 
     private void FluentWindow_MouseMove(object sender, MouseEventArgs e)
     {
-        if (_isDragging && ViewModel.Scale > 1.0)
+        if (_isDragging && _viewModel.Scale > 1.0)
         {
             var pos = e.GetPosition(this);
             var delta = pos - _lastMousePos;
 
-            ViewModel.TransformX += delta.X;
-            ViewModel.TransformY += delta.Y;
+            _viewModel.TransformX += delta.X;
+            _viewModel.TransformY += delta.Y;
 
             _lastMousePos = pos;
         }
@@ -241,7 +240,7 @@ public partial class MainWindow
         // Zoom when Ctrl+Wheel
         if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
         {
-            var scale = ViewModel.Scale;
+            var scale = _viewModel.Scale;
             // calculate next scale
             if (e.Delta > 0)
             {
@@ -252,17 +251,17 @@ public partial class MainWindow
                 scale = Math.Max(ZoomStep, scale - ZoomStep);
             }
 
-            ViewModel.ScaleCenterX = ViewModel.MediaElement.ActualWidth / 2;
-            ViewModel.ScaleCenterY = ViewModel.MediaElement.ActualHeight / 2;
+            _viewModel.ScaleCenterX = _viewModel.MediaElement.ActualWidth / 2;
+            _viewModel.ScaleCenterY = _viewModel.MediaElement.ActualHeight / 2;
 
             if (scale < 1.0)
             {
                 // Fix to center
-                ViewModel.TransformX = 0;
-                ViewModel.TransformY = 0;
+                _viewModel.TransformX = 0;
+                _viewModel.TransformY = 0;
             }
 
-            ViewModel.Scale = scale;
+            _viewModel.Scale = scale;
 
             e.Handled = true;
         }
@@ -289,7 +288,7 @@ public partial class MainWindow
         _lastControllerClick = now;
     }
 
-    private void ToggleFullScreen()
+    public void ToggleFullScreen()
     {
         if (WindowState == WindowState.Maximized)
         {
@@ -310,11 +309,11 @@ public partial class MainWindow
 
     private void ResetTransform()
     {
-        ViewModel.Scale = 1.0;
-        ViewModel.ScaleCenterX = ViewModel.MediaElement.ActualWidth / 2;
-        ViewModel.ScaleCenterY = ViewModel.MediaElement.ActualHeight / 2;
-        ViewModel.TransformX = 0;
-        ViewModel.TransformY = 0;
-        ViewModel.Angle = 0;
+        _viewModel.Scale = 1.0;
+        _viewModel.ScaleCenterX = _viewModel.MediaElement.ActualWidth / 2;
+        _viewModel.ScaleCenterY = _viewModel.MediaElement.ActualHeight / 2;
+        _viewModel.TransformX = 0;
+        _viewModel.TransformY = 0;
+        _viewModel.Angle = 0;
     }
 }

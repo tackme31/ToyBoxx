@@ -7,21 +7,15 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary>
-                    <vm:RootViewModel x:Key="ViewModel" />
-                </ResourceDictionary>
-
-                <ResourceDictionary>
-                    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-                    <local:TimeSpanToSecondsConverter x:Key="TimeSpanToSecondsConverter" />
-                    <local:NullableTimeSpanToSecondsConverter x:Key="NullableTimeSpanToSecondsConverter" />
-                    <local:InverseBooleanConverter x:Key="InverseBooleanConverter" />
-                    <local:SpeedRatioConverter x:Key="SpeedRatioConverter" />
-                </ResourceDictionary>
-
                 <ui:ThemesDictionary Theme="Dark" />
                 <ui:ControlsDictionary />
             </ResourceDictionary.MergedDictionaries>
+
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <local:TimeSpanToSecondsConverter x:Key="TimeSpanToSecondsConverter" />
+            <local:NullableTimeSpanToSecondsConverter x:Key="NullableTimeSpanToSecondsConverter" />
+            <local:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+            <local:SpeedRatioConverter x:Key="SpeedRatioConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

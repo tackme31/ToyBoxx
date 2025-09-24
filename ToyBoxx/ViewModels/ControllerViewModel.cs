@@ -49,12 +49,12 @@ public partial class ControllerViewModel : AttachedViewModel
     {
         get
         {
-            var m = App.ViewModel.MediaElement;
+            var m = Root.MediaElement;
             return m.LoopingBehavior == MediaPlaybackState.Play;
         }
         set
         {
-            var m = App.ViewModel.MediaElement;
+            var m = Root.MediaElement;
             m.LoopingBehavior = value ? MediaPlaybackState.Play : MediaPlaybackState.Pause;
             OnPropertyChanged(nameof(IsLoopingMediaEnabled));
         }
@@ -63,7 +63,7 @@ public partial class ControllerViewModel : AttachedViewModel
     internal override void OnApplicationLoaded()
     {
         base.OnApplicationLoaded();
-        var m = App.ViewModel.MediaElement;
+        var m = Root.MediaElement;
 
         // Load user preference
         IsLoopingMediaEnabled = (MediaPlaybackState)Properties.Settings.Default.LoopingBehavior == MediaPlaybackState.Play;

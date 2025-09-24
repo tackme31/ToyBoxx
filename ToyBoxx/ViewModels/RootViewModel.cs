@@ -104,7 +104,7 @@ public partial class RootViewModel : ObservableObject
 
         if (filePath is not null && File.Exists(filePath))
         {
-            await App.ViewModel.Commands.Open.ExecuteAsync(filePath);
+            await Commands.Open.ExecuteAsync(filePath);
         }
 
         string? GetDragEventFile(DragEventArgs args)
