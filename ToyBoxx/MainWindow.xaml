@@ -91,5 +91,7 @@
                 <ui:ImageIcon Source="/256x256.ico" />
             </ui:TitleBar.Icon>
         </ui:TitleBar>
+
+        <ui:SnackbarPresenter x:Name="SnackbarPresenter" />
     </Grid>
 </ui:FluentWindow>

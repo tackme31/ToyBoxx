@@ -7,6 +7,8 @@ using System.Windows.Threading;
 using ToyBoxx.Foundation;
 using ToyBoxx.ViewModels;
 using Unosquare.FFME.Common;
+using Wpf.Ui;
+using Wpf.Ui.Controls;
 
 namespace ToyBoxx;
 
@@ -27,10 +29,12 @@ public partial class MainWindow
     private readonly WindowStatus _previousWindowStatus = new();
 
     private readonly RootViewModel _viewModel;
+    private readonly ISnackbarService _snackbarService;
 
-    public MainWindow(RootViewModel rootViewModel)
+    public MainWindow(RootViewModel rootViewModel, ISnackbarService snackbarService)
     {
         _viewModel = rootViewModel;
+        _snackbarService = snackbarService;
 
         InitializeComponent();
         InitializeMainWindow();
@@ -49,6 +53,8 @@ public partial class MainWindow
 
         Loaded += (s, e) =>
         {
+            _snackbarService.SetSnackbarPresenter(SnackbarPresenter);
+
             Storyboard.SetTarget(HideControllerAnimation, ControllerPanel);
             Storyboard.SetTarget(ShowControllerAnimation, ControllerPanel);
 
@@ -169,6 +175,7 @@ public partial class MainWindow
             case Key.S when Media.IsOpen:
                 var savePath = GetCaptureSavePath();
                 await _viewModel.Commands.SaveCapture.ExecuteAsync(savePath);
+                App.ShowSnackbar("Screenshot saved", savePath);
                 break;
             case Key.R when Media.IsOpen:
                 _viewModel.Angle += 90;

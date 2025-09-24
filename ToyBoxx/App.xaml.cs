@@ -5,6 +5,7 @@ using System.Windows;
 using ToyBoxx.Services;
 using ToyBoxx.ViewModels;
 using Wpf.Ui;
+using Wpf.Ui.Controls;
 
 namespace ToyBoxx;
 
@@ -27,6 +28,16 @@ public partial class App : Application
             _ = services.AddSingleton<ISnackbarService, SnackbarService>();
         })
         .Build();
+
+    public static void ShowSnackbar(
+        string title,
+        string message,
+        ControlAppearance appearance = ControlAppearance.Secondary,
+        SymbolRegular icon = SymbolRegular.Info12)
+    {
+        var snackbarService = _host.Services.GetRequiredService<ISnackbarService>();
+        snackbarService.Show(title, message, appearance, new SymbolIcon(icon), TimeSpan.FromSeconds(3));
+    }
 
     public static T GetRequiredService<T>()
         where T : class
