@@ -9,7 +9,6 @@ using ToyBoxx.Foundation;
 using ToyBoxx.ViewModels;
 using Unosquare.FFME.Common;
 using Wpf.Ui;
-using Wpf.Ui.Controls;
 
 namespace ToyBoxx;
 
@@ -284,8 +283,8 @@ public partial class MainWindow
                 scale = Math.Max(ZoomStep, scale - ZoomStep);
             }
 
-            _viewModel.ScaleCenterX = _viewModel.MediaElement.ActualWidth / 2;
-            _viewModel.ScaleCenterY = _viewModel.MediaElement.ActualHeight / 2;
+            _viewModel.ScaleCenterX = Media.ActualWidth / 2;
+            _viewModel.ScaleCenterY = Media.ActualHeight / 2;
 
             if (scale < 1.0)
             {
@@ -343,8 +342,8 @@ public partial class MainWindow
     private void ResetTransform()
     {
         _viewModel.Scale = 1.0;
-        _viewModel.ScaleCenterX = _viewModel.MediaElement.ActualWidth / 2;
-        _viewModel.ScaleCenterY = _viewModel.MediaElement.ActualHeight / 2;
+        _viewModel.ScaleCenterX = Media.ActualWidth / 2;
+        _viewModel.ScaleCenterY = Media.ActualHeight / 2;
         _viewModel.TransformX = 0;
         _viewModel.TransformY = 0;
         _viewModel.Angle = 0;

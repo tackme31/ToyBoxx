@@ -1,15 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.ComponentModel.Design;
 using System.Windows;
 using System.Windows.Input;
-using ToyBoxx.Foundation;
 using ToyBoxx.Services;
 using ToyBoxx.ViewModels;
 using Wpf.Ui;
 using Wpf.Ui.Controls;
-using Wpf.Ui.Input;
 
 namespace ToyBoxx;
 
