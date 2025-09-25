@@ -48,6 +48,10 @@ public partial class App : Application
             var presenter = snackbarService.GetSnackbarPresenter();
             if (presenter is SnackbarPresenter { Content: Snackbar snackbar })
             {
+                snackbar.IsCloseButtonEnabled = false;
+                snackbar.HorizontalAlignment = HorizontalAlignment.Right;
+                snackbar.Width = 500;
+
                 void handler(object sender, MouseButtonEventArgs e)
                 {
                     onClick();
