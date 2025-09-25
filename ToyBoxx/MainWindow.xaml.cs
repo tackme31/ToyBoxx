@@ -120,6 +120,20 @@ public partial class MainWindow
     private void InitializeMediaEvents()
     {
         PreviewMedia.RendererOptions.VideoImageType = VideoRendererImageType.InteropBitmap;
+        PreviewMedia.MediaOpening += (s, e) =>
+        {
+            e.Options.DecoderParams.EnableFastDecoding = true;
+            e.Options.DecoderParams.EnableLowDelayDecoding = true;
+            e.Options.DecoderParams.LowResolutionIndex = VideoResolutionDivider.Quarter;
+            e.Options.IsAudioDisabled = true;
+            e.Options.IsSubtitleDisabled = true;
+
+            // Enable hardware decoding
+            if (e.Options.VideoStream is StreamInfo videoStream)
+            {
+                e.Options.VideoHardwareDevices = GetHardwareDevices(videoStream);
+            }
+        };
 
         Media.RendererOptions.UseLegacyAudioOut = true;
         Media.Loaded += (s, e) => ResetTransform();
@@ -128,26 +142,23 @@ public partial class MainWindow
             // Enable hardware decoding
             if (e.Options.VideoStream is StreamInfo videoStream)
             {
-                
-                var deviceCandidates = new[]
-                {
-                    AVHWDeviceType.AV_HWDEVICE_TYPE_CUDA,
-                    AVHWDeviceType.AV_HWDEVICE_TYPE_D3D11VA,
-                    AVHWDeviceType.AV_HWDEVICE_TYPE_DXVA2
-                };
-
-                var devices = new List<HardwareDeviceInfo>(deviceCandidates.Length);
-                foreach (var deviceType in deviceCandidates)
-                {
-                    var accelerator = videoStream.HardwareDevices.FirstOrDefault(d => d.DeviceType == deviceType);
-                    if (accelerator == null) continue;
-
-                    devices.Add(accelerator);
-                }
-
-                e.Options.VideoHardwareDevices = [.. devices];
+                e.Options.VideoHardwareDevices = GetHardwareDevices(videoStream);
             }
         };
+
+        HardwareDeviceInfo[] GetHardwareDevices(StreamInfo videoStream)
+        {
+            var deviceCandidates = new[]
+            {
+                AVHWDeviceType.AV_HWDEVICE_TYPE_CUDA,
+                AVHWDeviceType.AV_HWDEVICE_TYPE_D3D11VA,
+                AVHWDeviceType.AV_HWDEVICE_TYPE_DXVA2
+            };
+
+            return [.. deviceCandidates
+                .Select(type => videoStream.HardwareDevices.FirstOrDefault(d => d.DeviceType == type))
+                .OfType<HardwareDeviceInfo>()];
+        }
     }
 
     private async void OnWindowKeyDown(object? sender, KeyEventArgs e)
