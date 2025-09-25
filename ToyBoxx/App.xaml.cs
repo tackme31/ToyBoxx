@@ -48,17 +48,11 @@ public partial class App : Application
                 snackbar.IsCloseButtonEnabled = false;
                 snackbar.HorizontalAlignment = HorizontalAlignment.Right;
                 snackbar.Width = 500;
-
-                void handler(object sender, MouseButtonEventArgs e)
+                snackbar.PreviewMouseLeftButtonDown += (s, e) =>
                 {
                     onClick();
-
-                    snackbar.PreviewMouseLeftButtonDown -= handler;
-
                     e.Handled = true;
-                }
-
-                snackbar.PreviewMouseLeftButtonDown += handler;
+                };
             }
         }
     }
