@@ -125,9 +125,10 @@ public partial class MainWindow
         Media.Loaded += (s, e) => ResetTransform();
         Media.MediaOpening += (s, e) =>
         {
-            // Use hardware device if needed
+            // Enable hardware decoding
             if (e.Options.VideoStream is StreamInfo videoStream)
             {
+                
                 var deviceCandidates = new[]
                 {
                     AVHWDeviceType.AV_HWDEVICE_TYPE_CUDA,
@@ -135,20 +136,16 @@ public partial class MainWindow
                     AVHWDeviceType.AV_HWDEVICE_TYPE_DXVA2
                 };
 
-                // Hardware device selection
-                if (videoStream.FPS <= 30)
+                var devices = new List<HardwareDeviceInfo>(deviceCandidates.Length);
+                foreach (var deviceType in deviceCandidates)
                 {
-                    var devices = new List<HardwareDeviceInfo>(deviceCandidates.Length);
-                    foreach (var deviceType in deviceCandidates)
-                    {
-                        var accelerator = videoStream.HardwareDevices.FirstOrDefault(d => d.DeviceType == deviceType);
-                        if (accelerator == null) continue;
+                    var accelerator = videoStream.HardwareDevices.FirstOrDefault(d => d.DeviceType == deviceType);
+                    if (accelerator == null) continue;
 
-                        devices.Add(accelerator);
-                    }
-
-                    e.Options.VideoHardwareDevices = [.. devices];
+                    devices.Add(accelerator);
                 }
+
+                e.Options.VideoHardwareDevices = [.. devices];
             }
         };
     }
