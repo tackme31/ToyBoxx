@@ -118,8 +118,8 @@ public partial class MainWindow
 
     private void InitializeMediaEvents()
     {
-        PreviewMedia.RendererOptions.VideoImageType = VideoRendererImageType.InteropBitmap;
-        PreviewMedia.MediaOpening += (s, e) =>
+        ControllerPanel.PreviewMedia.RendererOptions.VideoImageType = VideoRendererImageType.InteropBitmap;
+        ControllerPanel.PreviewMedia.MediaOpening += (s, e) =>
         {
             e.Options.DecoderParams.EnableFastDecoding = true;
             e.Options.DecoderParams.EnableLowDelayDecoding = true;

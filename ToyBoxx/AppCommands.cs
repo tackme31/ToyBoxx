@@ -160,44 +160,6 @@ public class AppCommands(RootViewModel viewModel)
         return Task.CompletedTask;
     });
 
-    private DelegateCommand? _captureThumbnail;
-    public DelegateCommand CaptureThumbnail => _captureThumbnail ??= new(async param =>
-    {
-        if (param is not TimeSpan position)
-        {
-            return;
-        }
-
-        if (!viewModel.PreviewMediaElement.IsOpen)
-        {
-            return;
-        }
-
-        await viewModel.PreviewMediaElement.Seek(position);
-
-        // Capture thumbnail
-        var bitmap = await viewModel.PreviewMediaElement.CaptureBitmapAsync();
-        if (bitmap is null)
-        {
-            viewModel.Controller.Thumbnail = null;
-            return;
-        }
-
-        // Convert into BitmapImage
-        using var memory = new MemoryStream();
-        bitmap.Save(memory, ImageFormat.Png);
-        memory.Position = 0;
-
-        var bitmapImage = new BitmapImage();
-        bitmapImage.BeginInit();
-        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-        bitmapImage.StreamSource = memory;
-        bitmapImage.EndInit();
-        bitmapImage.Freeze();
-
-        viewModel.Controller.Thumbnail = bitmapImage;
-    });
-
     private DelegateCommand? _saveCaptureCommand;
     public DelegateCommand SaveCapture => _saveCaptureCommand ??= new(param =>
     {

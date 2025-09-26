@@ -85,9 +85,6 @@ namespace ToyBoxx.Controls
             _idleTimer.Stop();
             _idleTimer.Start();
 
-            // Clear thumbnail
-            _viewModel.Controller.Thumbnail = null;
-
             HoverPosition.Text = MousePointPosition.ToString(@"hh\:mm\:ss");
 
             // Move preview area to mouse point
@@ -119,7 +116,12 @@ namespace ToyBoxx.Controls
         {
             _idleTimer.Stop();
 
-            await _viewModel.Commands.CaptureThumbnail.ExecuteAsync(MousePointPosition);
+            if (!_viewModel.PreviewMediaElement.IsOpen || !_viewModel.PreviewMediaElement.IsSeekable)
+            {
+                return;
+            }
+
+            await _viewModel.PreviewMediaElement.Seek(MousePointPosition);
         }
     }
 }
