@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ToyBoxx.ViewModels;
 using Unosquare.FFME;
+using Wpf.Ui.Appearance;
 
 namespace ToyBoxx.Services;
 
@@ -17,6 +18,7 @@ internal class ApplicationHostService : IHostedService
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
+        // Build config
         var builder = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -24,10 +26,22 @@ internal class ApplicationHostService : IHostedService
             .AddEnvironmentVariables();
         var config = builder.Build();
 
+        // Set application theme
+        var theme = config["ApplicationTheme"] switch
+        {
+            "Dark" => ApplicationTheme.Dark,
+            "Light" => ApplicationTheme.Light,
+            "HighContrast" => ApplicationTheme.HighContrast,
+            _ => ApplicationTheme.Dark
+        };
+        ApplicationThemeManager.Apply(theme);
+
+        // Initialize FFME
         var ffmpegPath = config["FFMpegRootPath"] ?? throw new InvalidOperationException("Variable 'FFMpegRootPath' does not exist");
         Library.FFmpegDirectory = ffmpegPath;
         Library.EnableWpfMultiThreadedVideo = true;
 
+        // Setup main window
         var window = _serviceProvider.GetRequiredService<MainWindow>();
 
         window.Top = Properties.Settings.Default.WindowTop;

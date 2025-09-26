@@ -9,8 +9,9 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
              mc:Ignorable="d" 
+             Background="{ui:ThemeResource ApplicationBackgroundBrush}"
              d:DataContext="{d:DesignInstance vm:RootViewModel, IsDesignTimeCreatable=True}">
-    <Grid Name="Controls" Visibility="Visible" Height="120" Background="Black" Opacity="0.8">
+    <Grid Name="Controls" Visibility="Visible" Height="120" Opacity="0.8">
         <Grid VerticalAlignment="Bottom">
             <Grid.RowDefinitions>
                 <RowDefinition Height="20"></RowDefinition>
@@ -22,7 +23,7 @@
                 <Border Name="PreviewImageArea"
                         Width="160"
                         Height="130"
-                        Background="White"
+                        Background="{ui:ThemeResource ApplicationBackgroundBrush}"
                         Opacity="0.8"
                         Canvas.Left="0"
                         Canvas.Top="0">
@@ -36,10 +37,9 @@
                             Name="PreviewMedia"
                             LoadedBehavior="Manual"
                             UnloadedBehavior="Manual"/>
-                        <TextBlock
+                        <ui:TextBlock
                             Name="HoverPosition"
                             Grid.Row="1"
-                            Foreground="Black"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Bottom"
                             Margin="0,2"/>
@@ -79,20 +79,20 @@
                                IsEnabled="{Binding Controller.IsPlayButtonEnabled}"
                                Command="{Binding Commands.Play}"
                                ToolTip="Play">
-                        <ui:SymbolIcon Symbol="Play48" Filled="True" Foreground="White"/>
+                        <ui:SymbolIcon Symbol="Play48" Filled="True" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
                     </ui:Button>
                     <ui:Button Margin="5,0"
                                Visibility="{Binding Controller.PauseButtonVisibility}"
                                IsEnabled="{Binding Controller.IsPauseButtonEnabled}"
                                Command="{Binding Commands.Pause}"
                                ToolTip="Pause">
-                        <ui:SymbolIcon Symbol="Pause12" Filled="True" Foreground="White"/>
+                        <ui:SymbolIcon Symbol="Pause12" Filled="True" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
                     </ui:Button>
                     <ui:Button Margin="5,0"
                                IsEnabled="{Binding Controller.IsStopButtonEnabled}"
                                Command="{Binding Commands.Stop}"
                                ToolTip="Stop">
-                        <ui:SymbolIcon Symbol="Stop24" Filled="True" Foreground="White"/>
+                        <ui:SymbolIcon Symbol="Stop24" Filled="True" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
                     </ui:Button>
 
                     <!-- StepForwardCommand is executed in code-behind to bypass WPF Click event limitations for rapid clicks -->
@@ -100,7 +100,7 @@
                                Name="StepForwardButton"
                                IsEnabled="{Binding Controller.IsStepForwardEnabled}"
                                ToolTip="Step forward">
-                        <ui:SymbolIcon Symbol="ArrowStepInRight12" Filled="True" Foreground="White"/>
+                        <ui:SymbolIcon Symbol="ArrowStepInRight12" Filled="True" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
                     </ui:Button>
 
                     <ToggleButton Name="PlaybackSpeedButton"
@@ -108,7 +108,7 @@
                                   Margin="5,0"
                                   Width="60"
                                   ToolTip="Change playback speed">
-                        <TextBlock Text="{Binding MediaElement.SpeedRatio, Converter={StaticResource SpeedRatioConverter}}" />
+                        <ui:TextBlock Text="{Binding MediaElement.SpeedRatio, Converter={StaticResource SpeedRatioConverter}}" />
                     </ToggleButton>
                     <Popup Name="PlaybackSpeedPopup"
                            IsOpen="{Binding IsChecked, ElementName=PlaybackSpeedButton, Mode=TwoWay}"
@@ -118,7 +118,7 @@
                            PlacementTarget="{Binding ElementName=PlaybackSpeedButton}"
                            VerticalOffset="-10"
                            AllowsTransparency="True">
-                        <StackPanel Width="80" Background="Black" Opacity="0.8">
+                        <StackPanel Width="80" Background="{ui:ThemeResource ApplicationBackgroundBrush}" Opacity="0.8">
                             <ui:Button HorizontalAlignment="Stretch"
                                        Command="{Binding Commands.ChangeSpeedRatio}"
                                        CommandParameter="0.25"
@@ -174,7 +174,7 @@
                     <ToggleButton Margin="5,0"
                                   Name="MuteUnmuteButton" IsChecked="{Binding MediaElement.IsMuted, Mode=TwoWay}"
                                   ToolTip="Mute">
-                        <ui:SymbolIcon Symbol="SpeakerMute16" Filled="True" Foreground="White"/>
+                        <ui:SymbolIcon Symbol="SpeakerMute16" Filled="True" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
                     </ToggleButton>
                     <controls:HtmlLikeSlider Margin="5,0"
                                              Width="100"
@@ -188,11 +188,11 @@
                 </DockPanel>
 
                 <DockPanel Name="RightControls" HorizontalAlignment="Right" Grid.Column="1">
-                    <TextBlock Margin="5,0" Foreground="White" FontSize="14" VerticalAlignment="Center" Text="{Binding MediaElement.Position, StringFormat={}{0:hh\\:mm\\:ss}}"/>
-                    <TextBlock Foreground="White" FontSize="14" VerticalAlignment="Center">/</TextBlock>
-                    <TextBlock Margin="5,0" Foreground="White" FontSize="14" VerticalAlignment="Center" Text="{Binding MediaElement.NaturalDuration, StringFormat={}{0:hh\\:mm\\:ss}}"/>
+                    <ui:TextBlock Margin="5,0" FontSize="14" VerticalAlignment="Center" Text="{Binding MediaElement.Position, StringFormat={}{0:hh\\:mm\\:ss}}"/>
+                    <ui:TextBlock FontSize="14" VerticalAlignment="Center">/</ui:TextBlock>
+                    <ui:TextBlock Margin="5,0"  FontSize="14" VerticalAlignment="Center" Text="{Binding MediaElement.NaturalDuration, StringFormat={}{0:hh\\:mm\\:ss}}"/>
                     <ToggleButton Margin="5,0" IsChecked="{Binding Controller.IsLoopingMediaEnabled, Mode=TwoWay}" ToolTip="Enable Looping">
-                        <ui:SymbolIcon Symbol="ArrowRepeatAll16" Foreground="White"/>
+                        <ui:SymbolIcon Symbol="ArrowRepeatAll16" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
                     </ToggleButton>
 
                     <ToggleButton Margin="5,0"
@@ -200,13 +200,13 @@
                                   IsChecked="{Binding Controller.IsSegmentLoopEnabled, Mode=OneWay}"
                                   Command="{Binding Commands.SetSegmentLoop}"
                                   ToolTip="Loop selected range">
-                        <ui:SymbolIcon Symbol="ArrowReset20" Filled="True" Foreground="White"/>
+                        <ui:SymbolIcon Symbol="ArrowReset20" Filled="True" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
                     </ToggleButton>
 
                     <ui:Button Margin="5,0"
                                Command="{Binding ToggleFullScreen}"
                                ToolTip="Toggle full screen">
-                        <ui:SymbolIcon Symbol="FullScreenMaximize16" Foreground="White"/>
+                        <ui:SymbolIcon Symbol="FullScreenMaximize16" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
                     </ui:Button>
                 </DockPanel>
             </Grid>
