@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows;
-using System.Windows.Input;
 using ToyBoxx.Services;
 using ToyBoxx.ViewModels;
 using Wpf.Ui;
@@ -26,6 +25,7 @@ public partial class App : Application
 
             _ = services.AddSingleton<MainWindow>();
             _ = services.AddSingleton<RootViewModel>();
+            _ = services.AddSingleton<IMediaElementProvider, MediaElementProvider>();
             _ = services.AddSingleton<ISnackbarService, SnackbarService>();
         })
         .Build();

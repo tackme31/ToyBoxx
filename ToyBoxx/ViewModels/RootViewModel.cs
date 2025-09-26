@@ -3,14 +3,17 @@ using System.IO;
 using System.Text;
 using System.Windows;
 using ToyBoxx.Foundation;
+using ToyBoxx.Services;
 using Unosquare.FFME;
 
 namespace ToyBoxx.ViewModels;
 
 public partial class RootViewModel : ObservableObject
 {
-    public RootViewModel()
+    private readonly IMediaElementProvider _mediaElementProvider;
+    public RootViewModel(IMediaElementProvider mediaElementProvider)
     {
+        _mediaElementProvider = mediaElementProvider;
         Controller = new ControllerViewModel(this);
         Commands = new AppCommands(this);
     }
@@ -22,10 +25,10 @@ public partial class RootViewModel : ObservableObject
     public event Action? RequestToggleFullScreen;
 
     private MediaElement? _mediaElement;
-    public MediaElement MediaElement => _mediaElement ??= (Application.Current.MainWindow as MainWindow)?.Media ?? throw new Exception("Media element not found.");
+    public MediaElement MediaElement => _mediaElement ??= _mediaElementProvider.GetMediaElement("main");
 
     private MediaElement? _previewMediaElement;
-    public MediaElement PreviewMediaElement => _previewMediaElement ??= (Application.Current.MainWindow as MainWindow)?.ControllerPanel.PreviewMedia ?? throw new Exception("Media element not found.");
+    public MediaElement PreviewMediaElement => _previewMediaElement ??= _mediaElementProvider.GetMediaElement("preview");
 
     [ObservableProperty]
     private bool _isApplicationLoaded;
@@ -93,7 +96,7 @@ public partial class RootViewModel : ObservableObject
     }
 
     private DelegateCommand? _openFromDropCommand;
-    public DelegateCommand OpenFileCommand => _openFromDropCommand ??= new (async param =>
+    public DelegateCommand OpenFileCommand => _openFromDropCommand ??= new(async param =>
     {
         var filePath = param switch
         {
