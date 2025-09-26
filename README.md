@@ -21,8 +21,17 @@ Limited, buggy, and uncustomizable, but perfect for me.
 - 📸 Capture the current frame (`S`)
 - ⏱️ Jump backward or forward 5 seconds (`Left` / `Right`)
 
-## Setup
-Run `requirements.ps1` before debugging.
+## Build
+Run the following in PowerShell:
+
+```console
+$ git clone https://github.com/tackme31/ToyBoxx.git
+$ cd ./ToyBoxx 
+$ powershell ./requirements.ps1 # Donload FFmpeg and SoundTouch library
+$ dotnet publish ./ToyBoxx/ToyBoxx.csproj -c Release -r win-x64 -p:PublishReadyToRun=true
+```
+
+Add `-p:SelfContained=true` option if needed.
 
 ## Author
 
