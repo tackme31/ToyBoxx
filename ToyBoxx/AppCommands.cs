@@ -1,6 +1,4 @@
 ﻿using System.Drawing.Imaging;
-using System.IO;
-using System.Windows.Media.Imaging;
 using ToyBoxx.Foundation;
 using ToyBoxx.ViewModels;
 using Unosquare.FFME;

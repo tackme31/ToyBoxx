@@ -27,7 +27,7 @@ namespace ToyBoxx.Controls
             }
         }
 
-        private RootViewModel _viewModel => (RootViewModel)DataContext!;
+        private RootViewModel ViewModel => (RootViewModel)DataContext!;
 
         public ControllerPanelControl()
         {
@@ -39,7 +39,7 @@ namespace ToyBoxx.Controls
                 MouseLeftButtonDownEvent,
                 new MouseButtonEventHandler(async (s, e) =>
                 {
-                    await _viewModel.Commands.StepForwardCommand.ExecuteAsync(null);
+                    await ViewModel.Commands.StepForwardCommand.ExecuteAsync(null);
                 }),
                 handledEventsToo: true);
 
@@ -116,12 +116,12 @@ namespace ToyBoxx.Controls
         {
             _idleTimer.Stop();
 
-            if (!_viewModel.PreviewMediaElement.IsOpen || !_viewModel.PreviewMediaElement.IsSeekable)
+            if (!ViewModel.PreviewMediaElement.IsOpen || !ViewModel.PreviewMediaElement.IsSeekable)
             {
                 return;
             }
 
-            await _viewModel.PreviewMediaElement.Seek(MousePointPosition);
+            await ViewModel.PreviewMediaElement.Seek(MousePointPosition);
         }
     }
 }
