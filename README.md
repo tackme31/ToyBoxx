@@ -27,7 +27,7 @@ Run the following in PowerShell:
 ```console
 $ git clone https://github.com/tackme31/ToyBoxx.git
 $ cd ./ToyBoxx 
-$ powershell ./requirements.ps1 # Donload FFmpeg and SoundTouch library
+$ powershell ./requirements.ps1 # Download FFmpeg and SoundTouch library
 $ dotnet publish ./ToyBoxx/ToyBoxx.csproj -c Release -r win-x64 -p:PublishReadyToRun=true
 ```
 
