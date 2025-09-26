@@ -80,8 +80,7 @@
         <ui:TitleBar
             x:Name="TitleBar"
             Title="{Binding WindowTitle}"
-            Margin="4"
-            CloseWindowByDoubleClickOnIcon="True" Cursor="">
+            Margin="4">
             <ui:TitleBar.Icon>
                 <ui:ImageIcon Source="/256x256.ico" />
             </ui:TitleBar.Icon>
