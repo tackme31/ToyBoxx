@@ -9,6 +9,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ApplicationIcon>256x256.ico</ApplicationIcon>
     <PublishReadyToRun>true</PublishReadyToRun>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
