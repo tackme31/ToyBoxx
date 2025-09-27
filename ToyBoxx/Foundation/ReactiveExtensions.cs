@@ -1,89 +1,65 @@
 ﻿using System.ComponentModel;
 
 namespace ToyBoxx.Foundation;
-internal static class ReactiveExtensions
+
+public static class PropertyChangedExtensions
 {
-    /// <summary>
-    /// Contains a list of subscriptions Subscriptions[Publisher][PropertyName].List of subscriber-action pairs.
-    /// </summary>
-    private static readonly Dictionary<INotifyPropertyChanged, SubscriptionSet> Subscriptions
-        = new Dictionary<INotifyPropertyChanged, SubscriptionSet>();
+    private static readonly Dictionary<INotifyPropertyChanged, Dictionary<string, List<Action>>> _subscriptions = [];
+    private static readonly Lock _lock = new();
 
-    private static readonly Lock SyncLock = new ();
-
-    /// <summary>
-    /// Specifies a callback when properties change.
-    /// </summary>
-    /// <param name="publisher">The publisher.</param>
-    /// <param name="callback">The callback.</param>
-    /// <param name="propertyNames">The property names.</param>
-    public static void WhenChanged(this INotifyPropertyChanged publisher, Action callback, params string[] propertyNames)
+    public static void WhenChanged(this INotifyPropertyChanged source, Action callback, params string[] propertyNames)
     {
-        var bindPropertyChanged = false;
+        bool needsBinding = false;
 
-        lock (SyncLock)
+        lock (_lock)
         {
-            // Create the subscription set for the publisher if it does not exist.
-            if (Subscriptions.ContainsKey(publisher) == false)
+            if (!_subscriptions.TryGetValue(source, out Dictionary<string, List<Action>>? value))
             {
-                Subscriptions[publisher] = new SubscriptionSet();
+                value = [];
 
-                // if it did not exist before, we need to bind to the
-                // PropertyChanged event of the publisher.
-                bindPropertyChanged = true;
+                _subscriptions[source] = value;
+                needsBinding = true;
             }
 
-            foreach (var propertyName in propertyNames)
+            foreach (var name in propertyNames)
             {
-                // Create the set of callback references for the publisher's property if it does not exist.
-                if (Subscriptions[publisher].ContainsKey(propertyName) == false)
-                    Subscriptions[publisher][propertyName] = new CallbackList();
+                if (!_subscriptions[source].ContainsKey(name))
+                {
+                    _subscriptions[source][name] = [];
+                }
 
-                // Add the callback for the publisher's property changed
-                Subscriptions[publisher][propertyName].Add(callback);
+                value[name].Add(callback);
             }
         }
 
-        // Make an initial call
         callback();
 
-        // No need to bind to the PropertyChanged event if we are already bound to it.
-        if (bindPropertyChanged == false)
-            return;
-
-        // Finally, bind to property changed
-        publisher.PropertyChanged += (s, e) =>
+        if (!needsBinding)
         {
-            CallbackList propertyCallbacks = null;
+            return;
+        }
 
-            lock (SyncLock)
+        source.PropertyChanged += (s, e) =>
+        {
+            List<Action>? actions;
+
+            lock (_lock)
             {
-                // we don't need to perform any action if there are no subscriptions to
-                // this property name.
-                if (Subscriptions[publisher].ContainsKey(e.PropertyName) == false)
+                if (!_subscriptions.TryGetValue(source, out var propertyMap))
+                {
                     return;
+                }
 
-                // Get the list of alive subscriptions for this property name
-                propertyCallbacks = Subscriptions[publisher][e.PropertyName];
+                if (string.IsNullOrEmpty(e.PropertyName) || !propertyMap.TryGetValue(e.PropertyName, out actions))
+                {
+                    return;
+                }
             }
 
-            // Call the subscription's callbacks
-            foreach (var propertyCallback in propertyCallbacks)
+            foreach (var action in actions ?? [])
             {
-                // if the subscription is alive, invoke the matching action
-                propertyCallback.Invoke();
+                action.Invoke();
             }
         };
-    }
-
-    internal sealed class SubscriptionSet : Dictionary<string, CallbackList> { }
-
-    internal sealed class CallbackList : List<Action>
-    {
-        public CallbackList()
-            : base(32)
-        {
-            // placeholder
-        }
     }
 }
