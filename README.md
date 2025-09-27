@@ -22,12 +22,13 @@ Limited, buggy, and uncustomizable, but perfect for me.
 - ⏱️ Jump backward or forward 5 seconds (`Left` / `Right`)
 
 ## Build
-Run the following in PowerShell:
+This software is only supported on Windows x64, as it depends on the FFmpeg and SoundTouch libraries built for 64-bit.
+To try it, run the following command in PowerShell:
 
 ```console
 $ git clone https://github.com/tackme31/ToyBoxx.git
 $ cd ./ToyBoxx 
-$ powershell ./requirements.ps1 # Download FFmpeg and SoundTouch library
+$ powershell ./requirements.ps1 # Download FFmpeg and SoundTouch libraries
 $ dotnet publish ./ToyBoxx/ToyBoxx.csproj -c Release -r win-x64 -p:PublishReadyToRun=true
 ```
 
@@ -38,4 +39,5 @@ Add `-p:SelfContained=true` option if needed.
 - Takumi Yamada (X: [@tackme31](https://x.com/tackme31))
 
 ## License
+
 This software is licensed under the MIT license. See [LICENSE](./LICENSE).
