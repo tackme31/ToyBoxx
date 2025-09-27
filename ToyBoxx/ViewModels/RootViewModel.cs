@@ -79,14 +79,13 @@ public partial class RootViewModel : ObservableObject
         {
             var source = MediaElement.MediaInfo.MediaSource;
             var uri = new Uri(source);
-            var fileName = uri.Segments.LastOrDefault() ?? "No title";
-
-            if (fileName.Length > 64)
+            var title = Path.GetFileNameWithoutExtension(uri.LocalPath);
+            if (title.Length > 64)
             {
-                fileName = fileName.Substring(0, 64) + "...";
+                title = string.Concat(title.AsSpan(0, 64), "...");
             }
 
-            titleBuilder.Append(fileName);
+            titleBuilder.Append(title);
             titleBuilder.Append(" - ");
         }
 
