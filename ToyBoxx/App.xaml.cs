@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System.Windows;
 using ToyBoxx.Services;
 using ToyBoxx.ViewModels;
@@ -14,19 +15,21 @@ namespace ToyBoxx;
 /// </summary>
 public partial class App : Application
 {
-    private static readonly IHost _host = Host.CreateDefaultBuilder()
+    private static readonly IHost _host = new HostBuilder()
         .ConfigureAppConfiguration(c =>
         {
-            _ = c.SetBasePath(AppContext.BaseDirectory);
+            c.SetBasePath(AppContext.BaseDirectory);
+            c.AddJsonFile("appsettings.json", optional: false, reloadOnChange: false);
+            c.AddJsonFile("appsettings.user.json", optional: true, reloadOnChange: false);
         })
-        .ConfigureServices((_1, services) =>
+        .ConfigureLogging(logging => logging.ClearProviders())
+        .ConfigureServices((context, services) =>
         {
-            _ = services.AddHostedService<ApplicationHostService>();
-
-            _ = services.AddSingleton<MainWindow>();
-            _ = services.AddSingleton<RootViewModel>();
-            _ = services.AddSingleton<IMediaElementProvider, MediaElementProvider>();
-            _ = services.AddSingleton<ISnackbarService, SnackbarService>();
+            services.AddHostedService<ApplicationHostService>();
+            services.AddSingleton<MainWindow>();
+            services.AddSingleton<RootViewModel>();
+            services.AddSingleton<IMediaElementProvider, MediaElementProvider>();
+            services.AddSingleton<ISnackbarService, SnackbarService>();
         })
         .Build();
 

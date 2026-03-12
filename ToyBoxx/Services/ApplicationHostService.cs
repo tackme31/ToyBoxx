@@ -10,24 +10,18 @@ namespace ToyBoxx.Services;
 internal class ApplicationHostService : IHostedService
 {
     private readonly IServiceProvider _serviceProvider;
+    private readonly IConfiguration _config;
 
-    public ApplicationHostService(IServiceProvider serviceProvider)
+    public ApplicationHostService(IServiceProvider serviceProvider, IConfiguration config)
     {
         _serviceProvider = serviceProvider;
+        _config = config;
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        // Build config
-        var builder = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddJsonFile("appsettings.user.json", optional: true, reloadOnChange: true)
-            .AddEnvironmentVariables();
-        var config = builder.Build();
-
         // Set application theme
-        var theme = config["ApplicationTheme"] switch
+        var theme = _config["ApplicationTheme"] switch
         {
             "Dark" => ApplicationTheme.Dark,
             "Light" => ApplicationTheme.Light,
@@ -37,7 +31,7 @@ internal class ApplicationHostService : IHostedService
         ApplicationThemeManager.Apply(theme);
 
         // Initialize FFME
-        var ffmpegPath = config["FFMpegRootPath"] ?? throw new InvalidOperationException("Variable 'FFMpegRootPath' does not exist");
+        var ffmpegPath = _config["FFMpegRootPath"] ?? throw new InvalidOperationException("Variable 'FFMpegRootPath' does not exist");
         Library.FFmpegDirectory = ffmpegPath;
         Library.EnableWpfMultiThreadedVideo = true;
 

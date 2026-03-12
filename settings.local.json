@@ -1,0 +1,63 @@
+{
+  "env": {
+    "CLAUDE_CODE_SYNTAX_HIGHLIGHT": "off",
+    "ENABLE_CLAUDEAI_MCP_SERVERS": "false"
+  },
+  "permissions": {
+    "allow": [
+      "mcp__serena",
+      "mcp__context7",
+      "Bash(flutter pub get:*)",
+      "Bash(flutter analyze:*)",
+      "Bash(flutter test:*)",
+      "Bash(flutter build:*)",
+      "Bash(flutter clean:*)",
+      "Bash(dart run build_runner:*)",
+      "Bash(dart pub deps:*)",
+      "Bash(dart analyze:*)",
+      "Bash(dart format:*)",
+      "Bash(dart compile kernel:*)",
+      "Bash(mkdir:*)",
+      "Bash(find:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(node -e:*)",
+      "WebSearch",
+      "WebFetch(domain:supabase.com)",
+      "WebFetch(domain:pub.dev)",
+      "WebFetch(domain:getdutchie.github.io)",
+      "WebFetch(domain:codewithandrea.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(head:*)",
+      "Bash(xargs grep:*)",
+      "Bash(xargs cat:*)",
+      "Bash(ls:*)",
+      "Bash(dart run:*)"
+    ],
+    "deny": [
+      "Bash(curl *)",
+      "Bash(wget *)",
+      "Bash(ssh *)",
+      "Read(**/.env*)",
+      "Read(**/*.pem)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "dart format ."
+          },
+          {
+            "type": "command",
+            "command": "dart fix --apply"
+          }
+        ]
+      }
+    ]
+  }
+}

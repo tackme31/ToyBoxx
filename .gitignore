@@ -489,3 +489,6 @@ appsettings.user.json
 # FFMpeg library
 /ToyBoxx/ffmpeg/*
 !/ToyBoxx/ffmpeg/.keep
+
+# Claude settings
+.claude/settings.local.json
