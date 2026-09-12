@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.IO;
 using System.Text;
 using System.Windows;
 using ToyBoxx.Foundation;
@@ -77,9 +76,7 @@ public partial class RootViewModel : ObservableObject
         var titleBuilder = new StringBuilder();
         if (MediaElement.IsOpen)
         {
-            var source = MediaElement.MediaInfo.MediaSource;
-            var uri = new Uri(source);
-            var title = Path.GetFileNameWithoutExtension(uri.LocalPath);
+            var title = MediaSourceHelper.GetTitle(MediaElement.MediaInfo.MediaSource);
             if (title.Length > 64)
             {
                 title = string.Concat(title.AsSpan(0, 64), "...");
@@ -97,16 +94,17 @@ public partial class RootViewModel : ObservableObject
     private DelegateCommand? _openFromDropCommand;
     public DelegateCommand OpenFileCommand => _openFromDropCommand ??= new(async param =>
     {
-        var filePath = param switch
+        var source = param switch
         {
             DragEventArgs args => GetDragEventFile(args),
             RoutedEventArgs args => GetRoutedEventFile(),
             _ => null
         };
 
-        if (filePath is not null && File.Exists(filePath))
+        source = MediaSourceHelper.Resolve(source);
+        if (source is not null)
         {
-            await Commands.Open.ExecuteAsync(filePath);
+            await Commands.Open.ExecuteAsync(source);
         }
 
         string? GetDragEventFile(DragEventArgs args)

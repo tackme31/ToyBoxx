@@ -211,8 +211,8 @@ public partial class MainWindow
         string GetCaptureSavePath()
         {
             var picturePath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-            var uri = new Uri(Media.MediaInfo.MediaSource);
-            var title = Path.GetFileNameWithoutExtension(uri.LocalPath);
+            var title = MediaSourceHelper.GetTitle(Media.MediaInfo.MediaSource);
+            title = string.Concat(title.Split(Path.GetInvalidFileNameChars()));
             var fileName = $"{title}_{DateTime.Now:yyyyMMddhhmmssfff}.png";
             return Path.Combine(picturePath, fileName);
         }
