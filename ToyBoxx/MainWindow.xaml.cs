@@ -135,14 +135,26 @@ public partial class MainWindow
         };
 
         Media.RendererOptions.UseLegacyAudioOut = true;
+        // InteropBitmap uses less CPU than WriteableBitmap for large frames (may introduce slight tearing)
+        Media.RendererOptions.VideoImageType = VideoRendererImageType.InteropBitmap;
         Media.Loaded += (s, e) => ResetTransform();
         Media.MediaOpening += (s, e) =>
         {
+            // FFME leaves the FFmpeg default (1 thread), which makes software decoding of 4K very slow
+            e.Options.DecoderParams.Threads = "auto";
+            // Decode audio and video on separate threads so heavy video frames don't block audio decoding
+            e.Options.UseParallelDecoding = true;
+
             // Enable hardware decoding
             if (e.Options.VideoStream is StreamInfo videoStream)
             {
                 e.Options.VideoHardwareDevices = GetHardwareDevices(videoStream);
             }
+        };
+        Media.MediaOpened += (s, e) =>
+        {
+            var hwDecoder = string.IsNullOrEmpty(Media.VideoHardwareDecoder) ? "none (software)" : Media.VideoHardwareDecoder;
+            Debug.WriteLine($"[ToyBoxx] Video codec: {Media.VideoCodec}, hardware decoder: {hwDecoder}");
         };
 
         HardwareDeviceInfo[] GetHardwareDevices(StreamInfo videoStream)
