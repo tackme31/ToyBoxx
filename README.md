@@ -3,6 +3,10 @@
 # ToyBoxx - a tiny media player
 Limited, buggy, and uncustomizable, but perfect for me.
 
+> [!IMPORTANT]
+> **ToyBoxx is no longer developed.** Its WPF + FFME stack hit a performance ceiling, most visibly stutter during fullscreen 4K playback.
+> It has been rewritten from scratch as **[ToyFoxx](https://github.com/tackme31/ToyFoxx)** (Qt 6 / Qt Quick, C++20), which keeps decoded frames on the GPU. Future development continues there.
+
 ![](./img/screenshot.png)
 
 ## Features
